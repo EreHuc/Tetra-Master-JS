@@ -1,0 +1,20 @@
+{
+  "name": "tetra-master-js",
+  "version": "0.0.1",
+  "description": "Recreation of FF9 tetra master game in Javascript",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EreHuc/Tetra-Master-JS.git"
+  },
+  "author": "EreHuc",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/EreHuc/Tetra-Master-JS/issues"
+  },
+  "homepage": "https://github.com/EreHuc/Tetra-Master-JS#readme",
+  "devDependencies": {
+    "eslint": "^4.19.1",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-import": "^2.11.0"
+  }
+}
