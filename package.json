@@ -4,6 +4,7 @@
   "description": "Recreation of FF9 tetra master game in Javascript",
   "scripts": {
     "dev": "./node_modules/.bin/parcel index.html",
+    "build": "./node_modules/.bin/parcel build index.html",
     "flow": "flow"
   },
   "repository": {
@@ -19,6 +20,7 @@
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-eslint": "^8.2.3",
+    "babel-plugin-transform-flow-strip-types": "^6.22.0",
     "babel-preset-flow": "^6.23.0",
     "eslint": "^4.19.1",
     "eslint-config-airbnb-base": "^12.1.0",
