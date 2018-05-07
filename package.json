@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "./node_modules/.bin/parcel index.html",
     "build": "./node_modules/.bin/parcel build index.html",
-    "flow": "flow"
+    "flow": "flow",
+    "lint": "./node_modules/.bin/eslint src/ --fix"
   },
   "repository": {
     "type": "git",
