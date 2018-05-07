@@ -1,3 +1,7 @@
 .idea
+.DS_Store
+.cache
 package-lock.json
 node_modules
+lib
+dist

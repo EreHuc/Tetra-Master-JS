@@ -2,7 +2,31 @@
 Recreation of FF9 tetra master game in Javascript
 
 # How to
-Just open index.html in your browser and enjoy
+
+Install dependencies
+```bash
+npm i
+```
+
+Run dev
+```bash
+npm run dev
+```
+
+Build (not working)
+````bash
+npm run build
+````
+
+Linter
+```bash
+npm run lint
+```
+
+Check type
+```bash
+npm run flow
+```
 
 ### About original tetra master
 
