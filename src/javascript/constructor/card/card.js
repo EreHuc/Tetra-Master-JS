@@ -42,13 +42,12 @@ const cardHeight: number = 51 * ZOOM_LEVEL;
 
 export default class Card {
   canvas: Canvas;
-  card: HTMLImageElement;
   tiles: CardTile;
   stats: MonsterStats;
+  corners: Array<number>;
 
   constructor(type: typeof RED_CARD | typeof BLUE_CARD): void {
-    this.card = GAME_SPRITE;
-    this.canvas = new Canvas('card', cardWidth, cardHeight, this.card);
+    this.canvas = new Canvas('card', cardWidth, cardHeight, GAME_SPRITE);
     this.tiles = {
       background: type === BLUE_CARD ? blueCardTile : redCardTile,
       '0': zeroCardTile,
@@ -85,6 +84,7 @@ export default class Card {
       },
     };
     this.stats = randomGenerator.stats();
+    this.corners = randomGenerator.corners();
     this.drawCard(
       this.tiles.monster.chocobo,
       this.stats.attack,
@@ -115,7 +115,7 @@ export default class Card {
     this.drawTypeStat(this.tiles[type]);
     this.drawPhysicalDefStat(this.tiles[physicalDef]);
     this.drawMagicalDefStat(this.tiles[magicalDef]);
-    this.drawCorners(randomGenerator.corners());
+    this.drawCorners(this.corners);
   }
 
   /**
