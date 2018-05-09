@@ -23,7 +23,8 @@ export type MonsterTile = {
 };
 
 export type CardTile = {
-  background: Tile,
+  red: Tile,
+  blue: Tile,
   '0': Tile,
   '1': Tile,
   '2': Tile,

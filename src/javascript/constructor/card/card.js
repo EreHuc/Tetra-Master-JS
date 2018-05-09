@@ -16,77 +16,29 @@ import {
   LEFT_CORNER,
 } from '../../common/variables';
 import randomGenerator from '../../common/random-generator';
-import type { CardTile, Tile } from '../../type/tile';
-import {
-  aCardTile, bCardTile,
-  cCardTile, dCardTile, eCardTile, eightCardTile, fCardTile, fiveCardTile,
-  fourCardTile, mCardTile, nineCardTile,
-  oneCardTile, pCardTile,
-  sevenCardTile, sixCardTile,
-  threeCardTile,
-  twoCardTile, xCardTile,
-  zeroCardTile,
-} from './stat-tile';
-import { blueCardTile, redCardTile } from './card-tile';
-import { chocobo } from './monster-tile';
-import {
-  bottomLeft, bottomRight, topLeft, topRight, top,
-  right,
-  bottom,
-  left,
-} from './corner-tile';
+import { cardTiles } from './card-tile';
+import type { Tile } from '../../type/tile';
 import type { MonsterStatPossibility, MonsterStats, MonsterTypePossibility } from '../../type/stat';
+import { backgroundTile } from '../board/board-tile';
 
 const cardWidth: number = 42 * ZOOM_LEVEL;
 const cardHeight: number = 51 * ZOOM_LEVEL;
 
 export default class Card {
   canvas: Canvas;
-  tiles: CardTile;
   stats: MonsterStats;
   corners: Array<number>;
+  monster: string;
+  color: typeof RED_CARD | typeof BLUE_CARD;
 
-  constructor(type: typeof RED_CARD | typeof BLUE_CARD): void {
-    this.canvas = new Canvas('card', cardWidth, cardHeight, GAME_SPRITE);
-    this.tiles = {
-      background: type === BLUE_CARD ? blueCardTile : redCardTile,
-      '0': zeroCardTile,
-      '1': oneCardTile,
-      '2': twoCardTile,
-      '3': threeCardTile,
-      '4': fourCardTile,
-      '5': fiveCardTile,
-      '6': sixCardTile,
-      '7': sevenCardTile,
-      '8': eightCardTile,
-      '9': nineCardTile,
-      A: aCardTile,
-      B: bCardTile,
-      C: cCardTile,
-      D: dCardTile,
-      E: eCardTile,
-      F: fCardTile,
-      P: pCardTile,
-      M: mCardTile,
-      X: xCardTile,
-      monster: {
-        chocobo,
-      },
-      corner: {
-        topLeft,
-        top,
-        topRight,
-        right,
-        bottomRight,
-        bottom,
-        bottomLeft,
-        left,
-      },
-    };
+  constructor(color: typeof RED_CARD | typeof BLUE_CARD, canvas?: Canvas): void {
+    this.canvas = canvas || new Canvas('card', backgroundTile.width, backgroundTile.height, GAME_SPRITE);
+    this.monster = 'chocobo';
     this.stats = randomGenerator.stats();
     this.corners = randomGenerator.corners();
+    this.color = color;
     this.drawCard(
-      this.tiles.monster.chocobo,
+      this.monster,
       this.stats.attack,
       this.stats.type,
       this.stats.physicalDef,
@@ -103,18 +55,18 @@ export default class Card {
    * @param magicalDef
    */
   drawCard(
-    monster: Tile,
+    monster: string,
     attack: MonsterStatPossibility,
     type: MonsterTypePossibility,
     physicalDef: MonsterStatPossibility,
     magicalDef: MonsterStatPossibility,
   ): void {
     this.drawBackground();
-    this.drawMonster(monster);
-    this.drawAttackStat(this.tiles[attack]);
-    this.drawTypeStat(this.tiles[type]);
-    this.drawPhysicalDefStat(this.tiles[physicalDef]);
-    this.drawMagicalDefStat(this.tiles[magicalDef]);
+    this.drawMonster(cardTiles.monster[monster]);
+    this.drawAttackStat(cardTiles[attack]);
+    this.drawTypeStat(cardTiles[type]);
+    this.drawPhysicalDefStat(cardTiles[physicalDef]);
+    this.drawMagicalDefStat(cardTiles[magicalDef]);
     this.drawCorners(this.corners);
   }
 
@@ -141,11 +93,12 @@ export default class Card {
    * Draw background image
    */
   drawBackground(): void {
+    const colorTile: Tile = this.color === RED_CARD ? cardTiles.red : cardTiles.blue;
     this.canvas.drawImage(
-      this.tiles.background.x,
-      this.tiles.background.y,
-      this.tiles.background.width,
-      this.tiles.background.height,
+      colorTile.x,
+      colorTile.y,
+      colorTile.width,
+      colorTile.height,
       0, 0, cardWidth, cardHeight,
     );
   }
@@ -250,7 +203,7 @@ export default class Card {
   drawTopLeftCorner(): void {
     const dx = 1;
     const dy = 1;
-    const tile = this.tiles.corner.topLeft;
+    const tile = cardTiles.corner.topLeft;
     this.drawTile(tile, dx, dy);
   }
 
@@ -258,7 +211,7 @@ export default class Card {
    * Draw top corner
    */
   drawTopCorner() {
-    const tile = this.tiles.corner.top;
+    const tile = cardTiles.corner.top;
     const dx = (cardWidth / ZOOM_LEVEL / 2) - (tile.width / 2);
     const dy = 0;
     this.drawTile(tile, dx, dy);
@@ -268,7 +221,7 @@ export default class Card {
    * Draw top right corner
    */
   drawTopRightCorner() {
-    const tile = this.tiles.corner.topRight;
+    const tile = cardTiles.corner.topRight;
     const dx = (cardWidth / ZOOM_LEVEL) - (tile.width + 1);
     const dy = 1;
     this.drawTile(tile, dx, dy);
@@ -278,7 +231,7 @@ export default class Card {
    * Draw right corner
    */
   drawRightCorner() {
-    const tile = this.tiles.corner.right;
+    const tile = cardTiles.corner.right;
     const dx = (cardWidth / ZOOM_LEVEL) - tile.width;
     const dy = (cardHeight / ZOOM_LEVEL / 2) - (tile.height / 2);
     this.drawTile(tile, dx, dy);
@@ -288,7 +241,7 @@ export default class Card {
    * Draw bottom right corner
    */
   drawBottomRightCorner() {
-    const tile = this.tiles.corner.bottomRight;
+    const tile = cardTiles.corner.bottomRight;
     const dx = (cardWidth / ZOOM_LEVEL) - (tile.width + 1);
     const dy = (cardHeight / ZOOM_LEVEL) - (tile.height + 1);
     this.drawTile(tile, dx, dy);
@@ -298,7 +251,7 @@ export default class Card {
    * Draw bottom corner
    */
   drawBottomCorner() {
-    const tile = this.tiles.corner.bottom;
+    const tile = cardTiles.corner.bottom;
     const dx = (cardWidth / ZOOM_LEVEL / 2) - (tile.width / 2);
     const dy = (cardHeight / ZOOM_LEVEL) - tile.height;
     this.drawTile(tile, dx, dy);
@@ -308,7 +261,7 @@ export default class Card {
    * Draw bottom left corner
    */
   drawBottomLeftCorner() {
-    const tile = this.tiles.corner.bottomLeft;
+    const tile = cardTiles.corner.bottomLeft;
     const dx = 1;
     const dy = (cardHeight / ZOOM_LEVEL) - (tile.height + 1);
     this.drawTile(tile, dx, dy);
@@ -318,7 +271,7 @@ export default class Card {
    * Draw left corner
    */
   drawLeftCorner() {
-    const tile = this.tiles.corner.left;
+    const tile = cardTiles.corner.left;
     const dx = 0;
     const dy = (cardHeight / ZOOM_LEVEL / 2) - (tile.height / 2);
     this.drawTile(tile, dx, dy);
