@@ -1,5 +1,7 @@
 // @flow
 
+import type { MonsterStats } from './stat';
+
 export type Tile = {
   x: number,
   y: number,
@@ -18,8 +20,15 @@ export type CornerTile = {
   left: Tile,
 }
 
-export type MonsterTile = {
-  chocobo: Tile,
+export type MonsterTile = Tile & {
+  baseStat: MonsterStats,
+}
+
+export type MonsterTileList = {
+  // Goblin: MonsterTile,
+  // Fang: MonsterTile,
+  // Skeleton: MonsterTile,
+  Chocobo: MonsterTile,
 };
 
 export type CardTile = {
@@ -44,6 +53,6 @@ export type CardTile = {
   P: Tile,
   M: Tile,
   X: Tile,
-  monster: MonsterTile,
+  monster: MonsterTileList,
   corner: CornerTile,
 };

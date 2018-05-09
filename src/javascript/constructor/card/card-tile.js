@@ -11,7 +11,7 @@ import {
   zeroCardTile,
 } from './stat-tile';
 import { bottom, bottomLeft, bottomRight, left, right, top, topLeft, topRight } from './corner-tile';
-import { chocobo } from './monster-tile';
+import { Chocobo } from './monster-tile';
 
 
 export const blueCardTile: Tile = {
@@ -51,7 +51,7 @@ export const cardTiles: CardTile = {
   M: mCardTile,
   X: xCardTile,
   monster: {
-    chocobo,
+    Chocobo,
   },
   corner: {
     topLeft,

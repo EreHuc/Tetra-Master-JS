@@ -2,7 +2,7 @@
 
 import { GAME_SPRITE, ZOOM_LEVEL } from '../../common/variables';
 import { backgroundTile, boardTile } from './board-tile';
-import Canvas from '../../generator/canvas';
+import Canvas from '../common/canvas';
 
 export default class Board {
   canvas: Canvas;

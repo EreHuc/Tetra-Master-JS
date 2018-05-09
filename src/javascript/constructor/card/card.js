@@ -1,6 +1,6 @@
 // @flow
 
-import Canvas from '../../generator/canvas';
+import Canvas from '../common/canvas';
 import {
   RED_CARD,
   BLUE_CARD,
@@ -17,9 +17,10 @@ import {
 } from '../../common/variables';
 import randomGenerator from '../../common/random-generator';
 import { cardTiles } from './card-tile';
-import type { Tile } from '../../type/tile';
-import type { MonsterStatPossibility, MonsterStats, MonsterTypePossibility } from '../../type/stat';
+import type { MonsterTile, Tile } from '../../type/tile';
+import type { MonsterStats } from '../../type/stat';
 import { backgroundTile } from '../board/board-tile';
+import { statToHexChar } from '../../common/common';
 
 const cardWidth: number = 42 * ZOOM_LEVEL;
 const cardHeight: number = 51 * ZOOM_LEVEL;
@@ -28,19 +29,18 @@ export default class Card {
   canvas: Canvas;
   stats: MonsterStats;
   corners: Array<number>;
-  monster: string;
+  monster: MonsterTile;
   color: typeof RED_CARD | typeof BLUE_CARD;
 
-  constructor(color: typeof RED_CARD | typeof BLUE_CARD, canvas?: Canvas): void {
-    this.canvas = canvas || new Canvas('card', backgroundTile.width, backgroundTile.height, GAME_SPRITE);
-    this.monster = 'chocobo';
-    this.stats = randomGenerator.stats();
+  constructor(color: typeof RED_CARD | typeof BLUE_CARD, monster: MonsterTile, canvas?: Canvas): void {
+    this.canvas = canvas || new Canvas('card', backgroundTile.width * ZOOM_LEVEL, backgroundTile.height * ZOOM_LEVEL, GAME_SPRITE);
+    this.monster = monster;
+    this.stats = randomGenerator.stats(monster.baseStat);
     this.corners = randomGenerator.corners();
     this.color = color;
     this.drawCard(
       this.monster,
       this.stats.attack,
-      this.stats.type,
       this.stats.physicalDef,
       this.stats.magicalDef,
     );
@@ -50,23 +50,21 @@ export default class Card {
    * Sequence to draw a card
    * @param monster
    * @param attack
-   * @param type
    * @param physicalDef
    * @param magicalDef
    */
   drawCard(
-    monster: string,
-    attack: MonsterStatPossibility,
-    type: MonsterTypePossibility,
-    physicalDef: MonsterStatPossibility,
-    magicalDef: MonsterStatPossibility,
-  ): void {
+    monster: MonsterTile,
+    attack: number,
+    physicalDef: number,
+    magicalDef: number,
+  ) {
     this.drawBackground();
-    this.drawMonster(cardTiles.monster[monster]);
-    this.drawAttackStat(cardTiles[attack]);
-    this.drawTypeStat(cardTiles[type]);
-    this.drawPhysicalDefStat(cardTiles[physicalDef]);
-    this.drawMagicalDefStat(cardTiles[magicalDef]);
+    this.drawMonster(monster);
+    this.drawAttackStat(cardTiles[statToHexChar(attack)]);
+    this.drawTypeStat(cardTiles[monster.baseStat.type]);
+    this.drawPhysicalDefStat(cardTiles[statToHexChar(physicalDef)]);
+    this.drawMagicalDefStat(cardTiles[statToHexChar(magicalDef)]);
     this.drawCorners(this.corners);
   }
 
