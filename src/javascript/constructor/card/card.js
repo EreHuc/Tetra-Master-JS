@@ -18,8 +18,8 @@ import {
 import randomGenerator from '../../common/random-generator';
 import { cardTiles } from './card-tile';
 import type { MonsterTile, Tile } from '../../type/tile';
-import type { MonsterStats } from '../../type/stat';
-import { backgroundTile } from '../board/board-tile';
+import type { MonsterStats, MonsterTypePossibility } from '../../type/stat';
+// import { backgroundTile } from '../board/board-tile';
 import { statToHexChar } from '../../common/common';
 
 const cardWidth: number = 42 * ZOOM_LEVEL;
@@ -33,7 +33,7 @@ export default class Card {
   color: typeof RED_CARD | typeof BLUE_CARD;
 
   constructor(color: typeof RED_CARD | typeof BLUE_CARD, monster: MonsterTile, canvas?: Canvas): void {
-    this.canvas = canvas || new Canvas('card', backgroundTile.width * ZOOM_LEVEL, backgroundTile.height * ZOOM_LEVEL, GAME_SPRITE);
+    this.canvas = canvas || new Canvas('card', cardWidth, cardHeight, GAME_SPRITE);
     this.monster = monster;
     this.stats = randomGenerator.stats(monster.baseStat);
     this.corners = randomGenerator.corners();
@@ -41,6 +41,7 @@ export default class Card {
     this.drawCard(
       this.monster,
       this.stats.attack,
+      this.stats.type,
       this.stats.physicalDef,
       this.stats.magicalDef,
     );
@@ -50,19 +51,21 @@ export default class Card {
    * Sequence to draw a card
    * @param monster
    * @param attack
+   * @param type
    * @param physicalDef
    * @param magicalDef
    */
   drawCard(
     monster: MonsterTile,
     attack: number,
+    type: MonsterTypePossibility,
     physicalDef: number,
     magicalDef: number,
   ) {
     this.drawBackground();
     this.drawMonster(monster);
     this.drawAttackStat(cardTiles[statToHexChar(attack)]);
-    this.drawTypeStat(cardTiles[monster.baseStat.type]);
+    this.drawTypeStat(cardTiles[type]);
     this.drawPhysicalDefStat(cardTiles[statToHexChar(physicalDef)]);
     this.drawMagicalDefStat(cardTiles[statToHexChar(magicalDef)]);
     this.drawCorners(this.corners);
@@ -115,7 +118,6 @@ export default class Card {
    * Generic function to draw stat tile
    * @param tile
    * @param dx
-   * @param dy
    */
   drawStatTile(tile: Tile, dx: number): void {
     const dy = (cardHeight / ZOOM_LEVEL) - 13;

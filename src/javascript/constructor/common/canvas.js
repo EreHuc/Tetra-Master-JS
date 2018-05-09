@@ -23,7 +23,6 @@ export default class Canvas {
 
   /**
    * Draw image in canvas
-   * @param image
    * @param sx
    * @param sy
    * @param sWidth
