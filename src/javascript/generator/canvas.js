@@ -55,4 +55,18 @@ export default class Canvas {
       dHeight,
     );
   }
+
+  /**
+   * Save canvas state
+   */
+  save() {
+    this.context.save();
+  }
+
+  /**
+   * Restore last canvas state
+   */
+  restore() {
+    this.context.restore();
+  }
 }
