@@ -1,5 +1,7 @@
 // @flow
 
+import type { AssaultBatteClass, FlexibleBattleClass, MagicalBattleClass, PhysicalBattleClass } from '../type/stat';
+
 export const GAME_SPRITE:HTMLImageElement = (document.getElementById('game-sprite'): any);
 export const BLUE_CARD: number = 0;
 export const RED_CARD: number = 1;
@@ -12,3 +14,7 @@ export const BOTTOM_RIGHT_CORNER: number = 4;
 export const BOTTOM_CORNER: number = 5;
 export const BOTTOM_LEFT_CORNER: number = 6;
 export const LEFT_CORNER: number = 7;
+export const ASSAULT_BATTLE_CLASS: AssaultBatteClass = 'A';
+export const PHYSICAL_BATTLE_CLASS: PhysicalBattleClass = 'P';
+export const MAGICAL_BATTLE_CLASS: MagicalBattleClass = 'M';
+export const FLEXIBLE_BATTLE_CLASS: FlexibleBattleClass = 'X';

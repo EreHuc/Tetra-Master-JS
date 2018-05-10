@@ -1,20 +1,6 @@
 // @flow
 
 /**
- * Generate a random ID
- * @returns {string}
- */
-const randId = (): string => Math.random().toString(16).substring(2);
-
-/**
- * Generate an id with prefix and length
- * @param prefix
- * @param length
- * @returns {string}
- */
-const namedId = (prefix: string, length: number = 4): string => `${prefix}-${randId().substring(0, length)}`;
-
-/**
  * Draw image in a specified context
  * @param ctx
  * @param image
@@ -27,7 +13,7 @@ const namedId = (prefix: string, length: number = 4): string => `${prefix}-${ran
  * @param dWidth
  * @param dHeight
  */
-const drawImage = (
+export const drawImage = (
   ctx: CanvasRenderingContext2D,
   image: HTMLImageElement,
   sx: number,
@@ -42,8 +28,12 @@ const drawImage = (
   ctx.drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight);
 };
 
-export default {
-  randId,
-  namedId,
-  drawImage,
+/**
+ * Convert base 10 stat to first hexadecimal characters
+ * @param stat
+ * @returns {string}
+ */
+export const statToHexChar = (stat: number): string => {
+  const hexChar = stat.toString(16);
+  return hexChar.length > 1 ? stat.toString(16).substring(0, 1).toUpperCase() : '0';
 };

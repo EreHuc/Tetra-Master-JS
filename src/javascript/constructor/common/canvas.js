@@ -1,6 +1,7 @@
 // @flow
 
-import common from '../common/common';
+import { drawImage } from '../../common/common';
+import { namedId } from '../../common/random-generator';
 
 export default class Canvas {
   canvas: HTMLCanvasElement;
@@ -9,10 +10,10 @@ export default class Canvas {
 
   constructor(type: string, width: number, height: number, image: HTMLImageElement) {
     const body: HTMLElement = (document.querySelector('body'): any);
-    const canvasId: string = common.namedId('canvas');
+    const canvasId: string = namedId('canvas');
     this.image = image;
     this.canvas = document.createElement('canvas');
-    this.canvas.classList.add(type);
+    this.canvas.classList.add('tetra-master', type);
     this.canvas.setAttribute('id', canvasId);
     this.canvas.width = width;
     this.canvas.height = height;
@@ -22,7 +23,6 @@ export default class Canvas {
 
   /**
    * Draw image in canvas
-   * @param image
    * @param sx
    * @param sy
    * @param sWidth
@@ -42,7 +42,7 @@ export default class Canvas {
     dWidth: number,
     dHeight: number,
   ) {
-    common.drawImage(
+    drawImage(
       this.context,
       this.image,
       sx,
@@ -54,5 +54,19 @@ export default class Canvas {
       dWidth,
       dHeight,
     );
+  }
+
+  /**
+   * Save canvas state
+   */
+  save() {
+    this.context.save();
+  }
+
+  /**
+   * Restore last canvas state
+   */
+  restore() {
+    this.context.restore();
   }
 }
