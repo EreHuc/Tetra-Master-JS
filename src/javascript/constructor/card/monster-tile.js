@@ -1373,7 +1373,7 @@ export const Namingway: MonsterTile = {
   },
 };
 
-export const Boco: MonsterTile = {
+export const BocoTHEChocobo: MonsterTile = {
   id: 99,
   x: 376,
   y: 439,

@@ -5,7 +5,6 @@ import {
   RED_CARD,
   BLUE_CARD,
   GAME_SPRITE,
-  ZOOM_LEVEL,
   TOP_LEFT_CORNER,
   TOP_CORNER,
   TOP_RIGHT_CORNER,
@@ -13,62 +12,58 @@ import {
   BOTTOM_RIGHT_CORNER,
   BOTTOM_CORNER,
   BOTTOM_LEFT_CORNER,
-  LEFT_CORNER,
+  LEFT_CORNER, CARD_HEIGHT, CARD_WIDTH,
 } from '../../common/variables';
 import randomGenerator from '../../common/random-generator';
 import { cardTiles } from './card-tile';
 import type { MonsterTile, Tile } from '../../type/tile';
-import type { MonsterStats, MonsterTypePossibility } from '../../type/stat';
-// import { backgroundTile } from '../board/board-tile';
+import type { MonsterStats } from '../../type/stat';
 import { statToHexChar } from '../../common/common';
-
-const cardWidth: number = 42 * ZOOM_LEVEL;
-const cardHeight: number = 51 * ZOOM_LEVEL;
+import { cornerToBattlegroundPosition } from '../../engine/corners';
+import type { GridPosition } from '../../type/canvas';
 
 export default class Card {
   canvas: Canvas;
   stats: MonsterStats;
   corners: Array<number>;
   monster: MonsterTile;
-  color: typeof RED_CARD | typeof BLUE_CARD;
+  colorTile: Tile;
+  gridPosition: GridPosition;
 
-  constructor(color: typeof RED_CARD | typeof BLUE_CARD, monster: MonsterTile, canvas?: Canvas): void {
-    this.canvas = canvas || new Canvas('card', cardWidth, cardHeight, GAME_SPRITE);
-    this.monster = monster;
-    this.stats = randomGenerator.stats(monster.baseStat);
-    this.corners = randomGenerator.corners();
-    this.color = color;
-    this.drawCard(
-      this.monster,
-      this.stats.attack,
-      this.stats.type,
-      this.stats.physicalDef,
-      this.stats.magicalDef,
-    );
+  constructor(color: typeof RED_CARD | typeof BLUE_CARD, gridPosition: GridPosition, monster?: MonsterTile, canvas?: Canvas): void {
+    this.canvas = canvas || new Canvas('card', GAME_SPRITE);
+    if (monster) {
+      this.monster = monster;
+      this.stats = randomGenerator.stats(monster.baseStat);
+      this.corners = randomGenerator.corners();
+      this.colorTile = color === RED_CARD ? cardTiles.red : cardTiles.blue;
+    } else {
+      this.colorTile = color === RED_CARD ? cardTiles.forbidden1 : cardTiles.forbidden2;
+    }
+    this.translateCardToBattlegroundGrid();
+    this.setCardPosition(gridPosition);
+    this.drawCard(gridPosition);
   }
 
   /**
    * Sequence to draw a card
-   * @param monster
-   * @param attack
-   * @param type
-   * @param physicalDef
-   * @param magicalDef
    */
-  drawCard(
-    monster: MonsterTile,
-    attack: number,
-    type: MonsterTypePossibility,
-    physicalDef: number,
-    magicalDef: number,
-  ) {
-    this.drawBackground();
-    this.drawMonster(monster);
-    this.drawAttackStat(cardTiles[statToHexChar(attack)]);
-    this.drawTypeStat(cardTiles[type]);
-    this.drawPhysicalDefStat(cardTiles[statToHexChar(physicalDef)]);
-    this.drawMagicalDefStat(cardTiles[statToHexChar(magicalDef)]);
-    this.drawCorners(this.corners);
+  drawCard(gridPosition: GridPosition) {
+    this.clearCard();
+    this.setCardPosition(gridPosition);
+    this.drawBackground(this.colorTile);
+    if (this.monster) {
+      this.drawMonster(this.monster);
+      this.drawAttackStat(cardTiles[statToHexChar(this.stats.attack)]);
+      this.drawTypeStat(cardTiles[this.stats.type]);
+      this.drawPhysicalDefStat(cardTiles[statToHexChar(this.stats.physicalDef)]);
+      this.drawMagicalDefStat(cardTiles[statToHexChar(this.stats.magicalDef)]);
+      this.drawCorners(this.corners);
+    }
+  }
+
+  clearCard() {
+    this.canvas.clearImage(this.gridPosition.x, this.gridPosition.y, CARD_WIDTH, CARD_HEIGHT);
   }
 
   /**
@@ -83,25 +78,18 @@ export default class Card {
       tile.y,
       tile.width,
       tile.height,
-      dx * ZOOM_LEVEL,
-      dy * ZOOM_LEVEL,
-      tile.width * ZOOM_LEVEL,
-      tile.height * ZOOM_LEVEL,
+      (this.gridPosition.x + dx),
+      (this.gridPosition.y + dy),
+      tile.width,
+      tile.height,
     );
   }
 
   /**
    * Draw background image
    */
-  drawBackground(): void {
-    const colorTile: Tile = this.color === RED_CARD ? cardTiles.red : cardTiles.blue;
-    this.canvas.drawImage(
-      colorTile.x,
-      colorTile.y,
-      colorTile.width,
-      colorTile.height,
-      0, 0, cardWidth, cardHeight,
-    );
+  drawBackground(colorTile: Tile): void {
+    this.drawTile(colorTile, 0, 0);
   }
 
   /**
@@ -120,7 +108,7 @@ export default class Card {
    * @param dx
    */
   drawStatTile(tile: Tile, dx: number): void {
-    const dy = (cardHeight / ZOOM_LEVEL) - 13;
+    const dy = CARD_HEIGHT - 13;
     this.drawTile(tile, dx, dy);
   }
 
@@ -212,7 +200,7 @@ export default class Card {
    */
   drawTopCorner() {
     const tile = cardTiles.corner.top;
-    const dx = (cardWidth / ZOOM_LEVEL / 2) - (tile.width / 2);
+    const dx = (CARD_WIDTH / 2) - (tile.width / 2);
     const dy = 0;
     this.drawTile(tile, dx, dy);
   }
@@ -222,7 +210,7 @@ export default class Card {
    */
   drawTopRightCorner() {
     const tile = cardTiles.corner.topRight;
-    const dx = (cardWidth / ZOOM_LEVEL) - (tile.width + 1);
+    const dx = CARD_WIDTH - (tile.width + 1);
     const dy = 1;
     this.drawTile(tile, dx, dy);
   }
@@ -232,8 +220,8 @@ export default class Card {
    */
   drawRightCorner() {
     const tile = cardTiles.corner.right;
-    const dx = (cardWidth / ZOOM_LEVEL) - tile.width;
-    const dy = (cardHeight / ZOOM_LEVEL / 2) - (tile.height / 2);
+    const dx = CARD_WIDTH - tile.width;
+    const dy = (CARD_HEIGHT / 2) - (tile.height / 2);
     this.drawTile(tile, dx, dy);
   }
 
@@ -242,8 +230,8 @@ export default class Card {
    */
   drawBottomRightCorner() {
     const tile = cardTiles.corner.bottomRight;
-    const dx = (cardWidth / ZOOM_LEVEL) - (tile.width + 1);
-    const dy = (cardHeight / ZOOM_LEVEL) - (tile.height + 1);
+    const dx = CARD_WIDTH - (tile.width + 1);
+    const dy = CARD_HEIGHT - (tile.height + 1);
     this.drawTile(tile, dx, dy);
   }
 
@@ -252,8 +240,8 @@ export default class Card {
    */
   drawBottomCorner() {
     const tile = cardTiles.corner.bottom;
-    const dx = (cardWidth / ZOOM_LEVEL / 2) - (tile.width / 2);
-    const dy = (cardHeight / ZOOM_LEVEL) - tile.height;
+    const dx = (CARD_WIDTH / 2) - (tile.width / 2);
+    const dy = CARD_HEIGHT - tile.height;
     this.drawTile(tile, dx, dy);
   }
 
@@ -263,7 +251,7 @@ export default class Card {
   drawBottomLeftCorner() {
     const tile = cardTiles.corner.bottomLeft;
     const dx = 1;
-    const dy = (cardHeight / ZOOM_LEVEL) - (tile.height + 1);
+    const dy = CARD_HEIGHT - (tile.height + 1);
     this.drawTile(tile, dx, dy);
   }
 
@@ -273,7 +261,25 @@ export default class Card {
   drawLeftCorner() {
     const tile = cardTiles.corner.left;
     const dx = 0;
-    const dy = (cardHeight / ZOOM_LEVEL / 2) - (tile.height / 2);
+    const dy = (CARD_HEIGHT / 2) - (tile.height / 2);
     this.drawTile(tile, dx, dy);
+  }
+
+  /**
+   * Change position of card for next draw
+   * @param gridPosition
+   */
+  setCardPosition(gridPosition: GridPosition) {
+    this.gridPosition = gridPosition;
+  }
+
+  translateCardToBattlegroundGrid() {
+    this.canvas.translateToBattleground();
+  }
+
+  checkCorners() {
+    this.corners.forEach((corner) => {
+      console.log('card.js:276 - ', corner, cornerToBattlegroundPosition(corner, this.gridPosition.value));
+    });
   }
 }
