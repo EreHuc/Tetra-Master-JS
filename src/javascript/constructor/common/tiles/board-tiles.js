@@ -1,8 +1,8 @@
 // @flow
 
-import type { Tile } from '../../type/tile';
+import type { Tile } from '../../../type/tile';
 
-export const boardTile: Tile = {
+export const boardTiles: Tile = {
   x: 340,
   y: 498,
   width: 224,

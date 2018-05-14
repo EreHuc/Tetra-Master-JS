@@ -1,8 +1,8 @@
 // @flow
 
-import { GAME_SPRITE } from '../../common/variables';
-import { backgroundTile, boardTile } from './board-tile';
-import Canvas from '../common/canvas';
+import { GAME_SPRITE } from '../common/variables';
+import { backgroundTile, boardTiles } from './common/tiles/board-tiles';
+import Canvas from './canvas';
 
 export default class Board {
   canvas: Canvas;
@@ -29,12 +29,12 @@ export default class Board {
 
   drawBoard() {
     this.canvas.drawImage(
-      boardTile.x,
-      boardTile.y,
-      boardTile.width,
-      boardTile.height,
-      ((backgroundTile.width - boardTile.width) / 2),
-      0, boardTile.width, boardTile.height,
+      boardTiles.x,
+      boardTiles.y,
+      boardTiles.width,
+      boardTiles.height,
+      ((backgroundTile.width - boardTiles.width) / 2),
+      0, boardTiles.width, boardTiles.height,
     );
   }
 }

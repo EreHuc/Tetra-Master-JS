@@ -1,6 +1,6 @@
 // @flow
 
-import Canvas from '../common/canvas';
+import Canvas from './canvas';
 import {
   RED_CARD,
   BLUE_CARD,
@@ -13,14 +13,14 @@ import {
   BOTTOM_CORNER,
   BOTTOM_LEFT_CORNER,
   LEFT_CORNER, CARD_HEIGHT, CARD_WIDTH,
-} from '../../common/variables';
-import randomGenerator from '../../common/random-generator';
-import { cardTiles } from './card-tile';
-import type { MonsterTile, Tile } from '../../type/tile';
-import type { MonsterStats } from '../../type/stat';
-import { statToHexChar } from '../../common/common';
-import { cornerToBattlegroundPosition } from '../../engine/corners';
-import type { GridPosition } from '../../type/canvas';
+} from '../common/variables';
+import randomGenerator from '../common/generator/random-generator';
+import { cardTiles } from './common/tiles/card-tiles';
+import type { MonsterTile, Tile } from '../type/tile';
+import type { MonsterStats } from '../type/stat';
+import { statToHexChar } from '../common/common';
+import { cornerToBattlegroundPosition } from '../engine/corners';
+import type { GridPosition } from '../type/canvas';
 
 export default class Card {
   canvas: Canvas;
@@ -29,9 +29,10 @@ export default class Card {
   monster: MonsterTile;
   colorTile: Tile;
   gridPosition: GridPosition;
+  grid: 'battleground' | 'playerHand';
 
-  constructor(color: typeof RED_CARD | typeof BLUE_CARD, gridPosition: GridPosition, monster?: MonsterTile, canvas?: Canvas): void {
-    this.canvas = canvas || new Canvas('card', GAME_SPRITE);
+  constructor(grid: 'battleground' | 'playerHand', color: typeof RED_CARD | typeof BLUE_CARD, gridPosition: GridPosition, monster?: MonsterTile, canvas?: Canvas): void {
+    this.grid = grid;
     if (monster) {
       this.monster = monster;
       this.stats = randomGenerator.stats(monster.baseStat);
@@ -40,9 +41,15 @@ export default class Card {
     } else {
       this.colorTile = color === RED_CARD ? cardTiles.forbidden1 : cardTiles.forbidden2;
     }
-    this.translateCardToBattlegroundGrid();
-    this.setCardPosition(gridPosition);
-    this.drawCard(gridPosition);
+    if (this.grid === 'battleground') {
+      this.canvas = canvas || new Canvas('card', GAME_SPRITE);
+      this.setCardPosition(gridPosition);
+      this.translateCardToBattlegroundGrid();
+    } else {
+      this.canvas = canvas || new Canvas('card', GAME_SPRITE, true, 0.8);
+      this.setCardPosition(gridPosition);
+      this.translateCardToPlayerHand();
+    }
   }
 
   /**
@@ -62,6 +69,9 @@ export default class Card {
     }
   }
 
+  /**
+   * Clear entire card
+   */
   clearCard() {
     this.canvas.clearImage(this.gridPosition.x, this.gridPosition.y, CARD_WIDTH, CARD_HEIGHT);
   }
@@ -270,16 +280,43 @@ export default class Card {
    * @param gridPosition
    */
   setCardPosition(gridPosition: GridPosition) {
-    this.gridPosition = gridPosition;
+    if (this.gridPosition) {
+      this.clearCard();
+    }
+    this.gridPosition = Object.assign({}, gridPosition);
   }
 
+  /**
+   * Change card to battleground grid
+   */
   translateCardToBattlegroundGrid() {
+    this.clearCard();
     this.canvas.translateToBattleground();
+    this.drawCard(this.gridPosition);
+  }
+
+  /**
+   * Change card to player hand grid
+   */
+  translateCardToPlayerHand() {
+    this.clearCard();
+    this.canvas.translateToPlayerHand();
+    this.drawCard(this.gridPosition);
   }
 
   checkCorners() {
     this.corners.forEach((corner) => {
       console.log('card.js:276 - ', corner, cornerToBattlegroundPosition(corner, this.gridPosition.value));
     });
+  }
+
+  switchTo4Card() {
+    this.canvas.setZoom(1);
+    this.drawCard(this.gridPosition);
+  }
+
+  switchTo5Card() {
+    this.canvas.setZoom(0.8);
+    this.drawCard(this.gridPosition);
   }
 }

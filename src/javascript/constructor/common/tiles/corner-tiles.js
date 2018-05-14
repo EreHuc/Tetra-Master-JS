@@ -1,6 +1,6 @@
 // @flow
 
-import type { Tile } from '../../type/tile';
+import type { Tile } from '../../../type/tile';
 
 export const topLeft: Tile = {
   x: 203,

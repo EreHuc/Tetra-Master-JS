@@ -1,6 +1,6 @@
 // @flow
 
-import type { Tile } from '../../type/tile';
+import type { Tile } from '../../../type/tile';
 
 export const zeroCardTile: Tile = {
   x: 356,

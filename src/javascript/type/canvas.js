@@ -5,8 +5,14 @@ export type CoordPosition = {
   y: number,
 }
 
+export type CursorDelta = {
+  dx: number,
+  dy: number,
+}
+
 export type GridPosition = CoordPosition & {
   value: number,
+  cursor: CursorDelta,
 }
 
 export type BattlegroundPositions = {
@@ -27,3 +33,5 @@ export type BattlegroundPositions = {
   '32': GridPosition,
   '33': GridPosition,
 }
+
+export type PlayerHandPositions = Array<GridPosition>;

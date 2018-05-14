@@ -8,10 +8,7 @@ import {
   TOP_LEFT_CORNER,
   TOP_RIGHT_CORNER,
 } from '../common/variables';
-
-export const validBattlegroundPositions: Array<number> = [0, 1, 2, 3, 10, 11, 12, 13, 20, 21, 22, 23, 30, 31, 32, 33];
-
-export const isValidBattlegroundPosition = (positionValue: number): boolean => validBattlegroundPositions.indexOf(positionValue) !== -1;
+import { isValidBattlegroundPosition } from '../constructor/common/positions/battleground-positions';
 
 export const cornerToBattlegroundPosition = (cornerNumber: number, positionValue: number): ?number => {
   let battlegroundPosition: number = -99;

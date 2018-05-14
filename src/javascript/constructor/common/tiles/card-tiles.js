@@ -1,6 +1,6 @@
 // @flow
 
-import type { CardTile, MonsterTileList, Tile } from '../../type/tile';
+import type { CardTile, MonsterTileList, Tile } from '../../../type/tile';
 import {
   aCardTile, bCardTile, cCardTile, dCardTile, eCardTile, eightCardTile, fCardTile,
   fiveCardTile,
@@ -9,8 +9,8 @@ import {
   sevenCardTile,
   sixCardTile, threeCardTile, twoCardTile, xCardTile,
   zeroCardTile,
-} from './stat-tile';
-import { bottom, bottomLeft, bottomRight, left, right, top, topLeft, topRight } from './corner-tile';
+} from './stat-tiles';
+import { bottom, bottomLeft, bottomRight, left, right, top, topLeft, topRight } from './corner-tiles';
 import {
   Abadon,
   Abomination, Airship, Alexander, Alexandria,
@@ -76,7 +76,7 @@ import {
   Zemzelett,
   Zombie,
   Zuu,
-} from './monster-tile';
+} from './monster-tiles';
 
 /**
  * Blue card background info

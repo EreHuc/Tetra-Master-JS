@@ -1,7 +1,5 @@
 // @flow
 
-import { ZOOM_LEVEL } from './variables';
-
 /**
  * Draw image in a specified context
  * @param ctx
@@ -27,7 +25,7 @@ export const drawImage = (
   dWidth: number,
   dHeight: number,
 ): void => {
-  ctx.drawImage(image, sx, sy, sWidth, sHeight, dx * ZOOM_LEVEL, dy * ZOOM_LEVEL, dWidth * ZOOM_LEVEL, dHeight * ZOOM_LEVEL);
+  ctx.drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight);
 };
 
 /**
@@ -39,7 +37,7 @@ export const drawImage = (
  * @param height
  */
 export const cleanRect = (ctx: CanvasRenderingContext2D, x: number, y: number, width: number, height: number): void => {
-  ctx.clearRect(x * ZOOM_LEVEL, y * ZOOM_LEVEL, width * ZOOM_LEVEL, height * ZOOM_LEVEL);
+  ctx.clearRect(x, y, width, height);
 };
 
 /**
@@ -49,7 +47,7 @@ export const cleanRect = (ctx: CanvasRenderingContext2D, x: number, y: number, w
  * @param y
  */
 export const translate = (ctx: CanvasRenderingContext2D, x: number, y: number): void => {
-  ctx.translate(x * ZOOM_LEVEL, y * ZOOM_LEVEL);
+  ctx.translate(x, y);
 };
 
 /**
