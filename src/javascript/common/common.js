@@ -29,6 +29,28 @@ export const drawImage = (
 };
 
 /**
+ * Clear rectangular area in a specific context
+ * @param ctx
+ * @param x
+ * @param y
+ * @param width
+ * @param height
+ */
+export const cleanRect = (ctx: CanvasRenderingContext2D, x: number, y: number, width: number, height: number): void => {
+  ctx.clearRect(x, y, width, height);
+};
+
+/**
+ * translate canvas to x, y coordinate
+ * @param ctx
+ * @param x
+ * @param y
+ */
+export const translate = (ctx: CanvasRenderingContext2D, x: number, y: number): void => {
+  ctx.translate(x, y);
+};
+
+/**
  * Convert base 10 stat to first hexadecimal characters
  * @param stat
  * @returns {string}

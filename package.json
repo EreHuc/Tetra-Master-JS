@@ -3,10 +3,10 @@
   "version": "0.0.1",
   "description": "Recreation of FF9 tetra master game in Javascript",
   "scripts": {
-    "dev": "./node_modules/.bin/parcel index.html",
-    "build": "./node_modules/.bin/parcel build index.html",
+    "dev": "parcel index.html",
+    "build": "parcel build index.html",
     "flow": "flow",
-    "lint": "./node_modules/.bin/eslint src/ --fix"
+    "lint": "eslint src/ --fix"
   },
   "repository": {
     "type": "git",
@@ -28,6 +28,7 @@
     "eslint-plugin-flowtype": "^2.46.3",
     "eslint-plugin-import": "^2.11.0",
     "flow-bin": "^0.71.0",
-    "parcel-bundler": "^1.8.1"
+    "parcel-bundler": "^1.8.1",
+    "babel-polyfill": "^6.26.0"
   }
 }

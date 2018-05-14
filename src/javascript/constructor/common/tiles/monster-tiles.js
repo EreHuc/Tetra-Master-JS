@@ -1,5 +1,5 @@
-import { MAGICAL_BATTLE_CLASS, PHYSICAL_BATTLE_CLASS } from '../../common/variables';
-import type { MonsterTile } from '../../type/tile';
+import { MAGICAL_BATTLE_CLASS, PHYSICAL_BATTLE_CLASS } from '../../../common/variables';
+import type { MonsterTile } from '../../../type/tile';
 
 export const Goblin: MonsterTile = {
   id: 1,
@@ -1373,7 +1373,7 @@ export const Namingway: MonsterTile = {
   },
 };
 
-export const Boco: MonsterTile = {
+export const BocoTHEChocobo: MonsterTile = {
   id: 99,
   x: 376,
   y: 439,

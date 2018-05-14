@@ -1,0 +1,17 @@
+body {
+    position: relative;
+}
+
+.tetra-master:not(.board) {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.hidden {
+    display: none;
+}
+
+.cursor {
+    z-index: 10;
+}

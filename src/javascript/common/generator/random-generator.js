@@ -8,8 +8,8 @@ import {
   TOP_CORNER,
   TOP_LEFT_CORNER,
   TOP_RIGHT_CORNER,
-} from './variables';
-import type { MonsterStats, MonsterTypePossibility } from '../type/stat';
+} from '../variables';
+import type { MonsterStats, MonsterTypePossibility } from '../../type/stat';
 
 /**
  * Generate a random ID

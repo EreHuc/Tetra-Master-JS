@@ -124,13 +124,15 @@ export type MonsterTileList = {
   TwoMoons: MonsterTile,
   Gargant: MonsterTile,
   Namingway: MonsterTile,
-  Boco: MonsterTile,
+  BocoTHEChocobo: MonsterTile,
   Airship: MonsterTile,
 };
 
 export type CardTile = {
   red: Tile,
   blue: Tile,
+  forbidden1: Tile,
+  forbidden2: Tile,
   '0': Tile,
   '1': Tile,
   '2': Tile,
@@ -153,3 +155,5 @@ export type CardTile = {
   monster: MonsterTileList,
   corner: CornerTile,
 };
+
+export type CursorTile = Array<Tile>;
