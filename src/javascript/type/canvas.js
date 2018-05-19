@@ -1,5 +1,7 @@
 // @flow
 
+console.log('test.js:3 - ', 'this console.log fix build');
+
 export type CoordPosition = {
   x: number,
   y: number,
