@@ -37,14 +37,16 @@ export default class Game {
 
   constructor() {
     this.board = new Board();
-    this.cards = [
-      new Card('battleground', BLUE_CARD, battlegroundGridPosition00, Goblin),
-      new Card('battleground', BLUE_CARD, battlegroundGridPosition12),
-      new Card('battleground', RED_CARD, battlegroundGridPosition23),
-      new Card('battleground', RED_CARD, battlegroundGridPosition30, Chocobo),
-      new Card('battleground', RED_CARD, battlegroundGridPosition21, FatChocobo),
-      new Card('battleground', BLUE_CARD, battlegroundGridPosition31),
-    ];
+    // this.cards = [
+    //   new Card('battleground', BLUE_CARD, battlegroundGridPosition00, Goblin),
+    //   new Card('battleground', BLUE_CARD, battlegroundGridPosition12),
+    //   new Card('battleground', RED_CARD, battlegroundGridPosition23),
+    //   new Card('battleground', RED_CARD, battlegroundGridPosition30, Chocobo),
+    //   new Card('battleground', RED_CARD, battlegroundGridPosition21, FatChocobo),
+    //   new Card('battleground', BLUE_CARD, battlegroundGridPosition31),
+    // ];
+    this.cards = [...generateForbiddenTile()];
+    console.log('engine.js:49 - ', this.cards);
     this.cardsInPlayerHand = [
       new Card('playerHand', BLUE_CARD, playerHandGridPosition00, BocoTHEChocobo),
       new Card('playerHand', BLUE_CARD, playerHandGridPosition01, BocoTHEChocobo),
@@ -59,7 +61,6 @@ export default class Game {
       .setOptions({ triggerOnce: true })
       .down([UP, DOWN, RIGHT, LEFT], this.changeCursorPosition.bind(this))
       .down(ENTER, this.selectOrPlaceCard.bind(this));
-    generateForbiddenTile();
   }
 
   changeCursorPosition(e: KeyPressedEvent) {
