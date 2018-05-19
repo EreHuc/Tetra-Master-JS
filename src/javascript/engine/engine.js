@@ -5,7 +5,11 @@ import Card from '../constructor/card';
 import { BLUE_CARD, DOWN, ENTER, LEFT, RED_CARD, RIGHT, UP } from '../common/variables';
 import Board from '../constructor/board';
 import { keyPressed } from '../common/keyPressed/key_pressed';
-import { keyCodeToPlayerHandPosition } from './key-handler';
+import {
+  isBattlegroundGridPositionAvailable,
+  keyCodeToBattlegroundPosition,
+  keyCodeToPlayerHandPosition,
+} from './key-handler';
 import {
   battlegroundGridPosition00,
   battlegroundGridPosition12, battlegroundGridPosition21,
@@ -20,6 +24,8 @@ import {
   playerHandGridPosition04,
   playerHandPositions,
 } from '../constructor/common/positions/player-side-positions';
+import type { KeyPressedEvent } from '../type/key_pressed';
+import { generateForbiddenTile } from './board-init';
 
 export default class Game {
   board: Board;
@@ -27,6 +33,7 @@ export default class Game {
   playerHandCursor: Cursor;
   battlegroundCursor: Cursor;
   cardsInPlayerHand: Array<?Card>;
+  cursorInPlayerGridPosition: boolean;
 
   constructor() {
     this.board = new Board();
@@ -47,20 +54,40 @@ export default class Game {
     ];
     this.playerHandCursor = new Cursor('playerHand');
     this.battlegroundCursor = new Cursor('battleground', false);
-    keyPressed.setOptions({ triggerOnce: true });
-    keyPressed.down([UP, DOWN, RIGHT, LEFT], (e) => {
-      const nextGridPosition = keyCodeToPlayerHandPosition(e.keyCode, this.playerHandCursor.gridPosition.value, this.cardsInPlayerHand.length);
+    this.cursorInPlayerHand = true;
+    keyPressed
+      .setOptions({ triggerOnce: true })
+      .down([UP, DOWN, RIGHT, LEFT], this.changeCursorPosition.bind(this))
+      .down(ENTER, this.selectOrPlaceCard.bind(this));
+    generateForbiddenTile();
+  }
+
+  changeCursorPosition(e: KeyPressedEvent) {
+    let nextGridPosition;
+    if (this.cursorInPlayerHand) {
+      nextGridPosition = keyCodeToPlayerHandPosition(e.keyCode, this.playerHandCursor.gridPosition.value, this.cardsInPlayerHand.length);
       if (nextGridPosition) {
-        this.playerHandCursor.setCursorPosition(nextGridPosition);
+        this.playerHandCursor.drawCursor(nextGridPosition);
       }
-    });
-    keyPressed.down(ENTER, () => {
+    } else {
+      nextGridPosition = keyCodeToBattlegroundPosition(e.keyCode, this.battlegroundCursor.gridPosition.value);
+      if (nextGridPosition) {
+        this.battlegroundCursor.drawCursor(nextGridPosition);
+      }
+    }
+  }
+
+  selectOrPlaceCard() {
+    if (this.cursorInPlayerHand) {
+      this.playerHandCursor.stopAnimatedCursor();
+      this.cursorInPlayerHand = false;
+    } else {
       const cardIndexToRemove = this.playerHandCursor.gridPosition.value;
       const cardToRemove = this.cardsInPlayerHand[cardIndexToRemove];
-      if (cardToRemove) {
-        cardToRemove.setCardPosition(battlegroundGridPosition00);
-        cardToRemove.translateCardToBattlegroundGrid();
+      if (cardToRemove && isBattlegroundGridPositionAvailable(this.cards, this.battlegroundCursor.gridPosition.value)) {
+        cardToRemove.setCardPosition(this.battlegroundCursor.gridPosition);
         cardToRemove.switchTo4Card();
+        cardToRemove.translateCardToBattlegroundGrid();
         if (this.cardsInPlayerHand.length === 5) {
           this.cardsInPlayerHand.splice(cardIndexToRemove, 1);
           this.cardsInPlayerHand.forEach((card, index) => {
@@ -73,7 +100,25 @@ export default class Game {
         } else {
           this.cardsInPlayerHand.splice(cardIndexToRemove, 1, undefined);
         }
+        this.cards.push(cardToRemove);
+        this.playerHandCursor.drawAnimatedCursor();
+        this.cursorInPlayerHand = true;
       }
-    });
+    }
+  }
+
+  set cursorInPlayerHand(value: boolean) {
+    if (value) {
+      this.playerHandCursor.canvas.undimCanvas();
+      this.battlegroundCursor.canvas.hideCanvas();
+    } else {
+      this.playerHandCursor.canvas.dimCanvas();
+      this.battlegroundCursor.canvas.showCanvas();
+    }
+    this.cursorInPlayerGridPosition = value;
+  }
+
+  get cursorInPlayerHand(): boolean {
+    return this.cursorInPlayerGridPosition;
   }
 }

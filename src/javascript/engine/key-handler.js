@@ -14,7 +14,7 @@ export const isBattlegroundGridPositionAvailable = (
   nextGridPositionValue: number,
 ): boolean => !listOfCards.some(card => card.gridPosition.value === nextGridPositionValue);
 
-export const keyCodeToBattlegroundPosition = (keyCode: number, cards:Array<Card>, positionValue: number): ?GridPosition => {
+export const keyCodeToBattlegroundPosition = (keyCode: number, positionValue: number): ?GridPosition => {
   let nextPosition:number = -99;
   switch (keyCode) {
     case UP:

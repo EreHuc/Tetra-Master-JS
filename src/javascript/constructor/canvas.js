@@ -19,7 +19,7 @@ export default class Canvas {
   zoom: number;
 
   constructor(type: string, image: HTMLImageElement, display: boolean = true, zoom: number = 1) {
-    const body: HTMLElement = (document.querySelector('body'): any);
+    const body: HTMLBodyElement = (document.querySelector('body'): any);
     const canvasId: string = namedId('canvas');
     this.zoom = zoom;
     this.image = image;
@@ -167,6 +167,14 @@ export default class Canvas {
 
   showCanvas() {
     this.canvas.classList.remove('hidden');
+  }
+
+  dimCanvas() {
+    this.canvas.classList.add('dimmed');
+  }
+
+  undimCanvas() {
+    this.canvas.classList.remove('dimmed');
   }
 
   setZoom(zoom: number) {
