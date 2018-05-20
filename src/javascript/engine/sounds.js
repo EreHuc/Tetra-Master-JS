@@ -19,7 +19,7 @@ export default class Sounds {
   putSound: HTMLAudioElement;
 
   constructor() {
-    // $FlowFixMe
+    // $FlowFixMe Stupid flow didn't recognise Audio...
     this.cursorSound = new Audio(cursorSound);
     this.quadmist = new Audio(quadmistMusic);
     this.errorSound = new Audio(errorSound);

@@ -20,8 +20,8 @@ import {
   playerHandPositions,
 } from '../constructor/common/positions/player-side-positions';
 import type { KeyPressedEvent } from '../type/key_pressed';
-import { generateStoneTile } from './board-init';
 import Sounds from './sounds';
+import { animateStoneTiles, generateStoneTile } from './board-init';
 
 export default class Game {
   board: Board;
@@ -34,9 +34,12 @@ export default class Game {
 
   constructor() {
     this.sounds = new Sounds();
-    this.sounds.music();
+    // this.sounds.music();
     this.board = new Board();
-    this.cards = [...generateStoneTile()];
+    generateStoneTile(animateStoneTiles).then((cards) => {
+      this.cards = [...cards];
+      // this.gameCanStart to dev
+    });
     this.cardsInPlayerHand = [
       new Card('playerHand', BLUE_CARD, playerHandGridPosition00, BocoTHEChocobo),
       new Card('playerHand', BLUE_CARD, playerHandGridPosition01, BocoTHEChocobo),
