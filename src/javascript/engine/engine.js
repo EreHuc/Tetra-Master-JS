@@ -2,7 +2,7 @@
 
 import { BocoTHEChocobo, Chocobo, FatChocobo, Goblin } from '../constructor/common/tiles/monster-tiles';
 import Card from '../constructor/card';
-import { BLUE_CARD, DOWN, ENTER, LEFT, RED_CARD, RIGHT, UP } from '../common/variables';
+import { BLUE_CARD, DOWN, ENTER, ESCAPE, LEFT, RED_CARD, RIGHT, UP } from '../common/variables';
 import Board from '../constructor/board';
 import { keyPressed } from '../common/keyPressed/key_pressed';
 import {
@@ -10,11 +10,6 @@ import {
   keyCodeToBattlegroundPosition,
   keyCodeToPlayerHandPosition,
 } from './key-handler';
-import {
-  battlegroundGridPosition00,
-  battlegroundGridPosition12, battlegroundGridPosition21,
-  battlegroundGridPosition23, battlegroundGridPosition30, battlegroundGridPosition31,
-} from '../constructor/common/positions/battleground-positions';
 import Cursor from '../constructor/cursor';
 import {
   playerHandGridPosition00,
@@ -25,28 +20,23 @@ import {
   playerHandPositions,
 } from '../constructor/common/positions/player-side-positions';
 import type { KeyPressedEvent } from '../type/key_pressed';
-import { generateForbiddenTile } from './board-init';
+import { generateStoneTile } from './board-init';
+import Sounds from './sounds';
 
 export default class Game {
   board: Board;
-  cards: Array<Card>;
+  cards: Array<?Card>;
   playerHandCursor: Cursor;
   battlegroundCursor: Cursor;
   cardsInPlayerHand: Array<?Card>;
   cursorInPlayerGridPosition: boolean;
+  sounds: Sounds;
 
   constructor() {
+    this.sounds = new Sounds();
+    this.sounds.music();
     this.board = new Board();
-    // this.cards = [
-    //   new Card('battleground', BLUE_CARD, battlegroundGridPosition00, Goblin),
-    //   new Card('battleground', BLUE_CARD, battlegroundGridPosition12),
-    //   new Card('battleground', RED_CARD, battlegroundGridPosition23),
-    //   new Card('battleground', RED_CARD, battlegroundGridPosition30, Chocobo),
-    //   new Card('battleground', RED_CARD, battlegroundGridPosition21, FatChocobo),
-    //   new Card('battleground', BLUE_CARD, battlegroundGridPosition31),
-    // ];
-    this.cards = [...generateForbiddenTile()];
-    console.log('engine.js:49 - ', this.cards);
+    this.cards = [...generateStoneTile()];
     this.cardsInPlayerHand = [
       new Card('playerHand', BLUE_CARD, playerHandGridPosition00, BocoTHEChocobo),
       new Card('playerHand', BLUE_CARD, playerHandGridPosition01, BocoTHEChocobo),
@@ -60,7 +50,8 @@ export default class Game {
     keyPressed
       .setOptions({ triggerOnce: true })
       .down([UP, DOWN, RIGHT, LEFT], this.changeCursorPosition.bind(this))
-      .down(ENTER, this.selectOrPlaceCard.bind(this));
+      .down(ENTER, this.selectOrPlaceCard.bind(this))
+      .down(ESCAPE, this.backToPlayerHand.bind(this));
   }
 
   changeCursorPosition(e: KeyPressedEvent) {
@@ -68,11 +59,13 @@ export default class Game {
     if (this.cursorInPlayerHand) {
       nextGridPosition = keyCodeToPlayerHandPosition(e.keyCode, this.playerHandCursor.gridPosition.value, this.cardsInPlayerHand.length);
       if (nextGridPosition) {
+        this.sounds.cursor();
         this.playerHandCursor.drawCursor(nextGridPosition);
       }
     } else {
       nextGridPosition = keyCodeToBattlegroundPosition(e.keyCode, this.battlegroundCursor.gridPosition.value);
       if (nextGridPosition) {
+        this.sounds.cursor();
         this.battlegroundCursor.drawCursor(nextGridPosition);
       }
     }
@@ -80,12 +73,14 @@ export default class Game {
 
   selectOrPlaceCard() {
     if (this.cursorInPlayerHand) {
+      this.sounds.cursor();
       this.playerHandCursor.stopAnimatedCursor();
       this.cursorInPlayerHand = false;
     } else {
       const cardIndexToRemove = this.playerHandCursor.gridPosition.value;
       const cardToRemove = this.cardsInPlayerHand[cardIndexToRemove];
       if (cardToRemove && isBattlegroundGridPositionAvailable(this.cards, this.battlegroundCursor.gridPosition.value)) {
+        this.sounds.cursor();
         cardToRemove.setCardPosition(this.battlegroundCursor.gridPosition);
         cardToRemove.switchTo4Card();
         cardToRemove.translateCardToBattlegroundGrid();
@@ -104,7 +99,17 @@ export default class Game {
         this.cards.push(cardToRemove);
         this.playerHandCursor.drawAnimatedCursor();
         this.cursorInPlayerHand = true;
+      } else {
+        this.sounds.error();
       }
+    }
+  }
+
+  backToPlayerHand() {
+    if (!this.cursorInPlayerHand) {
+      this.sounds.escape();
+      this.playerHandCursor.drawAnimatedCursor();
+      this.cursorInPlayerHand = true;
     }
   }
 

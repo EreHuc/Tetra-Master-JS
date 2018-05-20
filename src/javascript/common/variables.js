@@ -37,6 +37,7 @@ export const DOWN: number = 40;
 export const LEFT: number = 37;
 export const RIGHT: number = 39;
 export const ENTER: number = 13;
+export const ESCAPE: number = 27;
 export const requestAnimationFrame = window.requestAnimationFrame
   || window.mozRequestAnimationFrame
   || window.webkitRequestAnimationFrame

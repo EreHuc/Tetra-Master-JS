@@ -100,14 +100,14 @@ export const redCardTile: Tile = {
   height: 51,
 };
 
-export const forbidden1CardTile: Tile = {
+export const stone1CardTile: Tile = {
   x: 114,
   y: 822,
   width: 42,
   height: 51,
 };
 
-export const forbidden2CardTile: Tile = {
+export const stone2CardTile: Tile = {
   x: 162,
   y: 822,
   width: 42,
@@ -228,8 +228,8 @@ export const monsterList: MonsterTileList = {
 export const cardTiles: CardTile = {
   red: redCardTile,
   blue: blueCardTile,
-  forbidden1: forbidden1CardTile,
-  forbidden2: forbidden2CardTile,
+  stone1: stone1CardTile,
+  stone2: stone2CardTile,
   '0': zeroCardTile,
   '1': oneCardTile,
   '2': twoCardTile,

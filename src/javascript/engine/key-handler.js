@@ -10,9 +10,9 @@ import Card from '../constructor/card';
 import { isValidPlayerHandPosition, playerHandPositions } from '../constructor/common/positions/player-side-positions';
 
 export const isBattlegroundGridPositionAvailable = (
-  listOfCards: Array<Card>,
+  listOfCards: Array<?Card>,
   nextGridPositionValue: number,
-): boolean => !listOfCards.some(card => card.gridPosition.value === nextGridPositionValue);
+): boolean => !listOfCards.some(card => card && card.gridPosition.value === nextGridPositionValue);
 
 export const keyCodeToBattlegroundPosition = (keyCode: number, positionValue: number): ?GridPosition => {
   let nextPosition:number = -99;

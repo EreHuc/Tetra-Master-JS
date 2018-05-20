@@ -131,8 +131,8 @@ export type MonsterTileList = {
 export type CardTile = {
   red: Tile,
   blue: Tile,
-  forbidden1: Tile,
-  forbidden2: Tile,
+  stone1: Tile,
+  stone2: Tile,
   '0': Tile,
   '1': Tile,
   '2': Tile,

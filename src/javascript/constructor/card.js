@@ -39,7 +39,7 @@ export default class Card {
       this.corners = randomGenerator.corners();
       this.colorTile = color === RED_CARD ? cardTiles.red : cardTiles.blue;
     } else {
-      this.colorTile = color === RED_CARD ? cardTiles.forbidden1 : cardTiles.forbidden2;
+      this.colorTile = color === RED_CARD ? cardTiles.stone1 : cardTiles.stone2;
     }
     if (this.grid === 'battleground') {
       this.canvas = canvas || new Canvas('card', GAME_SPRITE);
