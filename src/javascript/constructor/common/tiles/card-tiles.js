@@ -221,6 +221,13 @@ export const monsterList: MonsterTileList = {
   Airship,
 };
 
+export const backCardTile: Tile = {
+  x: 210,
+  y: 822,
+  height: 42,
+  width: 51,
+};
+
 /**
  * All tile need for drawing card
  * @type {{red: Tile, blue: Tile, '0': Tile, '1': Tile, '2': Tile, '3': Tile, '4': Tile, '5': Tile, '6': Tile, '7': Tile, '8': Tile, '9': Tile, A: Tile, B: Tile, C: Tile, D: Tile, E: Tile, F: Tile, P: Tile, M: Tile, X: Tile, monster: MonsterTileList, corner: {topLeft: Tile, top: Tile, topRight: Tile, right: Tile, bottomRight: Tile, bottom: Tile, bottomLeft: Tile, left: Tile}}}
@@ -260,4 +267,5 @@ export const cardTiles: CardTile = {
     bottomLeft,
     left,
   },
+  back: backCardTile,
 };

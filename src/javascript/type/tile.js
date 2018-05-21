@@ -154,6 +154,7 @@ export type CardTile = {
   X: Tile,
   monster: MonsterTileList,
   corner: CornerTile,
+  back: Tile,
 };
 
 export type CursorTile = Array<Tile>;
