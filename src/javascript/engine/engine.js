@@ -1,8 +1,8 @@
 // @flow
 
-import { BocoTHEChocobo, Chocobo, FatChocobo, Goblin } from '../constructor/common/tiles/monster-tiles';
+import { BocoTHEChocobo } from '../constructor/common/tiles/monster-tiles';
 import Card from '../constructor/card';
-import { BLUE_CARD, DOWN, ENTER, ESCAPE, LEFT, RED_CARD, RIGHT, UP } from '../common/variables';
+import { BLUE_CARD, DOWN, ENTER, ESCAPE, LEFT, RIGHT, UP } from '../common/variables';
 import Board from '../constructor/board';
 import { keyPressed } from '../common/keyPressed/key_pressed';
 import {
@@ -31,6 +31,7 @@ export default class Game {
   cardsInPlayerHand: Array<?Card>;
   cursorInPlayerGridPosition: boolean;
   sounds: Sounds;
+  gcs: boolean;
 
   constructor() {
     this.sounds = new Sounds();
@@ -38,7 +39,13 @@ export default class Game {
     this.board = new Board();
     generateStoneTile(animateStoneTiles).then((cards) => {
       this.cards = [...cards];
+      console.log('engine.js:42 - ', cards);
       // this.gameCanStart to dev
+      keyPressed
+        .setOptions({ triggerOnce: true })
+        .down([UP, DOWN, RIGHT, LEFT], this.changeCursorPosition.bind(this))
+        .down(ENTER, this.selectOrPlaceCard.bind(this))
+        .down(ESCAPE, this.backToPlayerHand.bind(this));
     });
     this.cardsInPlayerHand = [
       new Card('playerHand', BLUE_CARD, playerHandGridPosition00, BocoTHEChocobo),
@@ -50,11 +57,6 @@ export default class Game {
     this.playerHandCursor = new Cursor('playerHand');
     this.battlegroundCursor = new Cursor('battleground', false);
     this.cursorInPlayerHand = true;
-    keyPressed
-      .setOptions({ triggerOnce: true })
-      .down([UP, DOWN, RIGHT, LEFT], this.changeCursorPosition.bind(this))
-      .down(ENTER, this.selectOrPlaceCard.bind(this))
-      .down(ESCAPE, this.backToPlayerHand.bind(this));
   }
 
   changeCursorPosition(e: KeyPressedEvent) {
@@ -83,7 +85,7 @@ export default class Game {
       const cardIndexToRemove = this.playerHandCursor.gridPosition.value;
       const cardToRemove = this.cardsInPlayerHand[cardIndexToRemove];
       if (cardToRemove && isBattlegroundGridPositionAvailable(this.cards, this.battlegroundCursor.gridPosition.value)) {
-        this.sounds.cursor();
+        this.sounds.chooseCard();
         cardToRemove.setCardPosition(this.battlegroundCursor.gridPosition);
         cardToRemove.switchTo4Card();
         cardToRemove.translateCardToBattlegroundGrid();
@@ -129,5 +131,16 @@ export default class Game {
 
   get cursorInPlayerHand(): boolean {
     return this.cursorInPlayerGridPosition;
+  }
+
+  set gameCanStart(value: boolean) {
+    if (value) {
+      this.gcs = value;
+      // start game here
+    }
+  }
+
+  get gameCanStart() {
+    return this.gcs;
   }
 }

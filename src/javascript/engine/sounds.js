@@ -9,6 +9,8 @@ import escapeSound from '../../assets/sound/snd_escape.mp3';
 // $FlowFixMe
 import putSound from '../../assets/sound/snd_put.mp3';
 // $FlowFixMe
+import chooseCardSound from '../../assets/sound/snd_choose_card.mp3';
+// $FlowFixMe
 import quadmistMusic from '../../assets/sound/mus_quadmist.mp3';
 
 export default class Sounds {
@@ -17,6 +19,7 @@ export default class Sounds {
   errorSound: HTMLAudioElement;
   escapeSound: HTMLAudioElement;
   putSound: HTMLAudioElement;
+  chooseCardSound: HTMLAudioElement;
 
   constructor() {
     // $FlowFixMe Stupid flow didn't recognise Audio...
@@ -25,6 +28,7 @@ export default class Sounds {
     this.errorSound = new Audio(errorSound);
     this.escapeSound = new Audio(escapeSound);
     this.putSound = new Audio(putSound);
+    this.chooseCardSound = new Audio(chooseCardSound);
   }
 
   cursor() {
@@ -48,6 +52,12 @@ export default class Sounds {
   }
 
   put() {
-    this.putSound.play();
+    const sound: HTMLAudioElement = this.putSound.cloneNode();
+    sound.play();
+  }
+
+  chooseCard() {
+    const sound: HTMLAudioElement = this.chooseCardSound.cloneNode();
+    sound.play();
   }
 }

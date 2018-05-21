@@ -21,6 +21,7 @@ import type { MonsterStats } from '../type/stat';
 import { statToHexChar } from '../common/common';
 import { cornerToBattlegroundPosition } from '../engine/corners';
 import type { GridPosition } from '../type/canvas';
+import AnimationSprite from '../engine/animations';
 
 export default class Card {
   canvas: Canvas;
@@ -30,6 +31,8 @@ export default class Card {
   colorTile: Tile;
   gridPosition: GridPosition;
   grid: 'battleground' | 'playerHand';
+  animation: AnimationSprite;
+  zoom: number;
 
   constructor(grid: 'battleground' | 'playerHand', color: typeof RED_CARD | typeof BLUE_CARD, gridPosition: GridPosition, monster?: MonsterTile, canvas?: Canvas): void {
     this.grid = grid;
@@ -39,7 +42,18 @@ export default class Card {
       this.corners = randomGenerator.corners();
       this.colorTile = color === RED_CARD ? cardTiles.red : cardTiles.blue;
     } else {
+      this.zoom = 2;
       this.colorTile = color === RED_CARD ? cardTiles.stone1 : cardTiles.stone2;
+      this.animation = new AnimationSprite(() => {
+        if (this.zoom < 1) {
+          this.animation.stopAnimation();
+        } else {
+          this.clearCard();
+          this.canvas.setZoom(this.zoom);
+          this.drawCard(this.gridPosition);
+          this.zoom = Number((this.zoom - 0.1).toFixed(1));
+        }
+      }, (1000 / 60));
     }
     if (this.grid === 'battleground') {
       this.canvas = canvas || new Canvas('card', GAME_SPRITE);
@@ -292,7 +306,11 @@ export default class Card {
   translateCardToBattlegroundGrid() {
     this.clearCard();
     this.canvas.translateToBattleground();
-    this.drawCard(this.gridPosition);
+    if (this.monster) {
+      this.drawCard(this.gridPosition);
+    } else {
+      this.animateStoneCard();
+    }
   }
 
   /**
@@ -318,5 +336,9 @@ export default class Card {
   switchTo5Card() {
     this.canvas.setZoom(0.8);
     this.drawCard(this.gridPosition);
+  }
+
+  animateStoneCard() {
+    this.animation.startAnimation();
   }
 }

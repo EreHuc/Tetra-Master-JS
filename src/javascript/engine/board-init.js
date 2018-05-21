@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 // @flow
 
 import {
@@ -11,7 +12,7 @@ import { RED_CARD } from '../common/variables';
 
 const sounds = new Sounds();
 
-export function generateStoneTile(animateTiles: (gridPosition: Array<?GridPosition>, stoneCardList: Array<?Card>) => Array<?Card>): Promise<Array<?Card>> {
+export function generateStoneTile(animateTiles: (gridPosition: Array<?GridPosition>, stoneCardList: Array<?Card>, resolve: Function) => Array<?Card>): Promise<Array<?Card>> {
   return new Promise((resolve) => {
     const nbOfStoneTile: number = Math.floor(Math.random() * 7);
     const battleGroundPositions: Array<number> = [...validBattlegroundPositions];
@@ -22,11 +23,12 @@ export function generateStoneTile(animateTiles: (gridPosition: Array<?GridPositi
       const gridPosition = battleGroundPositions.splice(index, 1).shift();
       stoneCards.push(battlegroundPositions[gridPosition]);
     }
-    return resolve(animateTiles(stoneCards, []));
+    return animateTiles(stoneCards, [], resolve);
   });
 }
 
-export function animateStoneTiles(gridPositions: Array<?GridPosition>, stoneCardList: Array<?Card>): Array<?Card> {
+// $FlowFixMe
+export function animateStoneTiles(gridPositions: Array<?GridPosition>, stoneCardList: Array<?Card>, resolve: Function): Promise<Array<?Card>> {
   if (gridPositions && gridPositions.length) {
     window.setTimeout(() => {
       // Stupid flow fix me didn't recognise gridPositions && gridPositions.length as valid condition for shift
@@ -34,8 +36,10 @@ export function animateStoneTiles(gridPositions: Array<?GridPosition>, stoneCard
       // $FlowFixMe
       const gridPosition: GridPosition = gridPositions.shift();
       stoneCardList.push(new Card('battleground', RED_CARD, gridPosition));
-      return animateStoneTiles(gridPositions, stoneCardList);
-    }, sounds.putSound.duration * 1000);
+      sounds.put();
+      return animateStoneTiles(gridPositions, stoneCardList, resolve);
+    }, 200);
+  } else {
+    return resolve(stoneCardList);
   }
-  return stoneCardList;
 }
