@@ -1,17 +1,25 @@
 // @flow
 
 // $FlowFixMe
-import cursorSound from '../../assets/sound/snd_cursor.mp3';
+import CursorSound from '../../assets/sound/snd_cursor.mp3';
 // $FlowFixMe
-import errorSound from '../../assets/sound/snd_error.mp3';
+import ErrorSound from '../../assets/sound/snd_error.mp3';
 // $FlowFixMe
-import escapeSound from '../../assets/sound/snd_escape.mp3';
+import EscapeSound from '../../assets/sound/snd_escape.mp3';
 // $FlowFixMe
-import putSound from '../../assets/sound/snd_put.mp3';
+import PutSound from '../../assets/sound/snd_put.mp3';
 // $FlowFixMe
-import chooseCardSound from '../../assets/sound/snd_choose_card.mp3';
+import ChooseCardSound from '../../assets/sound/snd_choose_card.mp3';
 // $FlowFixMe
-import quadmistMusic from '../../assets/sound/mus_quadmist.mp3';
+import QuadmistMusic from '../../assets/sound/mus_quadmist.mp3';
+
+// $FlowFixMe Stupid flow didn't recognise Audio...
+const cursorSound = new Audio(CursorSound);
+const errorSound = new Audio(ErrorSound);
+const escapeSound = new Audio(EscapeSound);
+const putSound = new Audio(PutSound);
+const chooseCardSound = new Audio(ChooseCardSound);
+const quadmist = new Audio(QuadmistMusic);
 
 export default class Sounds {
   cursorSound: HTMLAudioElement;
@@ -22,13 +30,12 @@ export default class Sounds {
   chooseCardSound: HTMLAudioElement;
 
   constructor() {
-    // $FlowFixMe Stupid flow didn't recognise Audio...
-    this.cursorSound = new Audio(cursorSound);
-    this.quadmist = new Audio(quadmistMusic);
-    this.errorSound = new Audio(errorSound);
-    this.escapeSound = new Audio(escapeSound);
-    this.putSound = new Audio(putSound);
-    this.chooseCardSound = new Audio(chooseCardSound);
+    this.cursorSound = cursorSound;
+    this.quadmist = quadmist;
+    this.errorSound = errorSound;
+    this.escapeSound = escapeSound;
+    this.putSound = putSound;
+    this.chooseCardSound = chooseCardSound;
   }
 
   cursor() {

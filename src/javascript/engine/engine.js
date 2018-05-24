@@ -35,7 +35,7 @@ export default class Game {
 
   constructor() {
     this.sounds = new Sounds();
-    // this.sounds.music();
+    this.sounds.music();
     this.board = new Board();
     generateStoneTile(animateStoneTiles).then((cards) => {
       this.cards = [...cards];
