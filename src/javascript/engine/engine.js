@@ -22,6 +22,7 @@ import {
 import type { KeyPressedEvent } from '../type/key_pressed';
 import Sounds from './sounds';
 import { animateStoneTiles, generateStoneTile } from './board-init';
+import { monsterList } from '../constructor/common/tiles/card-tiles';
 
 export default class Game {
   board: Board;
@@ -48,11 +49,11 @@ export default class Game {
         .down(ESCAPE, this.backToPlayerHand.bind(this));
     });
     this.cardsInPlayerHand = [
-      new Card('playerHand', BLUE_CARD, playerHandGridPosition00, BocoTHEChocobo),
-      new Card('playerHand', BLUE_CARD, playerHandGridPosition01, BocoTHEChocobo),
-      new Card('playerHand', BLUE_CARD, playerHandGridPosition02, BocoTHEChocobo),
-      new Card('playerHand', BLUE_CARD, playerHandGridPosition03, BocoTHEChocobo),
-      new Card('playerHand', BLUE_CARD, playerHandGridPosition04, BocoTHEChocobo),
+      new Card('playerHand', BLUE_CARD, playerHandGridPosition00, monsterList[Object.keys(monsterList)[Math.floor(Math.random() * Object.keys(monsterList).length)]]),
+      new Card('playerHand', BLUE_CARD, playerHandGridPosition01, monsterList[Object.keys(monsterList)[Math.floor(Math.random() * Object.keys(monsterList).length)]]),
+      new Card('playerHand', BLUE_CARD, playerHandGridPosition02, monsterList[Object.keys(monsterList)[Math.floor(Math.random() * Object.keys(monsterList).length)]]),
+      new Card('playerHand', BLUE_CARD, playerHandGridPosition03, monsterList[Object.keys(monsterList)[Math.floor(Math.random() * Object.keys(monsterList).length)]]),
+      new Card('playerHand', BLUE_CARD, playerHandGridPosition04, monsterList[Object.keys(monsterList)[Math.floor(Math.random() * Object.keys(monsterList).length)]]),
     ];
     this.playerHandCursor = new Cursor('playerHand');
     this.battlegroundCursor = new Cursor('battleground', false);
