@@ -7,9 +7,9 @@ import { cursorTile } from './common/tiles/cursor-tiles';
 import type { GridPosition } from '../type/canvas';
 import { battlegroundGridPosition00 } from './common/positions/battleground-positions';
 import type { Tile } from '../type/tile';
-import { startAnimation } from '../engine/animations';
 import { infiniteSequence } from '../common/generator/sequence-generator';
 import { playerHandGridPosition00 } from './common/positions/player-side-positions';
+import AnimationSprite from '../engine/animations';
 
 export default class Cursor {
   canvas: Canvas;
@@ -18,6 +18,8 @@ export default class Cursor {
   gridPosition: GridPosition;
   sprite: Tile;
   grid: 'battleground' | 'playerHand';
+  requestId: number;
+  animation: AnimationSprite;
 
   constructor(grid: 'battleground' | 'playerHand', display: boolean = true) {
     this.sprite = cursorTile[0];
@@ -32,6 +34,10 @@ export default class Cursor {
       this.gridPosition = playerHandGridPosition00;
       this.translateCursorToPlayerHand();
     }
+    this.animation = new AnimationSprite(() => {
+      this.drawCursor(this.gridPosition);
+      this.nextCursorSpriteIndex();
+    }, 1000 / 10);
     this.drawAnimatedCursor();
   }
 
@@ -39,9 +45,11 @@ export default class Cursor {
    * Start drawing animated cursor
    */
   drawAnimatedCursor() {
-    startAnimation(() => {
-      this.drawCursor(this.gridPosition);
-    }, 1000 / 30);
+    this.animation.startAnimation();
+  }
+
+  stopAnimatedCursor() {
+    this.animation.stopAnimation();
   }
 
   /**
@@ -49,10 +57,8 @@ export default class Cursor {
    * @param gridPosition
    */
   drawCursor(gridPosition: GridPosition) {
-    this.clearCursor();
     this.setCursorPosition(gridPosition);
     this.drawTile(this.sprite);
-    this.nextCursorSpriteIndex();
   }
 
   /**

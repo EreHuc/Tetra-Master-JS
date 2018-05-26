@@ -15,3 +15,7 @@ body {
 .cursor {
     z-index: 10;
 }
+
+.dimmed {
+    opacity: .5;
+}

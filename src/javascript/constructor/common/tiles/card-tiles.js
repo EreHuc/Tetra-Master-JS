@@ -100,14 +100,14 @@ export const redCardTile: Tile = {
   height: 51,
 };
 
-export const forbidden1CardTile: Tile = {
+export const stone1CardTile: Tile = {
   x: 114,
   y: 822,
   width: 42,
   height: 51,
 };
 
-export const forbidden2CardTile: Tile = {
+export const stone2CardTile: Tile = {
   x: 162,
   y: 822,
   width: 42,
@@ -221,6 +221,13 @@ export const monsterList: MonsterTileList = {
   Airship,
 };
 
+export const backCardTile: Tile = {
+  x: 210,
+  y: 822,
+  height: 42,
+  width: 51,
+};
+
 /**
  * All tile need for drawing card
  * @type {{red: Tile, blue: Tile, '0': Tile, '1': Tile, '2': Tile, '3': Tile, '4': Tile, '5': Tile, '6': Tile, '7': Tile, '8': Tile, '9': Tile, A: Tile, B: Tile, C: Tile, D: Tile, E: Tile, F: Tile, P: Tile, M: Tile, X: Tile, monster: MonsterTileList, corner: {topLeft: Tile, top: Tile, topRight: Tile, right: Tile, bottomRight: Tile, bottom: Tile, bottomLeft: Tile, left: Tile}}}
@@ -228,8 +235,8 @@ export const monsterList: MonsterTileList = {
 export const cardTiles: CardTile = {
   red: redCardTile,
   blue: blueCardTile,
-  forbidden1: forbidden1CardTile,
-  forbidden2: forbidden2CardTile,
+  stone1: stone1CardTile,
+  stone2: stone2CardTile,
   '0': zeroCardTile,
   '1': oneCardTile,
   '2': twoCardTile,
@@ -260,4 +267,5 @@ export const cardTiles: CardTile = {
     bottomLeft,
     left,
   },
+  back: backCardTile,
 };

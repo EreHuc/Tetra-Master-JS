@@ -5,7 +5,7 @@ import type { AssaultBatteClass, FlexibleBattleClass, MagicalBattleClass, Physic
 export const GAME_SPRITE:HTMLImageElement = (document.getElementById('game-sprite'): any);
 export const BLUE_CARD: number = 0;
 export const RED_CARD: number = 1;
-export const ZOOM_LEVEL: number = 2;
+export const ZOOM_LEVEL: number = 3;
 export const TOP_LEFT_CORNER: number = 0;
 export const TOP_CORNER: number = 1;
 export const TOP_RIGHT_CORNER: number = 2;
@@ -37,6 +37,7 @@ export const DOWN: number = 40;
 export const LEFT: number = 37;
 export const RIGHT: number = 39;
 export const ENTER: number = 13;
+export const ESCAPE: number = 27;
 export const requestAnimationFrame = window.requestAnimationFrame
   || window.mozRequestAnimationFrame
   || window.webkitRequestAnimationFrame

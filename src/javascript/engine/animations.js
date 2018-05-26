@@ -1,22 +1,42 @@
 // @flow
 
-export const requestAnimationFrame = window.requestAnimationFrame
+const requestAnimationFrame = window.requestAnimationFrame
   || window.mozRequestAnimationFrame
   || window.webkitRequestAnimationFrame
   || window.msRequestAnimationFrame;
 
-/**
- * Generic function that start animation frame
- * @param callback
- * @param animationDuration
- */
-export const startAnimation = (callback: Function, animationDuration: number = (1000 / 60)): void => {
-  function rAF() {
-    callback();
-    window.setTimeout(() => {
-      requestAnimationFrame(rAF);
-    }, animationDuration);
+const cancelAnimationFrame = window.cancelAnimationFrame || window.mozCancelAnimationFrame;
+
+
+export default class AnimationSprite {
+  requestId: number;
+  fpsInterval: number;
+  now: number;
+  elapsed: number;
+  then: number;
+  callback: Function;
+
+  constructor(callback: Function, fpsInterval: number = (1000 / 60)) {
+    this.fpsInterval = fpsInterval;
+    this.callback = callback;
   }
 
-  requestAnimationFrame(rAF);
-};
+  startAnimation(): void {
+    this.then = Date.now();
+    this.requestId = requestAnimationFrame(this.rAF.bind(this));
+  }
+
+  rAF(): void {
+    this.now = Date.now();
+    this.elapsed = this.now - this.then;
+    this.requestId = requestAnimationFrame(this.rAF.bind(this));
+    if (this.elapsed > this.fpsInterval) {
+      this.then = this.now - (this.elapsed % this.fpsInterval);
+      this.callback();
+    }
+  }
+
+  stopAnimation(): void {
+    cancelAnimationFrame(this.requestId);
+  }
+}
