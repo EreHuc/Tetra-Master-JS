@@ -1,34 +1,63 @@
 # Tetra-Master-JS
+
 Recreation of FF9 tetra master game in Javascript
 
-# How to
+## Getting Started
 
-Install dependencies
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
+
+### Prerequisites
+
+- [npm](https://www.npmjs.com/get-npm)
+- [gcloudSDK](https://cloud.google.com/sdk/downloads) for deploy purpose only.
+
+### Installing
+
 ```bash
-npm i
+$ git clone https://github.com/EreHuc/Tetra-Master-JS.git
+$ cd Tetra-Master-JS
+$ npm install 
 ```
 
-Run dev
+### Run in dev
+
 ```bash
-npm run dev
+$ npm run dev
 ```
 
-Build (not working)
-````bash
-npm run build
-````
+### Build project
 
-Linter
 ```bash
-npm run lint
+$ npm run build
 ```
 
-Check type
+### Lint project
+
 ```bash
-npm run flow
+$ npm run lint
 ```
 
-### About original tetra master
+### Check type error
+
+```bash
+$ npm run flow
+```
+
+### Deploy (GCP only)
+
+Initialize or reinitialize gcloud if needed.
+
+```bash
+$ gcloud init
+```
+
+Then.
+
+```bash
+$ npm run deploy
+```
+
+## About original tetra master
 
 - [Gamefaqs link](https://gamefaqs.gamespot.com/ps/197338-final-fantasy-ix/faqs/9671)
 - [Tetra Master sprites](https://www.spriters-resource.com/playstation/finalfantasy9/sheet/59144/)
