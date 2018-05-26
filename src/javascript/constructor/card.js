@@ -19,7 +19,6 @@ import { cardTiles } from './common/tiles/card-tiles';
 import type { MonsterTile, Tile } from '../type/tile';
 import type { MonsterStats } from '../type/stat';
 import { statToHexChar } from '../common/common';
-import { cornerToBattlegroundPosition } from '../engine/corners';
 import type { GridPosition } from '../type/canvas';
 import AnimationSprite from '../engine/animations';
 
@@ -323,8 +322,8 @@ export default class Card {
   }
 
   checkCorners() {
-    this.corners.forEach((corner) => {
-      console.log('card.js:276 - ', corner, cornerToBattlegroundPosition(corner, this.gridPosition.value));
+    this.corners.forEach((/* corner */) => {
+      // console.log('card.js:276 - ', corner, cornerToBattlegroundPosition(corner, this.gridPosition.value));
     });
   }
 

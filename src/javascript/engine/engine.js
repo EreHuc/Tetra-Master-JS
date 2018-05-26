@@ -1,6 +1,5 @@
 // @flow
 
-import { BocoTHEChocobo } from '../constructor/common/tiles/monster-tiles';
 import Card from '../constructor/card';
 import { BLUE_CARD, DOWN, ENTER, ESCAPE, LEFT, RIGHT, UP } from '../common/variables';
 import Board from '../constructor/board';
@@ -40,8 +39,7 @@ export default class Game {
     this.board = new Board();
     generateStoneTile(animateStoneTiles).then((cards) => {
       this.cards = [...cards];
-      console.log('engine.js:42 - ', cards);
-      // this.gameCanStart to dev
+      // TODO: this.gameCanStart to dev
       keyPressed
         .setOptions({ triggerOnce: true })
         .down([UP, DOWN, RIGHT, LEFT], this.changeCursorPosition.bind(this))
@@ -137,7 +135,7 @@ export default class Game {
   set gameCanStart(value: boolean) {
     if (value) {
       this.gcs = value;
-      // start game here
+      // TODO: start game here
     }
   }
 
