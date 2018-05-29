@@ -32,27 +32,44 @@ export default class Card {
   grid: 'battleground' | 'playerHand';
   animation: AnimationSprite;
   zoom: number;
+  cardType: 'back' | 'stone' | 'monster';
+  event: EventTarget;
+  callback: Function;
+  animationFinished: boolean;
 
-  constructor(grid: 'battleground' | 'playerHand', color: typeof RED_CARD | typeof BLUE_CARD, gridPosition: GridPosition, monster?: MonsterTile, canvas?: Canvas): void {
+  constructor({
+    grid,
+    color,
+    gridPosition,
+    monster,
+    canvas,
+    cardType,
+  }: {
+    grid: 'battleground' | 'playerHand',
+    color: typeof RED_CARD | typeof BLUE_CARD,
+    gridPosition: GridPosition,
+    monster?: MonsterTile,
+    canvas?: Canvas,
+    cardType: 'back' | 'stone' | 'monster',
+  }):void {
+    this.event = new EventTarget();
     this.grid = grid;
-    if (monster) {
-      this.monster = monster;
-      this.stats = randomGenerator.stats(monster.baseStat);
-      this.corners = randomGenerator.corners();
-      this.colorTile = color === RED_CARD ? cardTiles.red : cardTiles.blue;
-    } else {
-      this.zoom = 2;
-      this.colorTile = color === RED_CARD ? cardTiles.stone1 : cardTiles.stone2;
-      this.animation = new AnimationSprite(() => {
-        if (this.zoom < 1) {
-          this.animation.stopAnimation();
-        } else {
-          this.clearCard();
-          this.canvas.setZoom(this.zoom);
-          this.drawCard(this.gridPosition);
-          this.zoom = Number((this.zoom - 0.1).toFixed(1));
+    this.cardType = cardType;
+    switch (this.cardType) {
+      case 'monster':
+        if (monster) {
+          this.monster = monster;
+          this.stats = randomGenerator.stats(monster.baseStat);
+          this.corners = randomGenerator.corners();
+          this.colorTile = color === RED_CARD ? cardTiles.red : cardTiles.blue;
         }
-      }, (1000 / 60));
+        break;
+      case 'stone':
+        this.zoom = 1.5;
+        this.colorTile = color === RED_CARD ? cardTiles.stone1 : cardTiles.stone2;
+        this.animation = new AnimationSprite(this.stoneCardAnimation.bind(this), (1000 / 30));
+        break;
+      default:
     }
     if (this.grid === 'battleground') {
       this.canvas = canvas || new Canvas('card', GAME_SPRITE);
@@ -337,7 +354,37 @@ export default class Card {
     this.drawCard(this.gridPosition);
   }
 
+  stoneCardAnimation() {
+    if (this.zoom < 1) {
+      this.cancelAnimation();
+      this.animationFinished = true;
+      this.off();
+    } else {
+      this.clearCard();
+      this.canvas.setZoom(this.zoom);
+      this.drawCard(this.gridPosition);
+      this.zoom = Number((this.zoom - 0.1).toFixed(1));
+    }
+    return this.animationFinished;
+  }
+
   animateStoneCard() {
+    const then = this.then.bind(this);
+    this.animationFinished = false;
     this.animation.startAnimation();
+    return { then };
+  }
+
+  cancelAnimation() {
+    this.event.dispatchEvent(new CustomEvent('animation.finished'));
+  }
+
+  then(callback: Function) {
+    this.callback = callback;
+    this.event.addEventListener('animation.finished', callback);
+  }
+
+  off() {
+    this.event.removeEventListener('animation.finished', this.callback);
   }
 }

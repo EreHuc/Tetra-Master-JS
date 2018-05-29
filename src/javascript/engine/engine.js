@@ -23,6 +23,8 @@ import Sounds from './sounds';
 import { animateStoneTiles, generateStoneTile } from './board-init';
 import { monsterList } from '../constructor/common/tiles/card-tiles';
 
+const randomMonster = () => monsterList[Object.keys(monsterList)[Math.floor(Math.random() * Object.keys(monsterList).length)]];
+
 export default class Game {
   board: Board;
   cards: Array<?Card>;
@@ -35,7 +37,7 @@ export default class Game {
 
   constructor() {
     this.sounds = new Sounds();
-    this.sounds.music();
+    // this.sounds.music();
     this.board = new Board();
     generateStoneTile(animateStoneTiles).then((cards) => {
       this.cards = [...cards];
@@ -47,11 +49,41 @@ export default class Game {
         .down(ESCAPE, this.backToPlayerHand.bind(this));
     });
     this.cardsInPlayerHand = [
-      new Card('playerHand', BLUE_CARD, playerHandGridPosition00, monsterList[Object.keys(monsterList)[Math.floor(Math.random() * Object.keys(monsterList).length)]]),
-      new Card('playerHand', BLUE_CARD, playerHandGridPosition01, monsterList[Object.keys(monsterList)[Math.floor(Math.random() * Object.keys(monsterList).length)]]),
-      new Card('playerHand', BLUE_CARD, playerHandGridPosition02, monsterList[Object.keys(monsterList)[Math.floor(Math.random() * Object.keys(monsterList).length)]]),
-      new Card('playerHand', BLUE_CARD, playerHandGridPosition03, monsterList[Object.keys(monsterList)[Math.floor(Math.random() * Object.keys(monsterList).length)]]),
-      new Card('playerHand', BLUE_CARD, playerHandGridPosition04, monsterList[Object.keys(monsterList)[Math.floor(Math.random() * Object.keys(monsterList).length)]]),
+      new Card({
+        grid: 'playerHand',
+        color: BLUE_CARD,
+        gridPosition: playerHandGridPosition00,
+        monster: randomMonster(),
+        cardType: 'monster',
+      }),
+      new Card({
+        grid: 'playerHand',
+        color: BLUE_CARD,
+        gridPosition: playerHandGridPosition01,
+        monster: randomMonster(),
+        cardType: 'monster',
+      }),
+      new Card({
+        grid: 'playerHand',
+        color: BLUE_CARD,
+        gridPosition: playerHandGridPosition02,
+        monster: randomMonster(),
+        cardType: 'monster',
+      }),
+      new Card({
+        grid: 'playerHand',
+        color: BLUE_CARD,
+        gridPosition: playerHandGridPosition03,
+        monster: randomMonster(),
+        cardType: 'monster',
+      }),
+      new Card({
+        grid: 'playerHand',
+        color: BLUE_CARD,
+        gridPosition: playerHandGridPosition04,
+        monster: randomMonster(),
+        cardType: 'monster',
+      }),
     ];
     this.playerHandCursor = new Cursor('playerHand');
     this.battlegroundCursor = new Cursor('battleground', false);

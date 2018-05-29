@@ -30,15 +30,19 @@ export function generateStoneTile(animateTiles: (gridPosition: Array<?GridPositi
 // $FlowFixMe
 export function animateStoneTiles(gridPositions: Array<?GridPosition>, stoneCardList: Array<?Card>, resolve: Function): Promise<Array<?Card>> {
   if (gridPositions && gridPositions.length) {
-    window.setTimeout(() => {
-      // Stupid flow fix me didn't recognise gridPositions && gridPositions.length as valid condition for shift
-      // on non-null or non-undefined value...
-      // $FlowFixMe
-      const gridPosition: GridPosition = gridPositions.shift();
-      stoneCardList.push(new Card('battleground', RED_CARD, gridPosition));
-      sounds.put();
-      return animateStoneTiles(gridPositions, stoneCardList, resolve);
-    }, 200);
+    const gridPosition: GridPosition = gridPositions.shift();
+    const card: Card = new Card({
+      grid: 'battleground',
+      color: RED_CARD,
+      gridPosition,
+      cardType: 'stone',
+    });
+    stoneCardList.push(card);
+    card.animateStoneCard()
+      .then(() => {
+        sounds.put();
+        animateStoneTiles(gridPositions, stoneCardList, resolve);
+      });
   } else {
     return resolve(stoneCardList);
   }

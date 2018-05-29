@@ -178,8 +178,10 @@ export default class Canvas {
   }
 
   setZoom(zoom: number) {
+    // scale to original size
     this.context.scale(1 / (ZOOM_LEVEL * this.zoom), 1 / (ZOOM_LEVEL * this.zoom));
     this.zoom = zoom;
+    // scale to the new size
     this.context.scale(ZOOM_LEVEL * this.zoom, ZOOM_LEVEL * this.zoom);
   }
 }
