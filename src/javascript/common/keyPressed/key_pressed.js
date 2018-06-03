@@ -219,7 +219,7 @@ const keyPressedClass = (defaultOptions: KeyPressedOptions = {}) => {
       return this;
     }
 
-    off(events: Array<Function> | Function): KeyPressed {
+    off(events: Array<Function | number> | Function | number): KeyPressed {
       const eventsHandler = (event) => {
         switch (event) {
           case 'keydown':

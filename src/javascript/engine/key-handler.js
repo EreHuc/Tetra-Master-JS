@@ -6,11 +6,12 @@ import {
   isValidBattlegroundPosition,
 } from '../constructor/common/positions/battleground-positions';
 import { DOWN, LEFT, RIGHT, UP } from '../common/variables';
-import Card from '../constructor/card';
 import { isValidPlayerHandPosition, playerHandPositions } from '../constructor/common/positions/player-side-positions';
+import Monster from '../constructor/card/monster';
+import Stone from '../constructor/card/stone';
 
 export const isBattlegroundGridPositionAvailable = (
-  listOfCards: Array<?Card>,
+  listOfCards: Array<?Stone | ?Monster>,
   nextGridPositionValue: number,
 ): boolean => !listOfCards.some(card => card && card.gridPosition.value === nextGridPositionValue);
 

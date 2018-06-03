@@ -28,16 +28,14 @@ export default class AnimationSprite {
   rAF(): void {
     this.now = Date.now();
     this.elapsed = this.now - this.then;
-    this.requestId = requestAnimationFrame(this.rAF.bind(this));
     if (this.elapsed > this.fpsInterval) {
       this.then = this.now - (this.elapsed % this.fpsInterval);
-      this.stopAnimation(this.callback());
+      this.callback();
     }
+    this.requestId = requestAnimationFrame(this.rAF.bind(this));
   }
 
-  stopAnimation(canStop: boolean): void {
-    if (canStop) {
-      cancelAnimationFrame(this.requestId);
-    }
+  stopAnimation(): void {
+    cancelAnimationFrame(this.requestId);
   }
 }

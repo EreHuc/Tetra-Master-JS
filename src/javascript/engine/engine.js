@@ -1,6 +1,6 @@
+/* eslint-disable class-methods-use-this */
 // @flow
 
-import Card from '../constructor/card';
 import { BLUE_CARD, DOWN, ENTER, ESCAPE, LEFT, RIGHT, UP } from '../common/variables';
 import Board from '../constructor/board';
 import { keyPressed } from '../common/keyPressed/key_pressed';
@@ -20,69 +20,62 @@ import {
 } from '../constructor/common/positions/player-side-positions';
 import type { KeyPressedEvent } from '../type/key_pressed';
 import Sounds from './sounds';
-import { animateStoneTiles, generateStoneTile } from './board-init';
 import { monsterList } from '../constructor/common/tiles/card-tiles';
+import Stone from '../constructor/card/stone';
+import Monster from '../constructor/card/monster';
+import { animateStoneTiles, generateStoneTile } from './board-init';
 
 const randomMonster = () => monsterList[Object.keys(monsterList)[Math.floor(Math.random() * Object.keys(monsterList).length)]];
 
+let cursorInPlayerGridPosition = false;
+let gcs = false;
+
 export default class Game {
   board: Board;
-  cards: Array<?Card>;
+  cards: Array<?Monster | ?Stone>;
   playerHandCursor: Cursor;
   battlegroundCursor: Cursor;
-  cardsInPlayerHand: Array<?Card>;
-  cursorInPlayerGridPosition: boolean;
+  cardsInPlayerHand: Array<?Monster>;
   sounds: Sounds;
-  gcs: boolean;
 
   constructor() {
     this.sounds = new Sounds();
     // this.sounds.music();
     this.board = new Board();
-    generateStoneTile(animateStoneTiles).then((cards) => {
+    generateStoneTile(animateStoneTiles, this.sounds).then((cards) => {
       this.cards = [...cards];
-      // TODO: this.gameCanStart to dev
-      keyPressed
-        .setOptions({ triggerOnce: true })
-        .down([UP, DOWN, RIGHT, LEFT], this.changeCursorPosition.bind(this))
-        .down(ENTER, this.selectOrPlaceCard.bind(this))
-        .down(ESCAPE, this.backToPlayerHand.bind(this));
+      this.gameCanStart = true;
     });
     this.cardsInPlayerHand = [
-      new Card({
+      new Monster({
         grid: 'playerHand',
         color: BLUE_CARD,
         gridPosition: playerHandGridPosition00,
         monster: randomMonster(),
-        cardType: 'monster',
       }),
-      new Card({
+      new Monster({
         grid: 'playerHand',
         color: BLUE_CARD,
         gridPosition: playerHandGridPosition01,
         monster: randomMonster(),
-        cardType: 'monster',
       }),
-      new Card({
+      new Monster({
         grid: 'playerHand',
         color: BLUE_CARD,
         gridPosition: playerHandGridPosition02,
         monster: randomMonster(),
-        cardType: 'monster',
       }),
-      new Card({
+      new Monster({
         grid: 'playerHand',
         color: BLUE_CARD,
         gridPosition: playerHandGridPosition03,
         monster: randomMonster(),
-        cardType: 'monster',
       }),
-      new Card({
+      new Monster({
         grid: 'playerHand',
         color: BLUE_CARD,
         gridPosition: playerHandGridPosition04,
         monster: randomMonster(),
-        cardType: 'monster',
       }),
     ];
     this.playerHandCursor = new Cursor('playerHand');
@@ -128,6 +121,9 @@ export default class Game {
               card.switchTo4Card();
             }
           });
+          if (this.playerHandCursor.gridPosition.value === 4) {
+            this.playerHandCursor.setCursorPosition(playerHandGridPosition03);
+          }
           this.playerHandCursor.switchTo4Card();
         } else {
           this.cardsInPlayerHand.splice(cardIndexToRemove, 1, undefined);
@@ -151,27 +147,40 @@ export default class Game {
 
   set cursorInPlayerHand(value: boolean) {
     if (value) {
-      this.playerHandCursor.canvas.undimCanvas();
-      this.battlegroundCursor.canvas.hideCanvas();
+      this.playerHandCursor.undimCanvas();
+      this.battlegroundCursor.hideCanvas();
     } else {
-      this.playerHandCursor.canvas.dimCanvas();
-      this.battlegroundCursor.canvas.showCanvas();
+      this.playerHandCursor.dimCanvas();
+      this.battlegroundCursor.showCanvas();
     }
-    this.cursorInPlayerGridPosition = value;
+    cursorInPlayerGridPosition = value;
   }
 
   get cursorInPlayerHand(): boolean {
-    return this.cursorInPlayerGridPosition;
+    return cursorInPlayerGridPosition;
   }
 
   set gameCanStart(value: boolean) {
     if (value) {
-      this.gcs = value;
-      // TODO: start game here
+      keyPressed
+        .setOptions({ triggerOnce: true })
+        .down([UP, DOWN, RIGHT, LEFT], this.changeCursorPosition.bind(this))
+        .down(ENTER, this.selectOrPlaceCard.bind(this))
+        .down(ESCAPE, this.backToPlayerHand.bind(this));
+    } else {
+      keyPressed.off([
+        UP,
+        DOWN,
+        RIGHT,
+        LEFT,
+        ENTER,
+        ESCAPE,
+      ]);
     }
+    gcs = value;
   }
 
   get gameCanStart() {
-    return this.gcs;
+    return gcs;
   }
 }

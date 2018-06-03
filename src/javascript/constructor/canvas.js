@@ -6,7 +6,7 @@ import {
   BATTLEGROUND_COORD_X,
   BATTLEGROUND_COORD_Y,
   CANVAS_HEIGHT,
-  CANVAS_WIDTH, PLAYER_HAND_COORD_X, PLAYER_HAND_COORD_Y,
+  CANVAS_WIDTH, GAME_SPRITE, PLAYER_HAND_COORD_X, PLAYER_HAND_COORD_Y,
   ZOOM_LEVEL,
 } from '../common/variables';
 import type { CoordPosition } from '../type/canvas';
@@ -15,10 +15,15 @@ export default class Canvas {
   canvas: HTMLCanvasElement;
   context: CanvasRenderingContext2D;
   image: HTMLImageElement;
-  canvasPosition: CoordPosition;
+  canvasPositionData: CoordPosition;
   zoom: number;
 
-  constructor(type: string, image: HTMLImageElement, display: boolean = true, zoom: number = 1) {
+  constructor({
+    type,
+    image = GAME_SPRITE,
+    display = true,
+    zoom = 1,
+  }: {type: string, image?: HTMLImageElement, display?: boolean, zoom?: number}) {
     const body: HTMLBodyElement = (document.querySelector('body'): any);
     const canvasId: string = namedId('canvas');
     this.zoom = zoom;
@@ -35,10 +40,7 @@ export default class Canvas {
     this.context = this.canvas.getContext('2d');
     this.toggleSmoothingZoom(false);
     this.context.scale(ZOOM_LEVEL * this.zoom, ZOOM_LEVEL * this.zoom);
-    this.canvasPosition = {
-      x: 0,
-      y: 0,
-    };
+    this.canvasPosition = { x: 0, y: 0 };
   }
 
   /**
@@ -101,13 +103,12 @@ export default class Canvas {
     this.context.restore();
   }
 
-  /**
-   * Set canvas position
-   * @param x
-   * @param y
-   */
-  setCanvasPosition(x: number, y: number): void {
-    this.canvasPosition = Object.assign({}, { x, y });
+  set canvasPosition({ x, y }: { x: number, y: number }): void {
+    this.canvasPositionData = Object.assign({}, { x, y });
+  }
+
+  get canvasPosition() {
+    return this.canvasPositionData;
   }
 
   /**
@@ -133,7 +134,7 @@ export default class Canvas {
     const x = -this.canvasPosition.x + BATTLEGROUND_COORD_X;
     const y = -this.canvasPosition.y + BATTLEGROUND_COORD_Y;
     this.translate(x, y);
-    this.setCanvasPosition(BATTLEGROUND_COORD_X, BATTLEGROUND_COORD_Y);
+    this.canvasPosition = { x: BATTLEGROUND_COORD_X, y: BATTLEGROUND_COORD_Y };
   }
 
   /**
@@ -143,14 +144,14 @@ export default class Canvas {
     const x = -this.canvasPosition.x + PLAYER_HAND_COORD_X;
     const y = -this.canvasPosition.y + PLAYER_HAND_COORD_Y;
     this.translate(x, y);
-    this.setCanvasPosition(PLAYER_HAND_COORD_X, PLAYER_HAND_COORD_Y);
+    this.canvasPosition = { x: PLAYER_HAND_COORD_X, y: PLAYER_HAND_COORD_Y };
   }
   /**
    * Reset canvas to initial position
    */
   resetCanvasPosition(): void {
     this.translate(-this.canvasPosition.x, -this.canvasPosition.y);
-    this.setCanvasPosition(0, 0);
+    this.canvasPosition = { x: 0, y: 0 };
   }
 
   /**

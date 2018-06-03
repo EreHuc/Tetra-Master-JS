@@ -6,13 +6,11 @@ import {
   validBattlegroundPositions,
 } from '../constructor/common/positions/battleground-positions';
 import type { GridPosition } from '../type/canvas';
+import Stone from '../constructor/card/stone';
+import { cardTiles } from '../constructor/common/tiles/card-tiles';
 import Sounds from './sounds';
-import Card from '../constructor/card';
-import { RED_CARD } from '../common/variables';
 
-const sounds = new Sounds();
-
-export function generateStoneTile(animateTiles: (gridPosition: Array<?GridPosition>, stoneCardList: Array<?Card>, resolve: Function) => Array<?Card>): Promise<Array<?Card>> {
+export function generateStoneTile(animateTiles: (gridPosition: Array<?GridPosition>, stoneCardList: Array<?Stone>, sounds: Sounds, resolve: Function) => Array<?Stone>, sounds: Sounds): Promise<Array<?Stone>> {
   return new Promise((resolve) => {
     const nbOfStoneTile: number = Math.floor(Math.random() * 7);
     const battleGroundPositions: Array<number> = [...validBattlegroundPositions];
@@ -23,26 +21,20 @@ export function generateStoneTile(animateTiles: (gridPosition: Array<?GridPositi
       const gridPosition = battleGroundPositions.splice(index, 1).shift();
       stoneCards.push(battlegroundPositions[gridPosition]);
     }
-    return animateTiles(stoneCards, [], resolve);
+    return animateTiles(stoneCards, [], sounds, resolve);
   });
 }
 
 // $FlowFixMe
-export function animateStoneTiles(gridPositions: Array<?GridPosition>, stoneCardList: Array<?Card>, resolve: Function): Promise<Array<?Card>> {
+export function animateStoneTiles(gridPositions: Array<?GridPosition>, stoneCardList: Array<?Stone>, sounds: Sounds, resolve: Function): Promise<Array<?Stone>> {
   if (gridPositions && gridPositions.length) {
     const gridPosition: GridPosition = gridPositions.shift();
-    const card: Card = new Card({
-      grid: 'battleground',
-      color: RED_CARD,
-      gridPosition,
-      cardType: 'stone',
+    const stone: Stone = new Stone({ stone: cardTiles.stone1, gridPosition });
+    stone.onAnimationFinished(() => {
+      sounds.put();
+      animateStoneTiles(gridPositions, stoneCardList, sounds, resolve);
     });
-    stoneCardList.push(card);
-    card.animateStoneCard()
-      .then(() => {
-        sounds.put();
-        animateStoneTiles(gridPositions, stoneCardList, resolve);
-      });
+    stoneCardList.push(stone);
   } else {
     return resolve(stoneCardList);
   }

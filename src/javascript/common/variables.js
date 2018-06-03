@@ -1,8 +1,10 @@
 // @flow
 
 import type { AssaultBatteClass, FlexibleBattleClass, MagicalBattleClass, PhysicalBattleClass } from '../type/stat';
+import game from '../../assets/sprites/game.png';
 
-export const GAME_SPRITE:HTMLImageElement = (document.getElementById('game-sprite'): any);
+export const GAME_SPRITE:HTMLImageElement = new Image();
+GAME_SPRITE.src = game;
 export const BLUE_CARD: number = 0;
 export const RED_CARD: number = 1;
 export const ZOOM_LEVEL: number = 3;
