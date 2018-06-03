@@ -1,5 +1,8 @@
 body {
     position: relative;
+    margin: 0;
+    background-color: #080808;
+    overflow: hidden;
 }
 
 .tetra-master:not(.board) {
@@ -18,4 +21,9 @@ body {
 
 .dimmed {
     opacity: .5;
+}
+
+.game {
+    margin: auto;
+    position: relative;
 }

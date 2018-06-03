@@ -24,7 +24,7 @@ export default class Canvas {
     display = true,
     zoom = 1,
   }: {type: string, image?: HTMLImageElement, display?: boolean, zoom?: number}) {
-    const body: HTMLBodyElement = (document.querySelector('body'): any);
+    const element: HTMLElement = (document.querySelector('.game'): any);
     const canvasId: string = namedId('canvas');
     this.zoom = zoom;
     this.image = image;
@@ -33,10 +33,11 @@ export default class Canvas {
     this.canvas.setAttribute('id', canvasId);
     this.canvas.width = CANVAS_WIDTH * ZOOM_LEVEL;
     this.canvas.height = CANVAS_HEIGHT * ZOOM_LEVEL;
+    element.style.width = `${this.canvas.width}px`;
     if (!display) {
       this.hideCanvas();
     }
-    this.canvas = body.appendChild(this.canvas);
+    this.canvas = element.appendChild(this.canvas);
     this.context = this.canvas.getContext('2d');
     this.toggleSmoothingZoom(false);
     this.context.scale(ZOOM_LEVEL * this.zoom, ZOOM_LEVEL * this.zoom);
