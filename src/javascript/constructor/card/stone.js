@@ -5,6 +5,7 @@ import Canvas from '../canvas';
 import Card from './card';
 import AnimationSprite from '../../engine/animations';
 import type { Tile } from '../../type/tile';
+import type { Store } from '../../type/store';
 
 export default class Stone extends Card {
   stone: Tile;
@@ -17,14 +18,17 @@ export default class Stone extends Card {
     gridPosition,
     canvas,
     stone,
+    store,
   }: {
     gridPosition: GridPosition,
     canvas?: Canvas,
     stone: Tile,
+    store: Store,
   }) {
     super({
       gridPosition,
       canvas,
+      store,
     });
     this.event = new EventTarget();
     this.stone = stone;

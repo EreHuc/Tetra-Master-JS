@@ -7,6 +7,7 @@ import {
 } from '../../common/variables';
 import type { Tile } from '../../type/tile';
 import type { GridPosition } from '../../type/canvas';
+import type { Store } from '../../type/store';
 
 export default class Card extends Canvas {
   gridPositionData: GridPosition;
@@ -14,13 +15,16 @@ export default class Card extends Canvas {
   constructor({
     gridPosition,
     zoom,
+    store,
   }: {
     gridPosition: GridPosition,
     zoom?: number,
+    store: Store,
   }):void {
     super({
       type: 'card',
       zoom,
+      store,
     });
     this.gridPosition = gridPosition;
   }

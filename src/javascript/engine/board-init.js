@@ -1,16 +1,22 @@
 /* eslint-disable consistent-return */
 // @flow
 
-import {
-  battlegroundPositions,
-  validBattlegroundPositions,
-} from '../constructor/common/positions/battleground-positions';
 import type { GridPosition } from '../type/canvas';
 import Stone from '../constructor/card/stone';
-import { cardTiles } from '../constructor/common/tiles/card-tiles';
 import Sounds from './sounds';
+import type { Store } from '../type/store';
+import { battlegroundPositions, validBattlegroundPositions } from '../common/positions/battleground-positions';
+import { cardTiles } from '../common/tiles/card-tiles';
 
-export function generateStoneTile(animateTiles: (gridPosition: Array<?GridPosition>, stoneCardList: Array<?Stone>, sounds: Sounds, resolve: Function) => Array<?Stone>, sounds: Sounds): Promise<Array<?Stone>> {
+export function generateStoneTile(
+  animateTiles:
+    (gridPosition: Array<?GridPosition>,
+     stoneCardList: Array<?Stone>,
+     sounds: Sounds, store: Store,
+     resolve: Function) => Array<?Stone>,
+  sounds: Sounds,
+  store: Store,
+): Promise<Array<?Stone>> {
   return new Promise((resolve) => {
     const nbOfStoneTile: number = Math.floor(Math.random() * 7);
     const battleGroundPositions: Array<number> = [...validBattlegroundPositions];
@@ -21,18 +27,18 @@ export function generateStoneTile(animateTiles: (gridPosition: Array<?GridPositi
       const gridPosition = battleGroundPositions.splice(index, 1).shift();
       stoneCards.push(battlegroundPositions[gridPosition]);
     }
-    return animateTiles(stoneCards, [], sounds, resolve);
+    return animateTiles(stoneCards, [], sounds, store, resolve);
   });
 }
 
 // $FlowFixMe
-export function animateStoneTiles(gridPositions: Array<?GridPosition>, stoneCardList: Array<?Stone>, sounds: Sounds, resolve: Function): Promise<Array<?Stone>> {
+export function animateStoneTiles(gridPositions: Array<?GridPosition>, stoneCardList: Array<?Stone>, sounds: Sounds, store: Store, resolve: Function): Promise<Array<?Stone>> {
   if (gridPositions && gridPositions.length) {
     const gridPosition: GridPosition = gridPositions.shift();
-    const stone: Stone = new Stone({ stone: cardTiles.stone1, gridPosition });
+    const stone: Stone = new Stone({ stone: cardTiles.stone1, gridPosition, store });
     stone.onAnimationFinished(() => {
       sounds.put();
-      animateStoneTiles(gridPositions, stoneCardList, sounds, resolve);
+      animateStoneTiles(gridPositions, stoneCardList, sounds, store, resolve);
     });
     stoneCardList.push(stone);
   } else {

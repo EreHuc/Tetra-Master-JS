@@ -1,12 +1,14 @@
 // @flow
 
-import { backgroundTile, boardTiles } from './common/tiles/board-tiles';
+import { backgroundTile, boardTiles } from '../common/tiles/board-tiles';
 import Canvas from './canvas';
+import type { Store } from '../type/store';
 
 export default class Board extends Canvas {
-  constructor() {
+  constructor({ store }: { store: Store }) {
     super({
       type: 'board',
+      store,
     });
     this.drawBackground();
     this.drawBoard();

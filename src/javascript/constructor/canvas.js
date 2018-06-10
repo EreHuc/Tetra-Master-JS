@@ -10,20 +10,25 @@ import {
   ZOOM_LEVEL,
 } from '../common/variables';
 import type { CoordPosition } from '../type/canvas';
+import type { Store } from '../type/store';
+import { StoreClass } from './store';
 
-export default class Canvas {
+export default class Canvas extends StoreClass {
   canvas: HTMLCanvasElement;
   context: CanvasRenderingContext2D;
   image: HTMLImageElement;
   canvasPositionData: CoordPosition;
   zoom: number;
+  store: Store;
 
   constructor({
     type,
     image = GAME_SPRITE,
     display = true,
     zoom = 1,
-  }: {type: string, image?: HTMLImageElement, display?: boolean, zoom?: number}) {
+    store,
+  }: {type: string, image?: HTMLImageElement, display?: boolean, zoom?: number, store: Store}) {
+    super(store);
     const element: HTMLElement = (document.querySelector('.game'): any);
     const canvasId: string = namedId('canvas');
     this.zoom = zoom;

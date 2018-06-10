@@ -4,9 +4,9 @@ import type { GridPosition } from '../type/canvas';
 import {
   battlegroundPositions,
   isValidBattlegroundPosition,
-} from '../constructor/common/positions/battleground-positions';
+} from '../common/positions/battleground-positions';
 import { DOWN, LEFT, RIGHT, UP } from '../common/variables';
-import { isValidPlayerHandPosition, playerHandPositions } from '../constructor/common/positions/player-side-positions';
+import { isValidPlayerHandPosition, playerHandPositions } from '../common/positions/player-side-positions';
 import Monster from '../constructor/card/monster';
 import Stone from '../constructor/card/stone';
 

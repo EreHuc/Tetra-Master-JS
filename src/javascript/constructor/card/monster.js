@@ -2,7 +2,7 @@
 
 import Card from './card';
 import { statToHexChar } from '../../common/common';
-import { cardTiles } from '../common/tiles/card-tiles';
+import { cardTiles } from '../../common/tiles/card-tiles';
 import {
   BLUE_CARD,
   BOTTOM_CORNER,
@@ -17,6 +17,7 @@ import type { MonsterTile, Tile } from '../../type/tile';
 import type { GridPosition } from '../../type/canvas';
 import randomGenerator from '../../common/generator/random-generator';
 import type { MonsterStats } from '../../type/stat';
+import type { Store } from '../../type/store';
 
 export default class Monster extends Card {
   stats: MonsterStats;
@@ -30,14 +31,17 @@ export default class Monster extends Card {
     color,
     gridPosition,
     monster,
+    store,
   }: {
     grid: 'battleground' | 'playerHand',
     color?: typeof RED_CARD | typeof BLUE_CARD,
     gridPosition: GridPosition,
     monster: MonsterTile,
+    store: Store,
   }) {
     super({
       gridPosition,
+      store,
     });
     this.grid = grid;
     this.monster = monster;

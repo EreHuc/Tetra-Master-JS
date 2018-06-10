@@ -17,34 +17,35 @@ import {
   playerHandGridPosition03,
   playerHandGridPosition04,
   playerHandPositions,
-} from '../constructor/common/positions/player-side-positions';
+} from '../common/positions/player-side-positions';
 import type { KeyPressedEvent } from '../type/key_pressed';
 import Sounds from './sounds';
-import { monsterList } from '../constructor/common/tiles/card-tiles';
+import { monsterList } from '../common/tiles/card-tiles';
 import Stone from '../constructor/card/stone';
 import Monster from '../constructor/card/monster';
 import { animateStoneTiles, generateStoneTile } from './board-init';
+import type { Store } from '../type/store';
+import { StoreClass } from '../constructor/store';
 
 const randomMonster = () => monsterList[Object.keys(monsterList)[Math.floor(Math.random() * Object.keys(monsterList).length)]];
 
-let cursorInPlayerGridPosition = false;
-let gcs = false;
-
-export default class Game {
+export default class Game extends StoreClass {
   board: Board;
   cards: Array<?Monster | ?Stone>;
   playerHandCursor: Cursor;
   battlegroundCursor: Cursor;
   cardsInPlayerHand: Array<?Monster>;
   sounds: Sounds;
+  store: Store;
 
-  constructor() {
+  constructor({ store }:{store: Store}) {
+    super(store);
     this.sounds = new Sounds();
     // this.sounds.music();
-    this.board = new Board();
-    generateStoneTile(animateStoneTiles, this.sounds).then((cards) => {
+    this.board = new Board({ store });
+    generateStoneTile(animateStoneTiles, this.sounds, this.store).then((cards) => {
       this.cards = [...cards];
-      this.gameCanStart = true;
+      this.store.dispatch({ type: 'GAME_STARTED' });
     });
     this.cardsInPlayerHand = [
       new Monster({
@@ -52,40 +53,65 @@ export default class Game {
         color: BLUE_CARD,
         gridPosition: playerHandGridPosition00,
         monster: randomMonster(),
+        store,
       }),
       new Monster({
         grid: 'playerHand',
         color: BLUE_CARD,
         gridPosition: playerHandGridPosition01,
         monster: randomMonster(),
+        store,
       }),
       new Monster({
         grid: 'playerHand',
         color: BLUE_CARD,
         gridPosition: playerHandGridPosition02,
         monster: randomMonster(),
+        store,
       }),
       new Monster({
         grid: 'playerHand',
         color: BLUE_CARD,
         gridPosition: playerHandGridPosition03,
         monster: randomMonster(),
+        store,
       }),
       new Monster({
         grid: 'playerHand',
         color: BLUE_CARD,
         gridPosition: playerHandGridPosition04,
         monster: randomMonster(),
+        store,
       }),
     ];
-    this.playerHandCursor = new Cursor('playerHand');
-    this.battlegroundCursor = new Cursor('battleground', false);
-    this.cursorInPlayerHand = true;
+    this.playerHandCursor = new Cursor({ grid: 'playerHand', store });
+    this.battlegroundCursor = new Cursor({ grid: 'battleground', display: false, store });
+    this.store.dispatch({ type: 'SHOW_CURSOR' });
+    this.store.subscribe(({ action }) => {
+      switch (action.type) {
+        case 'GAME_STARTED':
+          keyPressed
+            .setOptions({ triggerOnce: true })
+            .down([UP, DOWN, RIGHT, LEFT], this.changeCursorPosition.bind(this))
+            .down(ENTER, this.selectOrPlaceCard.bind(this))
+            .down(ESCAPE, this.backToPlayerHand.bind(this));
+          break;
+        case 'SHOW_CURSOR':
+          this.playerHandCursor.undimCanvas();
+          this.battlegroundCursor.hideCanvas();
+          break;
+        case 'HIDE_CURSOR':
+          this.playerHandCursor.dimCanvas();
+          this.battlegroundCursor.showCanvas();
+          break;
+        default:
+      }
+    });
   }
 
   changeCursorPosition(e: KeyPressedEvent) {
     let nextGridPosition;
-    if (this.cursorInPlayerHand) {
+    if (this.store.getState().displayPlayerHandCursor) {
       nextGridPosition = keyCodeToPlayerHandPosition(e.keyCode, this.playerHandCursor.gridPosition.value, this.cardsInPlayerHand.length);
       if (nextGridPosition) {
         this.sounds.cursor();
@@ -101,10 +127,10 @@ export default class Game {
   }
 
   selectOrPlaceCard() {
-    if (this.cursorInPlayerHand) {
+    if (this.store.getState().displayPlayerHandCursor) {
       this.sounds.cursor();
       this.playerHandCursor.stopAnimatedCursor();
-      this.cursorInPlayerHand = false;
+      this.store.dispatch({ type: 'HIDE_CURSOR' });
     } else {
       const cardIndexToRemove = this.playerHandCursor.gridPosition.value;
       const cardToRemove = this.cardsInPlayerHand[cardIndexToRemove];
@@ -130,7 +156,7 @@ export default class Game {
         }
         this.cards.push(cardToRemove);
         this.playerHandCursor.drawAnimatedCursor();
-        this.cursorInPlayerHand = true;
+        this.store.dispatch({ type: 'SHOW_CURSOR' });
       } else {
         this.sounds.error();
       }
@@ -138,49 +164,10 @@ export default class Game {
   }
 
   backToPlayerHand() {
-    if (!this.cursorInPlayerHand) {
+    if (!this.store.getState().displayPlayerHandCursor) {
       this.sounds.escape();
       this.playerHandCursor.drawAnimatedCursor();
-      this.cursorInPlayerHand = true;
+      this.store.dispatch({ type: 'SHOW_CURSOR' });
     }
-  }
-
-  set cursorInPlayerHand(value: boolean) {
-    if (value) {
-      this.playerHandCursor.undimCanvas();
-      this.battlegroundCursor.hideCanvas();
-    } else {
-      this.playerHandCursor.dimCanvas();
-      this.battlegroundCursor.showCanvas();
-    }
-    cursorInPlayerGridPosition = value;
-  }
-
-  get cursorInPlayerHand(): boolean {
-    return cursorInPlayerGridPosition;
-  }
-
-  set gameCanStart(value: boolean) {
-    if (value) {
-      keyPressed
-        .setOptions({ triggerOnce: true })
-        .down([UP, DOWN, RIGHT, LEFT], this.changeCursorPosition.bind(this))
-        .down(ENTER, this.selectOrPlaceCard.bind(this))
-        .down(ESCAPE, this.backToPlayerHand.bind(this));
-    } else {
-      keyPressed.off([
-        UP,
-        DOWN,
-        RIGHT,
-        LEFT,
-        ENTER,
-        ESCAPE,
-      ]);
-    }
-    gcs = value;
-  }
-
-  get gameCanStart() {
-    return gcs;
   }
 }
