@@ -14,7 +14,7 @@ export type CursorDelta = {
 
 export type GridPosition = CoordPosition & {
   value: number,
-  cursor: CursorDelta,
+  cursor?: CursorDelta,
 }
 
 export type BattlegroundPositions = {

@@ -26,8 +26,26 @@ import Monster from '../constructor/card/monster';
 import { animateStoneTiles, generateStoneTile } from './board-init';
 import type { Store } from '../type/store';
 import { StoreClass } from '../constructor/store';
+import EnemyHandCard from '../constructor/card/enemy-hand';
+import { enemyHandPosition } from '../common/positions/enemy-side-positions';
 
 const randomMonster = () => monsterList[Object.keys(monsterList)[Math.floor(Math.random() * Object.keys(monsterList).length)]];
+
+const generateTestEnemyHand = (index: number, store: Store, enemyHand?: Array<?EnemyHandCard> = []): ?Array<?EnemyHandCard> => {
+  if (index < 5) {
+    const card = new EnemyHandCard({
+      store,
+      gridPosition: enemyHandPosition[index],
+      monster: randomMonster(),
+    });
+    enemyHand.push(card);
+    card.onAnimationFinished(() => {
+      generateTestEnemyHand(index + 1, store, enemyHand);
+    });
+  } else {
+    return enemyHand;
+  }
+};
 
 export default class Game extends StoreClass {
   board: Board;
@@ -40,6 +58,7 @@ export default class Game extends StoreClass {
 
   constructor({ store }:{store: Store}) {
     super(store);
+    generateTestEnemyHand(0, store);
     this.sounds = new Sounds();
     // this.sounds.music();
     this.board = new Board({ store });

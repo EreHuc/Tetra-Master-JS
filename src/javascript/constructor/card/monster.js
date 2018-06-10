@@ -18,6 +18,7 @@ import type { GridPosition } from '../../type/canvas';
 import randomGenerator from '../../common/generator/random-generator';
 import type { MonsterStats } from '../../type/stat';
 import type { Store } from '../../type/store';
+import Canvas from '../canvas';
 
 export default class Monster extends Card {
   stats: MonsterStats;
@@ -32,16 +33,19 @@ export default class Monster extends Card {
     gridPosition,
     monster,
     store,
+    canvas,
   }: {
     grid: 'battleground' | 'playerHand',
     color?: typeof RED_CARD | typeof BLUE_CARD,
     gridPosition: GridPosition,
     monster: MonsterTile,
     store: Store,
+    canvas?: Canvas
   }) {
     super({
       gridPosition,
       store,
+      canvas,
     });
     this.grid = grid;
     this.monster = monster;

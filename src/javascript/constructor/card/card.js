@@ -32,10 +32,10 @@ export default class Card extends Canvas {
   /**
    * Sequence to draw a card
    */
-  drawCard(gridPosition: GridPosition, tile: Tile) {
+  drawCard(gridPosition: GridPosition, tile: Tile, dx: number = 0, dy: number = 0) {
     this.clearCard();
     this.gridPosition = gridPosition;
-    this.drawTile(tile, 0, 0);
+    this.drawTile(tile, dx, dy);
   }
 
   /**
