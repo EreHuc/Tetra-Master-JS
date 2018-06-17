@@ -2,7 +2,7 @@
 
 import type { Store } from '../../type/store';
 import Card from './card';
-import type { GridPosition } from '../../type/canvas';
+import type { EnemyHandPosition } from '../../type/canvas';
 import Canvas from '../canvas';
 import AnimationSprite from '../../engine/animations';
 import { cardTiles } from '../../common/tiles/card-tiles';
@@ -11,28 +11,39 @@ import { CANVAS_HEIGHT } from '../../common/variables';
 
 export default class EnemyHandCard extends Card {
   event: EventTarget;
-  animation: AnimationSprite;
+  enterAnimation: AnimationSprite;
+  selectAnimation: AnimationSprite;
+  deselectAnimation: AnimationSprite;
   monster: MonsterTile;
   tile: Tile;
   y: number;
   animationFinished: boolean;
   callback: Function;
+  currentAnimation: 'enter' | 'select' | 'deselect' | null;
+  currentDx: number;
+  selectPositionX: number;
+  deselectPositionX: number;
 
   constructor({
     store,
     gridPosition,
     canvas,
     monster,
-  }:{store: Store, gridPosition: GridPosition, canvas?: Canvas, monster: MonsterTile}) {
+  }:{store: Store, gridPosition: EnemyHandPosition, canvas?: Canvas, monster: MonsterTile}) {
     super({ store, gridPosition, canvas });
     this.event = new EventTarget();
-    this.animation = new AnimationSprite(this.enterAnimation.bind(this), (1000 / 30));
+    this.selectAnimation = new AnimationSprite(this.selectAnimationFrame.bind(this), (1000 / 60));
+    this.deselectAnimation = new AnimationSprite(this.deselectAnimationFrame.bind(this), (1000 / 60));
+    // $FlowFixMe
+    this.enterAnimation = new AnimationSprite(this.enterAnimationFrame.bind(this), (1000 / 60));
     this.monster = monster;
     this.tile = cardTiles.back;
     this.y = this.gridPosition.y;
+    this.selectPositionX = this.gridPosition.x + this.gridPosition.select.dx;
+    this.deselectPositionX = this.gridPosition.x;
     this.animationFinished = false;
     this.drawEnemyCard();
-    this.animateEnemyCard();
+    this.animateEnemyCardEnter();
     return this;
   }
 
@@ -40,44 +51,124 @@ export default class EnemyHandCard extends Card {
     this.drawCard(this.gridPosition, this.tile);
   }
 
-  enterAnimation() {
+  enterAnimationFrame() {
+    let y;
     if (this.gridPosition.y <= this.y) {
-      this.gridPosition = {
-        x: this.gridPosition.x,
-        y: this.y,
-        value: this.gridPosition.value,
-      };
+      ({ y } = this);
       this.cancelAnimation();
     } else {
-      const y = this.gridPosition.y - 38;
-      this.gridPosition = {
-        x: this.gridPosition.x,
-        y: y <= this.y ? this.y : y,
-        value: this.gridPosition.value,
-      };
+      y = this.gridPosition.y - 19;
     }
+    this.gridPosition = {
+      x: this.gridPosition.x,
+      y: y <= this.y ? this.y : y,
+      value: this.gridPosition.value,
+      select: this.gridPosition.select,
+    };
+    this.drawEnemyCard();
+  }
+
+  selectAnimationFrame() {
+    if (this.currentDx <= this.selectPositionX) {
+      this.currentDx += 5;
+    } else {
+      this.currentDx = this.selectPositionX;
+      this.cancelAnimation();
+    }
+    this.gridPosition = {
+      x: this.currentDx <= this.selectPositionX ? this.currentDx : this.selectPositionX,
+      y: this.gridPosition.y,
+      value: this.gridPosition.value,
+      select: this.gridPosition.select,
+    };
+    this.drawEnemyCard();
+  }
+
+  deselectAnimationFrame() {
+    if (this.currentDx >= this.deselectPositionX) {
+      this.currentDx -= 5;
+    } else {
+      this.currentDx = this.deselectPositionX;
+      this.cancelAnimation();
+    }
+    this.gridPosition = {
+      x: this.currentDx >= this.deselectPositionX ? this.currentDx : this.deselectPositionX,
+      y: this.gridPosition.y,
+      value: this.gridPosition.value,
+      select: this.gridPosition.select,
+    };
     this.drawEnemyCard();
   }
 
   /**
    * Call to start stone animation
    */
-  animateEnemyCard() {
-    this.animationFinished = false;
-    this.gridPosition = {
-      x: this.gridPosition.x,
-      y: CANVAS_HEIGHT,
-      value: this.gridPosition.value,
-    };
-    this.animation.startAnimation();
+  animateEnemyCardEnter() {
+    if (!this.currentAnimation) {
+      this.animationFinished = false;
+      this.currentAnimation = 'enter';
+      this.gridPosition = {
+        x: this.gridPosition.x,
+        y: CANVAS_HEIGHT,
+        value: this.gridPosition.value,
+        select: this.gridPosition.select,
+      };
+      this.enterAnimation.startAnimation();
+    }
+  }
+
+  animateEnemyCardSelect() {
+    if (!this.currentAnimation) {
+      this.animationFinished = false;
+      this.currentAnimation = 'select';
+      this.currentDx = this.deselectPositionX;
+      this.gridPosition = {
+        x: this.currentDx,
+        y: this.gridPosition.y,
+        value: this.gridPosition.value,
+        select: this.gridPosition.select,
+      };
+      this.drawEnemyCard();
+      this.selectAnimation.startAnimation();
+    }
+  }
+
+  animateEnemyCardDeselect() {
+    if (!this.currentAnimation) {
+      this.animationFinished = false;
+      this.currentAnimation = 'deselect';
+      this.currentDx = this.selectPositionX;
+      this.gridPosition = {
+        x: this.currentDx,
+        y: this.gridPosition.y,
+        value: this.gridPosition.value,
+        select: this.gridPosition.select,
+      };
+      this.drawEnemyCard();
+      this.deselectAnimation.startAnimation();
+    }
   }
 
   /**
    * Call to end stone animation
    */
   cancelAnimation() {
-    this.event.dispatchEvent(new CustomEvent('animation.finished'));
-    this.animation.stopAnimation();
+    if (this.currentAnimation) {
+      this.event.dispatchEvent(new CustomEvent(`${this.currentAnimation}.finished`));
+      switch (this.currentAnimation) {
+        case 'enter':
+          this.enterAnimation.stopAnimation();
+          break;
+        case 'select':
+          this.selectAnimation.stopAnimation();
+          break;
+        case 'deselect':
+          this.deselectAnimation.stopAnimation();
+          break;
+        default:
+      }
+      this.currentAnimation = null;
+    }
   }
 
   /**
@@ -85,17 +176,21 @@ export default class EnemyHandCard extends Card {
    * @param callback
    */
   onAnimationFinished(callback: Function) {
-    this.callback = () => {
-      callback();
-      this.off();
-    };
-    this.event.addEventListener('animation.finished', this.callback);
+    if (this.currentAnimation) {
+      this.callback = () => {
+        callback();
+        this.off();
+      };
+      this.event.addEventListener(`${this.currentAnimation}.finished`, this.callback);
+    }
   }
 
   /**
    * Remove event listener on 'animation.finished'
    */
   off() {
-    this.event.removeEventListener('animation.finished', this.callback);
+    if (this.currentAnimation) {
+      this.event.removeEventListener(`${this.currentAnimation}.finished`, this.callback);
+    }
   }
 }

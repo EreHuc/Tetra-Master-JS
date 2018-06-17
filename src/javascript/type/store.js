@@ -8,6 +8,8 @@ export type Action = {
 export type State = {
   gameCanStart: boolean;
   displayPlayerHandCursor: boolean;
+  enemyHandAnimation: boolean;
+  stoneAnimation: boolean;
 }
 
 export type Reducer<T> = (state: T, action: Action) => T;

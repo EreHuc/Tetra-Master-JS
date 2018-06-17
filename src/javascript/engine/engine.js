@@ -20,32 +20,20 @@ import {
 } from '../common/positions/player-side-positions';
 import type { KeyPressedEvent } from '../type/key_pressed';
 import Sounds from './sounds';
-import { monsterList } from '../common/tiles/card-tiles';
 import Stone from '../constructor/card/stone';
 import Monster from '../constructor/card/monster';
-import { animateStoneTiles, generateStoneTile } from './board-init';
+import {
+  animateStoneTiles,
+  enemyHandGenerator,
+  generateEnemyHand,
+  generateStoneTile,
+  randomMonster,
+} from './board-init';
 import type { Store } from '../type/store';
 import { StoreClass } from '../constructor/store';
 import EnemyHandCard from '../constructor/card/enemy-hand';
-import { enemyHandPosition } from '../common/positions/enemy-side-positions';
+import { enemyHandAnimationDispatch, stoneCardAnimationDisptach } from '../store/actions';
 
-const randomMonster = () => monsterList[Object.keys(monsterList)[Math.floor(Math.random() * Object.keys(monsterList).length)]];
-
-const generateTestEnemyHand = (index: number, store: Store, enemyHand?: Array<?EnemyHandCard> = []): ?Array<?EnemyHandCard> => {
-  if (index < 5) {
-    const card = new EnemyHandCard({
-      store,
-      gridPosition: enemyHandPosition[index],
-      monster: randomMonster(),
-    });
-    enemyHand.push(card);
-    card.onAnimationFinished(() => {
-      generateTestEnemyHand(index + 1, store, enemyHand);
-    });
-  } else {
-    return enemyHand;
-  }
-};
 
 export default class Game extends StoreClass {
   board: Board;
@@ -55,16 +43,20 @@ export default class Game extends StoreClass {
   cardsInPlayerHand: Array<?Monster>;
   sounds: Sounds;
   store: Store;
+  enemyCards: Array<EnemyHandCard>;
 
   constructor({ store }:{store: Store}) {
     super(store);
-    generateTestEnemyHand(0, store);
+    generateEnemyHand(enemyHandGenerator, 0, store).then((enemyCards) => {
+      this.enemyCards = enemyCards;
+      enemyHandAnimationDispatch({ store });
+    });
     this.sounds = new Sounds();
     // this.sounds.music();
     this.board = new Board({ store });
     generateStoneTile(animateStoneTiles, this.sounds, this.store).then((cards) => {
       this.cards = [...cards];
-      this.store.dispatch({ type: 'GAME_STARTED' });
+      stoneCardAnimationDisptach({ store });
     });
     this.cardsInPlayerHand = [
       new Monster({
@@ -130,11 +122,20 @@ export default class Game extends StoreClass {
 
   changeCursorPosition(e: KeyPressedEvent) {
     let nextGridPosition;
-    if (this.store.getState().displayPlayerHandCursor) {
+    if (this.state.displayPlayerHandCursor) {
       nextGridPosition = keyCodeToPlayerHandPosition(e.keyCode, this.playerHandCursor.gridPosition.value, this.cardsInPlayerHand.length);
       if (nextGridPosition) {
         this.sounds.cursor();
         this.playerHandCursor.drawCursor(nextGridPosition);
+      }
+      switch (e.keyCode) {
+        case LEFT:
+          this.enemyCards[1].animateEnemyCardDeselect();
+          break;
+        case RIGHT:
+          this.enemyCards[1].animateEnemyCardSelect();
+          break;
+        default:
       }
     } else {
       nextGridPosition = keyCodeToBattlegroundPosition(e.keyCode, this.battlegroundCursor.gridPosition.value);
@@ -146,7 +147,7 @@ export default class Game extends StoreClass {
   }
 
   selectOrPlaceCard() {
-    if (this.store.getState().displayPlayerHandCursor) {
+    if (this.state.displayPlayerHandCursor) {
       this.sounds.cursor();
       this.playerHandCursor.stopAnimatedCursor();
       this.store.dispatch({ type: 'HIDE_CURSOR' });
@@ -183,7 +184,7 @@ export default class Game extends StoreClass {
   }
 
   backToPlayerHand() {
-    if (!this.store.getState().displayPlayerHandCursor) {
+    if (!this.state.displayPlayerHandCursor) {
       this.sounds.escape();
       this.playerHandCursor.drawAnimatedCursor();
       this.store.dispatch({ type: 'SHOW_CURSOR' });

@@ -32,7 +32,7 @@ export default class Stone extends Card {
     });
     this.event = new EventTarget();
     this.stone = stone;
-    this.animation = new AnimationSprite(this.stoneCardAnimation.bind(this), (1000 / 30));
+    this.animation = new AnimationSprite(this.stoneCardAnimation.bind(this), (1000 / 60));
     this.setZoom(1.5);
     this.translateCardToBattlegroundGrid();
     this.animateStoneCard();
@@ -55,10 +55,10 @@ export default class Stone extends Card {
       this.cancelAnimation();
       this.animationFinished = true;
     } else {
+      const nextZoom = Number((this.zoom - 0.06).toFixed(2));
       this.clearCard();
-      this.setZoom(Number((this.zoom - 0.1).toFixed(1)));
+      this.setZoom(nextZoom <= 1 ? 1 : nextZoom);
       this.drawStone();
-      // this.zoom = ;
     }
   }
 
@@ -74,8 +74,8 @@ export default class Stone extends Card {
    * Call to end stone animation
    */
   cancelAnimation() {
-    this.event.dispatchEvent(new CustomEvent('animation.finished'));
     this.animation.stopAnimation();
+    this.event.dispatchEvent(new CustomEvent('animation.finished'));
   }
 
   /**

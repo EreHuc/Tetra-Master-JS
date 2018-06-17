@@ -6,18 +6,18 @@ import {
   CARD_WIDTH,
 } from '../../common/variables';
 import type { Tile } from '../../type/tile';
-import type { GridPosition } from '../../type/canvas';
+import type { GridPosition, EnemyHandPosition } from '../../type/canvas';
 import type { Store } from '../../type/store';
 
 export default class Card extends Canvas {
-  gridPositionData: GridPosition;
+  gridPositionData: EnemyHandPosition | GridPosition;
 
   constructor({
     gridPosition,
     zoom,
     store,
   }: {
-    gridPosition: GridPosition,
+    gridPosition: EnemyHandPosition | GridPosition,
     zoom?: number,
     store: Store,
   }):void {
@@ -32,7 +32,7 @@ export default class Card extends Canvas {
   /**
    * Sequence to draw a card
    */
-  drawCard(gridPosition: GridPosition, tile: Tile, dx: number = 0, dy: number = 0) {
+  drawCard(gridPosition: GridPosition | EnemyHandPosition, tile: Tile, dx: number = 0, dy: number = 0) {
     this.clearCard();
     this.gridPosition = gridPosition;
     this.drawTile(tile, dx, dy);
@@ -68,7 +68,7 @@ export default class Card extends Canvas {
    * Change position of card for next draw
    * @param gridPosition
    */
-  set gridPosition(gridPosition: GridPosition) {
+  set gridPosition(gridPosition: GridPosition | EnemyHandPosition) {
     if (this.gridPosition) {
       this.clearCard();
     }
@@ -79,7 +79,7 @@ export default class Card extends Canvas {
     return this.gridPositionData;
   }
 
-  setCardPosition(gridPosition: GridPosition) {
+  setCardPosition(gridPosition: GridPosition | EnemyHandPosition) {
     this.gridPosition = gridPosition;
   }
 }

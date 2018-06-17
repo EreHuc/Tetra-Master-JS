@@ -8,4 +8,8 @@ export class StoreClass {
   constructor(store: Store) {
     this.store = store;
   }
+
+  get state() {
+    return this.store.getState();
+  }
 }

@@ -6,7 +6,11 @@ import Stone from '../constructor/card/stone';
 import Sounds from './sounds';
 import type { Store } from '../type/store';
 import { battlegroundPositions, validBattlegroundPositions } from '../common/positions/battleground-positions';
-import { cardTiles } from '../common/tiles/card-tiles';
+import { cardTiles, monsterList } from '../common/tiles/card-tiles';
+import EnemyHandCard from '../constructor/card/enemy-hand';
+import { enemyHandPosition } from '../common/positions/enemy-side-positions';
+
+export const randomMonster = () => monsterList[Object.keys(monsterList)[Math.floor(Math.random() * Object.keys(monsterList).length)]];
 
 export function generateStoneTile(
   animateTiles:
@@ -45,3 +49,24 @@ export function animateStoneTiles(gridPositions: Array<?GridPosition>, stoneCard
     return resolve(stoneCardList);
   }
 }
+
+export const generateEnemyHand =
+  (generateTestEnemyHand: Function, index: number, store: Store, enemyHand?: Array<?EnemyHandCard> = []) =>
+    new Promise(resolve =>
+      generateTestEnemyHand(index, store, enemyHand, resolve));
+
+export const enemyHandGenerator = (index: number, store: Store, enemyHand?: Array<?EnemyHandCard> = [], resolve: Function): ?Promise<Array<?EnemyHandCard>> => {
+  if (index < 5) {
+    const card = new EnemyHandCard({
+      store,
+      gridPosition: enemyHandPosition[index],
+      monster: randomMonster(),
+    });
+    enemyHand.push(card);
+    card.onAnimationFinished(() => {
+      enemyHandGenerator(index + 1, store, enemyHand, resolve);
+    });
+  } else {
+    return resolve(enemyHand);
+  }
+};
