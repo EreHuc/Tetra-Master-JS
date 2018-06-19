@@ -6,20 +6,30 @@ import {
   BATTLEGROUND_COORD_X,
   BATTLEGROUND_COORD_Y,
   CANVAS_HEIGHT,
-  CANVAS_WIDTH, PLAYER_HAND_COORD_X, PLAYER_HAND_COORD_Y,
+  CANVAS_WIDTH, GAME_SPRITE, PLAYER_HAND_COORD_X, PLAYER_HAND_COORD_Y,
   ZOOM_LEVEL,
 } from '../common/variables';
-import type { CoordPosition } from '../type/canvas';
+import type { CoordPosition } from '../type/canvas-type';
+import type { Store } from '../type/store-type';
+import { StoreClass } from './store-constructor';
 
-export default class Canvas {
+export default class Canvas extends StoreClass {
   canvas: HTMLCanvasElement;
   context: CanvasRenderingContext2D;
   image: HTMLImageElement;
-  canvasPosition: CoordPosition;
+  canvasPositionData: CoordPosition;
   zoom: number;
+  store: Store;
 
-  constructor(type: string, image: HTMLImageElement, display: boolean = true, zoom: number = 1) {
-    const body: HTMLBodyElement = (document.querySelector('body'): any);
+  constructor({
+    type,
+    image = GAME_SPRITE,
+    display = true,
+    zoom = 1,
+    store,
+  }: {type: string, image?: HTMLImageElement, display?: boolean, zoom?: number, store: Store}) {
+    super(store);
+    const element: HTMLElement = (document.querySelector('.game'): any);
     const canvasId: string = namedId('canvas');
     this.zoom = zoom;
     this.image = image;
@@ -28,17 +38,15 @@ export default class Canvas {
     this.canvas.setAttribute('id', canvasId);
     this.canvas.width = CANVAS_WIDTH * ZOOM_LEVEL;
     this.canvas.height = CANVAS_HEIGHT * ZOOM_LEVEL;
+    element.style.width = `${this.canvas.width}px`;
     if (!display) {
       this.hideCanvas();
     }
-    this.canvas = body.appendChild(this.canvas);
+    this.canvas = element.appendChild(this.canvas);
     this.context = this.canvas.getContext('2d');
     this.toggleSmoothingZoom(false);
     this.context.scale(ZOOM_LEVEL * this.zoom, ZOOM_LEVEL * this.zoom);
-    this.canvasPosition = {
-      x: 0,
-      y: 0,
-    };
+    this.canvasPosition = { x: 0, y: 0 };
   }
 
   /**
@@ -101,13 +109,12 @@ export default class Canvas {
     this.context.restore();
   }
 
-  /**
-   * Set canvas position
-   * @param x
-   * @param y
-   */
-  setCanvasPosition(x: number, y: number): void {
-    this.canvasPosition = Object.assign({}, { x, y });
+  set canvasPosition({ x, y }: { x: number, y: number }): void {
+    this.canvasPositionData = Object.assign({}, { x, y });
+  }
+
+  get canvasPosition() {
+    return this.canvasPositionData;
   }
 
   /**
@@ -133,7 +140,7 @@ export default class Canvas {
     const x = -this.canvasPosition.x + BATTLEGROUND_COORD_X;
     const y = -this.canvasPosition.y + BATTLEGROUND_COORD_Y;
     this.translate(x, y);
-    this.setCanvasPosition(BATTLEGROUND_COORD_X, BATTLEGROUND_COORD_Y);
+    this.canvasPosition = { x: BATTLEGROUND_COORD_X, y: BATTLEGROUND_COORD_Y };
   }
 
   /**
@@ -143,14 +150,14 @@ export default class Canvas {
     const x = -this.canvasPosition.x + PLAYER_HAND_COORD_X;
     const y = -this.canvasPosition.y + PLAYER_HAND_COORD_Y;
     this.translate(x, y);
-    this.setCanvasPosition(PLAYER_HAND_COORD_X, PLAYER_HAND_COORD_Y);
+    this.canvasPosition = { x: PLAYER_HAND_COORD_X, y: PLAYER_HAND_COORD_Y };
   }
   /**
    * Reset canvas to initial position
    */
   resetCanvasPosition(): void {
     this.translate(-this.canvasPosition.x, -this.canvasPosition.y);
-    this.setCanvasPosition(0, 0);
+    this.canvasPosition = { x: 0, y: 0 };
   }
 
   /**
@@ -178,8 +185,10 @@ export default class Canvas {
   }
 
   setZoom(zoom: number) {
+    // scale to original size
     this.context.scale(1 / (ZOOM_LEVEL * this.zoom), 1 / (ZOOM_LEVEL * this.zoom));
     this.zoom = zoom;
+    // scale to the new size
     this.context.scale(ZOOM_LEVEL * this.zoom, ZOOM_LEVEL * this.zoom);
   }
 }

@@ -1,16 +1,17 @@
 // @flow
 
-import type { GridPosition } from '../type/canvas';
+import type { GridPosition } from '../type/canvas-type';
 import {
   battlegroundPositions,
   isValidBattlegroundPosition,
-} from '../constructor/common/positions/battleground-positions';
+} from '../common/positions/battleground-positions';
 import { DOWN, LEFT, RIGHT, UP } from '../common/variables';
-import Card from '../constructor/card';
-import { isValidPlayerHandPosition, playerHandPositions } from '../constructor/common/positions/player-side-positions';
+import { isValidPlayerHandPosition, playerHandPositions } from '../common/positions/player-side-positions';
+import Stone from '../constructor/card/stone-constructor';
+import Monster from '../constructor/card/monster-constructor';
 
 export const isBattlegroundGridPositionAvailable = (
-  listOfCards: Array<?Card>,
+  listOfCards: Array<?Stone | ?Monster>,
   nextGridPositionValue: number,
 ): boolean => !listOfCards.some(card => card && card.gridPosition.value === nextGridPositionValue);
 

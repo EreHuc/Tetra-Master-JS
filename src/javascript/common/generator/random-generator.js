@@ -9,7 +9,7 @@ import {
   TOP_LEFT_CORNER,
   TOP_RIGHT_CORNER,
 } from '../variables';
-import type { MonsterStats, MonsterTypePossibility } from '../../type/stat';
+import type { MonsterStats, MonsterTypePossibility } from '../../type/stat-type';
 
 /**
  * Generate a random ID

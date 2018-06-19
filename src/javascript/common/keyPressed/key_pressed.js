@@ -1,7 +1,7 @@
 // @flow
 /* eslint-disable no-console,no-use-before-define */
 
-import type { KeyPressedEvent, KeyPressedOptions } from '../../type/key_pressed';
+import type { KeyPressedEvent, KeyPressedOptions } from '../../type/key_pressed-type';
 
 const keyPressedClass = (defaultOptions: KeyPressedOptions = {}) => {
   const prop: WeakMap<KeyPressed, KpUtils> = new WeakMap();
@@ -219,7 +219,7 @@ const keyPressedClass = (defaultOptions: KeyPressedOptions = {}) => {
       return this;
     }
 
-    off(events: Array<Function> | Function): KeyPressed {
+    off(events: Array<Function | number> | Function | number): KeyPressed {
       const eventsHandler = (event) => {
         switch (event) {
           case 'keydown':

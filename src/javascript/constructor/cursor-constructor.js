@@ -1,18 +1,18 @@
 /* eslint-disable prefer-destructuring */
 // @flow
 
-import Canvas from './canvas';
-import { CURSOR_HEIGHT, CURSOR_WIDTH, GAME_SPRITE } from '../common/variables';
-import { cursorTile } from './common/tiles/cursor-tiles';
-import type { GridPosition } from '../type/canvas';
-import { battlegroundGridPosition00 } from './common/positions/battleground-positions';
-import type { Tile } from '../type/tile';
+import Canvas from './canvas-constructor';
+import { CURSOR_HEIGHT, CURSOR_WIDTH } from '../common/variables';
+import { cursorTile } from '../common/tiles/cursor-tiles';
+import type { GridPosition } from '../type/canvas-type';
+import { battlegroundGridPosition00 } from '../common/positions/battleground-positions';
+import type { Tile } from '../type/tile-type';
 import { infiniteSequence } from '../common/generator/sequence-generator';
-import { playerHandGridPosition00 } from './common/positions/player-side-positions';
-import AnimationSprite from '../engine/animations';
+import { playerHandGridPosition00 } from '../common/positions/player-side-positions';
+import type { Store } from '../type/store-type';
+import AnimationSprite from './animations-constructor';
 
-export default class Cursor {
-  canvas: Canvas;
+export default class Cursor extends Canvas {
   cursorSequence: Iterator<number>;
   frameSequence: Iterator<number>;
   gridPosition: GridPosition;
@@ -21,16 +21,20 @@ export default class Cursor {
   requestId: number;
   animation: AnimationSprite;
 
-  constructor(grid: 'battleground' | 'playerHand', display: boolean = true) {
+  constructor({ grid, display = true, store }: {grid: 'battleground' | 'playerHand', display?: boolean, store: Store}) {
+    super({
+      type: 'cursor',
+      display,
+      store,
+    });
     this.sprite = cursorTile[0];
     this.cursorSequence = infiniteSequence(cursorTile.length);
     this.grid = grid;
     if (this.grid === 'battleground') {
-      this.canvas = new Canvas('cursor', GAME_SPRITE, display);
       this.gridPosition = battlegroundGridPosition00;
       this.translateCursorToBattleground();
     } else {
-      this.canvas = new Canvas('cursor', GAME_SPRITE, display, 0.8);
+      this.setZoom(0.8);
       this.gridPosition = playerHandGridPosition00;
       this.translateCursorToPlayerHand();
     }
@@ -66,7 +70,7 @@ export default class Cursor {
    */
   clearCursor() {
     const { x, y } = this.gridPosition;
-    this.canvas.clearImage(x + this.gridPosition.cursor.dx, y + this.gridPosition.cursor.dy, CURSOR_WIDTH, CURSOR_HEIGHT);
+    this.clearImage(x + this.gridPosition.cursor.dx, y + this.gridPosition.cursor.dy, CURSOR_WIDTH, CURSOR_HEIGHT);
   }
 
   /**
@@ -91,7 +95,7 @@ export default class Cursor {
    * @param tile
    */
   drawTile(tile: Tile): void {
-    this.canvas.drawImage(
+    this.drawImage(
       tile.x,
       tile.y,
       tile.width,
@@ -108,7 +112,7 @@ export default class Cursor {
    */
   translateCursorToPlayerHand() {
     this.clearCursor();
-    this.canvas.translateToPlayerHand();
+    this.translateToPlayerHand();
   }
 
   /**
@@ -116,16 +120,16 @@ export default class Cursor {
    */
   translateCursorToBattleground() {
     this.clearCursor();
-    this.canvas.translateToBattleground();
+    this.translateToBattleground();
   }
 
   switchTo4Card() {
     this.clearCursor();
-    this.canvas.setZoom(1);
+    this.setZoom(1);
   }
 
   switchTo5Card() {
     this.clearCursor();
-    this.canvas.setZoom(0.8);
+    this.setZoom(0.8);
   }
 }

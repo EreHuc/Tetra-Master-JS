@@ -1,6 +1,6 @@
 // @flow
 
-import type { MonsterStats } from './stat';
+import type { MonsterStats } from './stat-type';
 
 export type Tile = {
   x: number,

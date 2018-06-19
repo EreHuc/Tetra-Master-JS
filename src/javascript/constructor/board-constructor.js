@@ -1,24 +1,24 @@
 // @flow
 
-import { GAME_SPRITE } from '../common/variables';
-import { backgroundTile, boardTiles } from './common/tiles/board-tiles';
-import Canvas from './canvas';
+import { backgroundTile, boardTiles } from '../common/tiles/board-tiles';
+import Canvas from './canvas-constructor';
+import type { Store } from '../type/store-type';
 
-export default class Board {
-  canvas: Canvas;
-
-  constructor(canvas?: Canvas) {
-    this.canvas = canvas || new Canvas('board', GAME_SPRITE);
+export default class Board extends Canvas {
+  constructor({ store }: { store: Store }) {
+    super({
+      type: 'board',
+      store,
+    });
     this.drawBackground();
     this.drawBoard();
-    this.canvas.save();
   }
 
   /**
    * Draw background image
    */
   drawBackground() {
-    this.canvas.drawImage(
+    this.drawImage(
       backgroundTile.x,
       backgroundTile.y,
       backgroundTile.width,
@@ -28,7 +28,7 @@ export default class Board {
   }
 
   drawBoard() {
-    this.canvas.drawImage(
+    this.drawImage(
       boardTiles.x,
       boardTiles.y,
       boardTiles.width,

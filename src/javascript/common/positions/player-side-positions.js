@@ -1,6 +1,6 @@
-import { CARD_HEIGHT, PLAYER_HAND_CURSOR_DX, PLAYER_HAND_CURSOR_DY } from '../../../common/variables';
-import type { CursorDelta, GridPosition } from '../../../type/canvas';
-import { PlayerHandPositions } from '../../../type/canvas';
+import { CARD_HEIGHT, PLAYER_HAND_CURSOR_DX, PLAYER_HAND_CURSOR_DY } from '../variables';
+import type { CursorDelta, GridPosition } from '../../type/canvas-type';
+import { PlayerHandPositions } from '../../type/canvas-type';
 
 export const playerHandCursorDelta: CursorDelta = {
   dx: PLAYER_HAND_CURSOR_DX,

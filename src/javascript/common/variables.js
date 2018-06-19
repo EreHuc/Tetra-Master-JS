@@ -1,11 +1,12 @@
 // @flow
 
-import type { AssaultBatteClass, FlexibleBattleClass, MagicalBattleClass, PhysicalBattleClass } from '../type/stat';
+import type { AssaultBatteClass, FlexibleBattleClass, MagicalBattleClass, PhysicalBattleClass } from '../type/stat-type';
+import game from '../../assets/sprites/game.png';
 
-export const GAME_SPRITE:HTMLImageElement = (document.getElementById('game-sprite'): any);
+export const GAME_SPRITE:HTMLImageElement = new Image();
+GAME_SPRITE.src = game;
 export const BLUE_CARD: number = 0;
 export const RED_CARD: number = 1;
-export const ZOOM_LEVEL: number = 3;
 export const TOP_LEFT_CORNER: number = 0;
 export const TOP_CORNER: number = 1;
 export const TOP_RIGHT_CORNER: number = 2;
@@ -42,3 +43,4 @@ export const requestAnimationFrame = window.requestAnimationFrame
   || window.mozRequestAnimationFrame
   || window.webkitRequestAnimationFrame
   || window.msRequestAnimationFrame;
+export const ZOOM_LEVEL: number = Number(window.innerHeight / CANVAS_HEIGHT);

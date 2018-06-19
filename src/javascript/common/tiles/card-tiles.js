@@ -1,6 +1,6 @@
 // @flow
 
-import type { CardTile, MonsterTileList, Tile } from '../../../type/tile';
+import type { CardTile, MonsterTileList, Tile } from '../../type/tile-type';
 import {
   aCardTile, bCardTile, cCardTile, dCardTile, eCardTile, eightCardTile, fCardTile,
   fiveCardTile,
@@ -224,8 +224,8 @@ export const monsterList: MonsterTileList = {
 export const backCardTile: Tile = {
   x: 210,
   y: 822,
-  height: 42,
-  width: 51,
+  width: 42,
+  height: 51,
 };
 
 /**

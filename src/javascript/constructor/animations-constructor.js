@@ -7,9 +7,8 @@ const requestAnimationFrame = window.requestAnimationFrame
 
 const cancelAnimationFrame = window.cancelAnimationFrame || window.mozCancelAnimationFrame;
 
-
 export default class AnimationSprite {
-  requestId: number;
+  requestId: ?number;
   fpsInterval: number;
   now: number;
   elapsed: number;
@@ -29,14 +28,17 @@ export default class AnimationSprite {
   rAF(): void {
     this.now = Date.now();
     this.elapsed = this.now - this.then;
-    this.requestId = requestAnimationFrame(this.rAF.bind(this));
     if (this.elapsed > this.fpsInterval) {
-      this.then = this.now - (this.elapsed % this.fpsInterval);
+      this.then = Date.now();
       this.callback();
+    }
+    if (this.requestId) {
+      this.requestId = requestAnimationFrame(this.rAF.bind(this));
     }
   }
 
   stopAnimation(): void {
     cancelAnimationFrame(this.requestId);
+    this.requestId = null;
   }
 }

@@ -1,5 +1,5 @@
-import { MAGICAL_BATTLE_CLASS, PHYSICAL_BATTLE_CLASS } from '../../../common/variables';
-import type { MonsterTile } from '../../../type/tile';
+import { MAGICAL_BATTLE_CLASS, PHYSICAL_BATTLE_CLASS } from '../variables';
+import type { MonsterTile } from '../../type/tile-type';
 
 export const Goblin: MonsterTile = {
   id: 1,
