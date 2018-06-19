@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 // @flow
 
-import type { Reducer } from '../type/store';
+import type { Reducer } from '../type/store-type';
 
 const stoneAnimation: Reducer<boolean> = (state, action) => {
   switch (action.type) {

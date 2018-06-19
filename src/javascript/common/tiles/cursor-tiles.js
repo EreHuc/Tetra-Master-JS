@@ -1,4 +1,4 @@
-import type { CursorTile, Tile } from '../../type/tile';
+import type { CursorTile, Tile } from '../../type/tile-type';
 
 export const cursorPosition0: Tile = {
   x: 276,

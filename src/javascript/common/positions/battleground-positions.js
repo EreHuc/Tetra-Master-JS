@@ -1,6 +1,6 @@
 // @flow
 
-import type { GridPosition, BattlegroundPositions, CursorDelta } from '../../type/canvas';
+import type { GridPosition, BattlegroundPositions, CursorDelta } from '../../type/canvas-type';
 import { BATTLEGROUND_CURSOR_DX, BATTLEGROUND_CURSOR_DY, CARD_HEIGHT, CARD_WIDTH } from '../variables';
 
 export const battleGroundCursorDelta: CursorDelta = {

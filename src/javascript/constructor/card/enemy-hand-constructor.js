@@ -1,12 +1,12 @@
 // @flow
 
-import type { Store } from '../../type/store';
-import Card from './card';
-import type { EnemyHandPosition } from '../../type/canvas';
-import Canvas from '../canvas';
-import AnimationSprite from '../../engine/animations';
+import type { Store } from '../../type/store-type';
+import Card from './card-constructor';
+import type { EnemyHandPosition } from '../../type/canvas-type';
+import Canvas from '../canvas-constructor';
+import AnimationSprite from '../animations-constructor';
 import { cardTiles } from '../../common/tiles/card-tiles';
-import type { MonsterTile, Tile } from '../../type/tile';
+import type { MonsterTile, Tile } from '../../type/tile-type';
 import { CANVAS_HEIGHT } from '../../common/variables';
 
 export default class EnemyHandCard extends Card {

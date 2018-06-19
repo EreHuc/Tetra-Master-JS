@@ -1,6 +1,6 @@
 // @flow
 
-import type { AssaultBatteClass, FlexibleBattleClass, MagicalBattleClass, PhysicalBattleClass } from '../type/stat';
+import type { AssaultBatteClass, FlexibleBattleClass, MagicalBattleClass, PhysicalBattleClass } from '../type/stat-type';
 import game from '../../assets/sprites/game.png';
 
 export const GAME_SPRITE:HTMLImageElement = new Image();

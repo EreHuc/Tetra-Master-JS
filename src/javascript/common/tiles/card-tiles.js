@@ -1,6 +1,6 @@
 // @flow
 
-import type { CardTile, MonsterTileList, Tile } from '../../type/tile';
+import type { CardTile, MonsterTileList, Tile } from '../../type/tile-type';
 import {
   aCardTile, bCardTile, cCardTile, dCardTile, eCardTile, eightCardTile, fCardTile,
   fiveCardTile,

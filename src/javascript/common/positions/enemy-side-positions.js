@@ -1,6 +1,6 @@
 // @flow
 
-import type { EnemyHandPosition } from '../../type/canvas';
+import type { EnemyHandPosition } from '../../type/canvas-type';
 
 const selectDx = 10;
 const selectDy = 0;

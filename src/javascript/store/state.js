@@ -1,6 +1,6 @@
 // @flow
 
-import type { State } from '../type/store';
+import type { State } from '../type/store-type';
 
 const initialState: State = {
   gameCanStart: false,

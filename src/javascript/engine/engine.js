@@ -2,14 +2,14 @@
 // @flow
 
 import { BLUE_CARD, DOWN, ENTER, ESCAPE, LEFT, RIGHT, UP } from '../common/variables';
-import Board from '../constructor/board';
+import Board from '../constructor/board-constructor';
 import { keyPressed } from '../common/keyPressed/key_pressed';
 import {
   isBattlegroundGridPositionAvailable,
   keyCodeToBattlegroundPosition,
   keyCodeToPlayerHandPosition,
 } from './key-handler';
-import Cursor from '../constructor/cursor';
+import Cursor from '../constructor/cursor-constructor';
 import {
   playerHandGridPosition00,
   playerHandGridPosition01,
@@ -18,10 +18,9 @@ import {
   playerHandGridPosition04,
   playerHandPositions,
 } from '../common/positions/player-side-positions';
-import type { KeyPressedEvent } from '../type/key_pressed';
-import Sounds from './sounds';
-import Stone from '../constructor/card/stone';
-import Monster from '../constructor/card/monster';
+import type { KeyPressedEvent } from '../type/key_pressed-type';
+import Sounds from '../constructor/sounds-constructor';
+import Stone from '../constructor/card/stone-constructor';
 import {
   animateStoneTiles,
   enemyHandGenerator,
@@ -29,10 +28,11 @@ import {
   generateStoneTile,
   randomMonster,
 } from './board-init';
-import type { Store } from '../type/store';
-import { StoreClass } from '../constructor/store';
-import EnemyHandCard from '../constructor/card/enemy-hand';
+import type { Store } from '../type/store-type';
+import { StoreClass } from '../constructor/store-constructor';
+import EnemyHandCard from '../constructor/card/enemy-hand-constructor';
 import { enemyHandAnimationDispatch, stoneCardAnimationDisptach } from '../store/actions';
+import Monster from '../constructor/card/monster-constructor';
 
 
 export default class Game extends StoreClass {

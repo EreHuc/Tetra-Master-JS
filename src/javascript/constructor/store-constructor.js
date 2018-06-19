@@ -1,6 +1,6 @@
 // @flow
 
-import type { Store } from '../type/store';
+import type { Store } from '../type/store-type';
 
 export class StoreClass {
   store: Store;

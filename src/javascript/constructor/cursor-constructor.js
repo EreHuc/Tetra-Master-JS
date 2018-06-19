@@ -1,16 +1,16 @@
 /* eslint-disable prefer-destructuring */
 // @flow
 
-import Canvas from './canvas';
+import Canvas from './canvas-constructor';
 import { CURSOR_HEIGHT, CURSOR_WIDTH } from '../common/variables';
 import { cursorTile } from '../common/tiles/cursor-tiles';
-import type { GridPosition } from '../type/canvas';
+import type { GridPosition } from '../type/canvas-type';
 import { battlegroundGridPosition00 } from '../common/positions/battleground-positions';
-import type { Tile } from '../type/tile';
+import type { Tile } from '../type/tile-type';
 import { infiniteSequence } from '../common/generator/sequence-generator';
 import { playerHandGridPosition00 } from '../common/positions/player-side-positions';
-import AnimationSprite from '../engine/animations';
-import type { Store } from '../type/store';
+import type { Store } from '../type/store-type';
+import AnimationSprite from './animations-constructor';
 
 export default class Cursor extends Canvas {
   cursorSequence: Iterator<number>;

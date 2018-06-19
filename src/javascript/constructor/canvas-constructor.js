@@ -9,9 +9,9 @@ import {
   CANVAS_WIDTH, GAME_SPRITE, PLAYER_HAND_COORD_X, PLAYER_HAND_COORD_Y,
   ZOOM_LEVEL,
 } from '../common/variables';
-import type { CoordPosition } from '../type/canvas';
-import type { Store } from '../type/store';
-import { StoreClass } from './store';
+import type { CoordPosition } from '../type/canvas-type';
+import type { Store } from '../type/store-type';
+import { StoreClass } from './store-constructor';
 
 export default class Canvas extends StoreClass {
   canvas: HTMLCanvasElement;

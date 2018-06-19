@@ -1,4 +1,4 @@
-import type { Store } from '../type/store';
+import type { Store } from '../type/store-type';
 
 export const gameCanStartDispatch = ({ store }:{store: Store}) => {
   const action = {

@@ -1,13 +1,13 @@
 // @flow
 
-import Canvas from '../canvas';
+import Canvas from '../canvas-constructor';
 import {
   CARD_HEIGHT,
   CARD_WIDTH,
 } from '../../common/variables';
-import type { Tile } from '../../type/tile';
-import type { GridPosition, EnemyHandPosition } from '../../type/canvas';
-import type { Store } from '../../type/store';
+import type { Tile } from '../../type/tile-type';
+import type { GridPosition, EnemyHandPosition } from '../../type/canvas-type';
+import type { Store } from '../../type/store-type';
 
 export default class Card extends Canvas {
   gridPositionData: EnemyHandPosition | GridPosition;

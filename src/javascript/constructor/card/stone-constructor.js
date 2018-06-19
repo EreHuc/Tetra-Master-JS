@@ -1,11 +1,11 @@
 // @flow
 
-import type { GridPosition } from '../../type/canvas';
-import Canvas from '../canvas';
-import Card from './card';
-import AnimationSprite from '../../engine/animations';
-import type { Tile } from '../../type/tile';
-import type { Store } from '../../type/store';
+import type { GridPosition } from '../../type/canvas-type';
+import Canvas from '../canvas-constructor';
+import Card from './card-constructor';
+import type { Tile } from '../../type/tile-type';
+import type { Store } from '../../type/store-type';
+import AnimationSprite from '../animations-constructor';
 
 export default class Stone extends Card {
   stone: Tile;

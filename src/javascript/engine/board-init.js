@@ -1,13 +1,13 @@
 /* eslint-disable consistent-return */
 // @flow
 
-import type { GridPosition } from '../type/canvas';
-import Stone from '../constructor/card/stone';
-import Sounds from './sounds';
-import type { Store } from '../type/store';
+import type { GridPosition } from '../type/canvas-type';
+import Stone from '../constructor/card/stone-constructor';
+import Sounds from '../constructor/sounds-constructor';
+import type { Store } from '../type/store-type';
 import { battlegroundPositions, validBattlegroundPositions } from '../common/positions/battleground-positions';
 import { cardTiles, monsterList } from '../common/tiles/card-tiles';
-import EnemyHandCard from '../constructor/card/enemy-hand';
+import EnemyHandCard from '../constructor/card/enemy-hand-constructor';
 import { enemyHandPosition } from '../common/positions/enemy-side-positions';
 
 export const randomMonster = () => monsterList[Object.keys(monsterList)[Math.floor(Math.random() * Object.keys(monsterList).length)]];

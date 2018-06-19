@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 // @flow
 
-import type { Action, Reducer, State, StoreConstructor } from '../type/store';
+import type { Action, Reducer, State, StoreConstructor } from '../type/store-type';
 
 const combineReducer = (reducers: Object, initialState: State): Reducer<any> => (state, action) => Object.keys(reducers).reduce((nextState, key) => {
   nextState[key] = reducers[key](state[key], action);

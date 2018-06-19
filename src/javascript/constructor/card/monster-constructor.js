@@ -1,6 +1,6 @@
 // @flow
 
-import Card from './card';
+import Card from './card-constructor';
 import { statToHexChar } from '../../common/common';
 import { cardTiles } from '../../common/tiles/card-tiles';
 import {
@@ -13,12 +13,12 @@ import {
   RIGHT_CORNER, TOP_CORNER,
   TOP_LEFT_CORNER, TOP_RIGHT_CORNER,
 } from '../../common/variables';
-import type { MonsterTile, Tile } from '../../type/tile';
-import type { GridPosition } from '../../type/canvas';
+import type { MonsterTile, Tile } from '../../type/tile-type';
+import type { GridPosition } from '../../type/canvas-type';
 import randomGenerator from '../../common/generator/random-generator';
-import type { MonsterStats } from '../../type/stat';
-import type { Store } from '../../type/store';
-import Canvas from '../canvas';
+import type { MonsterStats } from '../../type/stat-type';
+import type { Store } from '../../type/store-type';
+import Canvas from '../canvas-constructor';
 
 export default class Monster extends Card {
   stats: MonsterStats;
@@ -256,7 +256,7 @@ export default class Monster extends Card {
 
   checkCorners() {
     this.corners.forEach((/* corner */) => {
-      // console.log('card.js:276 - ', corner, cornerToBattlegroundPosition(corner, this.gridPosition.value));
+      // console.log('card-constructor.js:276 - ', corner, cornerToBattlegroundPosition(corner, this.gridPosition.value));
     });
   }
 
