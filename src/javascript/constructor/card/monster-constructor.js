@@ -46,6 +46,7 @@ export default class Monster extends Card {
       gridPosition,
       store,
       canvas,
+      type: 'player card',
     });
     this.grid = grid;
     this.monster = monster;

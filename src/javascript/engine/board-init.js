@@ -7,7 +7,7 @@ import Sounds from '../constructor/sounds-constructor';
 import type { Store } from '../type/store-type';
 import { battlegroundPositions, validBattlegroundPositions } from '../common/positions/battleground-positions';
 import { cardTiles, monsterList } from '../common/tiles/card-tiles';
-import EnemyHandCard from '../constructor/card/enemy-hand-constructor';
+import EnemyHandCard from '../constructor/card/enemy-cards-constructor';
 import { enemyHandPosition } from '../common/positions/enemy-side-positions';
 
 export const randomMonster = () => monsterList[Object.keys(monsterList)[Math.floor(Math.random() * Object.keys(monsterList).length)]];

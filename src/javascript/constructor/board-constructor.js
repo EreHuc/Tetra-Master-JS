@@ -1,7 +1,9 @@
 // @flow
 
-import { backgroundTile, boardTiles } from '../common/tiles/board-tiles';
 import Canvas from './canvas-constructor';
+
+import { backgroundTile, boardTiles } from '../common/tiles/board-tiles';
+
 import type { Store } from '../type/store-type';
 
 export default class Board extends Canvas {

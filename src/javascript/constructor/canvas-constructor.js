@@ -1,5 +1,7 @@
 // @flow
 
+import StoreClass from './store-constructor';
+
 import { cleanRect, drawImage, translate } from '../common/common';
 import { namedId } from '../common/generator/random-generator';
 import {
@@ -9,9 +11,9 @@ import {
   CANVAS_WIDTH, GAME_SPRITE, PLAYER_HAND_COORD_X, PLAYER_HAND_COORD_Y,
   ZOOM_LEVEL,
 } from '../common/variables';
+
 import type { CoordPosition } from '../type/canvas-type';
 import type { Store } from '../type/store-type';
-import { StoreClass } from './store-constructor';
 
 export default class Canvas extends StoreClass {
   canvas: HTMLCanvasElement;
@@ -34,7 +36,7 @@ export default class Canvas extends StoreClass {
     this.zoom = zoom;
     this.image = image;
     this.canvas = document.createElement('canvas');
-    this.canvas.classList.add('tetra-master', type);
+    this.canvas.classList.add('tetra-master', ...type.split(' '));
     this.canvas.setAttribute('id', canvasId);
     this.canvas.width = CANVAS_WIDTH * ZOOM_LEVEL;
     this.canvas.height = CANVAS_HEIGHT * ZOOM_LEVEL;

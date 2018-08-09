@@ -9,6 +9,11 @@ export type Tile = {
   height: number,
 };
 
+export type CoinTile = Tile & {
+  value: number,
+  color: 'red' | 'blue',
+}
+
 export type CornerTile = {
   topLeft: Tile,
   top: Tile,

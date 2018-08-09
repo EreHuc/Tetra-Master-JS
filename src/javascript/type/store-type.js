@@ -10,6 +10,7 @@ export type State = {
   displayPlayerHandCursor: boolean;
   enemyHandAnimation: boolean;
   stoneAnimation: boolean;
+  coinFlipped: boolean;
 }
 
 export type Reducer<T> = (state: T, action: Action) => T;

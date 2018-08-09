@@ -2,7 +2,7 @@
 
 import type { Store } from '../type/store-type';
 
-export class StoreClass {
+export default class StoreClass {
   store: Store;
 
   constructor(store: Store) {

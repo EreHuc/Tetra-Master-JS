@@ -7,6 +7,7 @@ const initialState: State = {
   displayPlayerHandCursor: false,
   enemyHandAnimation: false,
   stoneAnimation: false,
+  coinFlipped: false,
 };
 
 export default initialState;

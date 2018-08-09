@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "Recreation of FF9 tetra master game in Javascript",
   "scripts": {
+    "start": "npm run dev",
     "dev": "parcel index.html",
     "build": "parcel build index.html",
     "flow": "flow",
@@ -31,7 +32,7 @@
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-plugin-flowtype": "^2.46.3",
     "eslint-plugin-import": "^2.11.0",
-    "flow-bin": "^0.71.0",
+    "flow-bin": "^0.76.0",
     "parcel-bundler": "^1.8.1"
   }
 }

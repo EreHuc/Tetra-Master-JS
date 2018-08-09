@@ -11,15 +11,15 @@ const combineReducer = (reducers: Object, initialState: State): Reducer<any> => 
 export const createStore: StoreConstructor = (reducers, initialState) => {
   const rootReducer = combineReducer(reducers, initialState);
   const listeners: Array<Function> = [];
-  let currentState = initialState;
+  let state = initialState;
 
-  const getState = () => Object.assign({}, currentState);
+  const getState = () => Object.assign({}, state);
 
   const subscribe = (listener: Function) => listeners.push(listener);
 
   const dispatch = (action: Action) => {
-    currentState = rootReducer(currentState, action);
-    listeners.forEach(listener => listener({ action, state: currentState }));
+    state = rootReducer(state, action);
+    listeners.forEach(listener => listener({ action, state }));
   };
 
   return {

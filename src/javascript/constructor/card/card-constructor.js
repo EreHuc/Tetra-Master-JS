@@ -16,13 +16,15 @@ export default class Card extends Canvas {
     gridPosition,
     zoom,
     store,
+    type = 'card',
   }: {
     gridPosition: EnemyHandPosition | GridPosition,
     zoom?: number,
     store: Store,
+    type?: string,
   }):void {
     super({
-      type: 'card',
+      type,
       zoom,
       store,
     });

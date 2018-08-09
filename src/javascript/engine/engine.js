@@ -29,13 +29,21 @@ import {
   randomMonster,
 } from './board-init';
 import type { Store } from '../type/store-type';
-import { StoreClass } from '../constructor/store-constructor';
-import EnemyHandCard from '../constructor/card/enemy-hand-constructor';
-import { enemyHandAnimationDispatch, stoneCardAnimationDisptach } from '../store/actions';
+import StoreClass from '../constructor/store-constructor';
+import EnemyHandCard from '../constructor/card/enemy-cards-constructor';
+import {
+  coinFlippedDispatch,
+  enemyHandAnimationDispatch, FLIP_COIN,
+  GAME_STARTED,
+  HIDE_CURSOR,
+  SHOW_CURSOR,
+  stoneCardAnimationDispatch,
+} from '../store/actions';
 import Monster from '../constructor/card/monster-constructor';
+import Coin from '../constructor/coin-constructor';
 
 
-export default class Game extends StoreClass {
+export default class Engine extends StoreClass {
   board: Board;
   cards: Array<?Monster | ?Stone>;
   playerHandCursor: Cursor;
@@ -44,20 +52,62 @@ export default class Game extends StoreClass {
   sounds: Sounds;
   store: Store;
   enemyCards: Array<EnemyHandCard>;
+  coin: Coin;
 
   constructor({ store }:{store: Store}) {
     super(store);
-    generateEnemyHand(enemyHandGenerator, 0, store).then((enemyCards) => {
-      this.enemyCards = enemyCards;
-      enemyHandAnimationDispatch({ store });
-    });
     this.sounds = new Sounds();
-    // this.sounds.music();
     this.board = new Board({ store });
+    this.coin = new Coin({ store });
+    this.playerHandCursor = new Cursor({ grid: 'playerHand', store });
+    this.battlegroundCursor = new Cursor({ grid: 'battleground', display: false, store });
+
     generateStoneTile(animateStoneTiles, this.sounds, this.store).then((cards) => {
       this.cards = [...cards];
-      stoneCardAnimationDisptach({ store });
+      stoneCardAnimationDispatch({ store });
+      this.flipCoin({ store });
     });
+
+    // this.sounds.music();
+
+    this.generateEnemyHand({ store });
+    this.generatePlayerHand({ store });
+
+    this.store.dispatch({ type: SHOW_CURSOR });
+
+    this.store.subscribe(({ action }) => {
+      switch (action.type) {
+        case GAME_STARTED:
+          keyPressed
+            .setOptions({ triggerOnce: true })
+            .down([UP, DOWN, RIGHT, LEFT], this.changeCursorPosition.bind(this))
+            .down(ENTER, this.selectOrPlaceCard.bind(this))
+            .down(ESCAPE, this.backToPlayerHand.bind(this));
+          break;
+        case SHOW_CURSOR:
+          this.playerHandCursor.undimCanvas();
+          this.battlegroundCursor.hideCanvas();
+          break;
+        case HIDE_CURSOR:
+          this.playerHandCursor.dimCanvas();
+          this.battlegroundCursor.showCanvas();
+          break;
+        case FLIP_COIN:
+          this.flipCoin({ store });
+          break;
+        default:
+      }
+    });
+  }
+
+  generateEnemyHand({ store }:{store: Store}) {
+    generateEnemyHand(enemyHandGenerator, 0, store).then((enemyCards) => {
+      this.enemyCards = [...enemyCards];
+      enemyHandAnimationDispatch({ store });
+    });
+  }
+
+  generatePlayerHand({ store }:{store: Store}) {
     this.cardsInPlayerHand = [
       new Monster({
         grid: 'playerHand',
@@ -95,29 +145,6 @@ export default class Game extends StoreClass {
         store,
       }),
     ];
-    this.playerHandCursor = new Cursor({ grid: 'playerHand', store });
-    this.battlegroundCursor = new Cursor({ grid: 'battleground', display: false, store });
-    this.store.dispatch({ type: 'SHOW_CURSOR' });
-    this.store.subscribe(({ action }) => {
-      switch (action.type) {
-        case 'GAME_STARTED':
-          keyPressed
-            .setOptions({ triggerOnce: true })
-            .down([UP, DOWN, RIGHT, LEFT], this.changeCursorPosition.bind(this))
-            .down(ENTER, this.selectOrPlaceCard.bind(this))
-            .down(ESCAPE, this.backToPlayerHand.bind(this));
-          break;
-        case 'SHOW_CURSOR':
-          this.playerHandCursor.undimCanvas();
-          this.battlegroundCursor.hideCanvas();
-          break;
-        case 'HIDE_CURSOR':
-          this.playerHandCursor.dimCanvas();
-          this.battlegroundCursor.showCanvas();
-          break;
-        default:
-      }
-    });
   }
 
   changeCursorPosition(e: KeyPressedEvent) {
@@ -150,7 +177,7 @@ export default class Game extends StoreClass {
     if (this.state.displayPlayerHandCursor) {
       this.sounds.cursor();
       this.playerHandCursor.stopAnimatedCursor();
-      this.store.dispatch({ type: 'HIDE_CURSOR' });
+      this.store.dispatch({ type: HIDE_CURSOR });
     } else {
       const cardIndexToRemove = this.playerHandCursor.gridPosition.value;
       const cardToRemove = this.cardsInPlayerHand[cardIndexToRemove];
@@ -176,7 +203,7 @@ export default class Game extends StoreClass {
         }
         this.cards.push(cardToRemove);
         this.playerHandCursor.drawAnimatedCursor();
-        this.store.dispatch({ type: 'SHOW_CURSOR' });
+        this.store.dispatch({ type: SHOW_CURSOR });
       } else {
         this.sounds.error();
       }
@@ -187,7 +214,15 @@ export default class Game extends StoreClass {
     if (!this.state.displayPlayerHandCursor) {
       this.sounds.escape();
       this.playerHandCursor.drawAnimatedCursor();
-      this.store.dispatch({ type: 'SHOW_CURSOR' });
+      this.store.dispatch({ type: SHOW_CURSOR });
     }
+  }
+
+  flipCoin({ store }:{store: Store}) {
+    this.coin.flipCoin();
+    coinFlippedDispatch({ store });
+    setTimeout(() => {
+      this.coin.stopCoin();
+    }, 2500);
   }
 }

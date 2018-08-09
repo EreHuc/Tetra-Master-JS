@@ -30,7 +30,9 @@ export default class EnemyHandCard extends Card {
     canvas,
     monster,
   }:{store: Store, gridPosition: EnemyHandPosition, canvas?: Canvas, monster: MonsterTile}) {
-    super({ store, gridPosition, canvas });
+    super({
+      store, gridPosition, canvas, type: 'enemy card',
+    });
     this.event = new EventTarget();
     this.selectAnimation = new AnimationSprite(this.selectAnimationFrame.bind(this), (1000 / 60));
     this.deselectAnimation = new AnimationSprite(this.deselectAnimationFrame.bind(this), (1000 / 60));

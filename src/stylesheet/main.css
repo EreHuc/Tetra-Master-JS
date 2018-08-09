@@ -15,6 +15,10 @@ body {
     display: none;
 }
 
+.coin {
+    z-index: 9;
+}
+
 .cursor {
     z-index: 10;
 }
@@ -26,4 +30,5 @@ body {
 .game {
     margin: auto;
     position: relative;
+    cursor: none;
 }

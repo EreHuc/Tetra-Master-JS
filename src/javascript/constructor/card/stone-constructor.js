@@ -29,6 +29,7 @@ export default class Stone extends Card {
       gridPosition,
       canvas,
       store,
+      type: 'stone',
     });
     this.event = new EventTarget();
     this.stone = stone;
