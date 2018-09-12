@@ -1,25 +1,26 @@
 {
-	"extends": ["tslint:recommended", "tslint-config-airbnb", "tslint-react", "tslint-config-prettier", "tslint-react-a11y"],
-	"linterOptions": {
-		"exclude": [
-			"config/**/*.js",
-			"node_modules/**/*.ts"
-		]
-	},
-	"defaultSeverity": "warning",
-	"rules": {
-		"no-console": {
-			"severity": "warning"
-		},
-		"ordered-imports": {
-			"severity": "warning"
-		},
-		"jsx-no-lambda": false,
-		"interface-name": false,
-		"interface-over-type-literal": false,
-		"object-literal-sort-keys": false,
-		"import-name": false,
-		"variable-name": false,
-		"jsx-boolean-value": ["error", "never"]
-	}
+  "extends": ["tslint:recommended", "tslint-config-airbnb", "tslint-react", "tslint-config-prettier", "tslint-react-a11y"],
+  "linterOptions": {
+    "exclude": [
+      "config/**/*.js",
+      "node_modules/**/*.ts"
+    ]
+  },
+  "defaultSeverity": "warning",
+  "rules": {
+    "no-console": {
+      "severity": "warning"
+    },
+    "ordered-imports": {
+      "severity": "warning"
+    },
+    "no-unused-variable": true,
+    "jsx-no-lambda": false,
+    "interface-name": false,
+    "interface-over-type-literal": false,
+    "object-literal-sort-keys": false,
+    "import-name": false,
+    "variable-name": false,
+    "jsx-boolean-value": ["error", "never"]
+  }
 }
