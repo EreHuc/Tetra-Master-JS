@@ -18,6 +18,11 @@
     "@types/node": "^10.9.4",
     "@types/react": "^16.4.14",
     "@types/react-dom": "^16.0.7",
+    "prettier": "^1.14.2",
+    "tslint-config-airbnb": "^5.11.0",
+    "tslint-config-prettier": "^1.15.0",
+    "tslint-react": "^3.6.0",
+    "tslint-react-a11y": "^1.0.0",
     "typescript": "^3.0.3"
   }
 }
