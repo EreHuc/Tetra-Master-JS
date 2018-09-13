@@ -1,0 +1,9 @@
+.player-hand {
+  display: flex;
+  flex-direction: row;
+  padding: 16px;
+}
+
+.player-hand .tile {
+  margin-right: 8px;
+}
