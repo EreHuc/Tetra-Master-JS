@@ -1,12 +1,19 @@
 import { connect } from "react-redux";
 
-import { getBoard } from "../../store";
+import { getBoard, placeTile } from "../../store";
 import { Board } from "./";
 
-const mapStateToProps = (state, props) => ({
+const mapStateToProps = state => ({
   board: getBoard(state),
 });
 
-const enhance = connect(mapStateToProps);
+const mapDispatchToProps = dispatch => ({
+  onCellClick: position => dispatch(placeTile(position)),
+});
+
+const enhance = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+);
 
 export default enhance(Board);

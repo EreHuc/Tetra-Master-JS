@@ -1,12 +1,28 @@
 import * as React from "react";
+import { defaultProps } from "recompose";
 
-import { TileType } from "../../board.constants";
+import { Vector2 } from "../../Vector2";
 import "./Board.css";
 
 type CellProps = {
-  tileType: TileType;
+  position: Vector2;
+  tileId: string;
+  onClick: (position: Vector2) => void;
 };
 
-export const Cell: React.SFC<CellProps> = ({ tileType }) => (
-  <div className="board-cell">{tileType}</div>
+const onClickWithPosition = (onClick, position) => clickEvent => {
+  onClick(position);
+};
+
+export const Cell: React.SFC<CellProps> = ({ position, tileId, onClick }) => (
+  <button
+    className={"board-cell"}
+    onClick={onClickWithPosition(onClick, position)}
+  >
+    {tileId}
+  </button>
 );
+
+export const EnhancedCell = defaultProps({
+  onClick: _ => {},
+})(Cell);

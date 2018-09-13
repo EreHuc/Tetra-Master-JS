@@ -14,13 +14,14 @@
     "ordered-imports": {
       "severity": "warning"
     },
+    "jsx-boolean-value": ["error", "never"],
+    "no-empty": [true, "allow-empty-functions"],
     "no-unused-variable": true,
     "jsx-no-lambda": false,
     "interface-name": false,
     "interface-over-type-literal": false,
     "object-literal-sort-keys": false,
     "import-name": false,
-    "variable-name": false,
-    "jsx-boolean-value": ["error", "never"]
+    "variable-name": false
   }
 }

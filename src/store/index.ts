@@ -1,13 +1,17 @@
-import { createStore } from "redux";
+import { applyMiddleware, createStore } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";
+import immutableStateInvariantMiddleware from "redux-immutable-state-invariant";
 
 import rootReducer from "./reducer";
+
+// TODO: Enable only in development mode.
+const middlewares = [immutableStateInvariantMiddleware()];
 
 export function configureStore(initialState = {}) {
   const store: any = createStore(
     rootReducer,
     initialState,
-    composeWithDevTools(),
+    composeWithDevTools(applyMiddleware(...middlewares)),
   );
 
   return store;
