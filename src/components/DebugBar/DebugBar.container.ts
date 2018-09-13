@@ -1,7 +1,7 @@
 import { connect } from "react-redux";
 
 import { initBoard } from "../../store";
-import { DebugBar } from "./DebugBar";
+import { EnhancedDebugBar } from "./DebugBar";
 
 // const mapStateToProps = (state, props) => ({});
 const mapDispatchToProps = {
@@ -13,4 +13,4 @@ const enhance = connect(
   mapDispatchToProps,
 );
 
-export default enhance(DebugBar);
+export default enhance(EnhancedDebugBar);

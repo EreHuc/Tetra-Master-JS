@@ -5,8 +5,12 @@ import "./Board.css";
 
 export const Board = ({ board }) => (
   <div className="board">
-    {board.map((row, x) =>
-      row.map((tileType, y) => <Cell key={`${x}-${y}`} tileType={tileType} />),
-    )}
+    <div className="grid">
+      {board.map((row, x) =>
+        row.map((tileType, y) => (
+          <Cell key={`${x}-${y}`} tileType={tileType} />
+        )),
+      )}
+    </div>
   </div>
 );
