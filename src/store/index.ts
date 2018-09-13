@@ -1,14 +1,16 @@
 import { createStore } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";
 
-const rootState = state => state;
+import rootReducer from "./reducer";
 
 export function configureStore(initialState = {}) {
   const store: any = createStore(
-    rootState,
+    rootReducer,
     initialState,
     composeWithDevTools(),
   );
 
   return store;
 }
+
+export * from "./reducer";

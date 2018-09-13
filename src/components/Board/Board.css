@@ -1,0 +1,17 @@
+/* FIXME: Make it work with various grid sizes */
+
+.board {
+  display: grid;
+  grid-gap: 10px;
+  grid-template-columns: repeat(3, 100px);
+  grid-template-rows: 100px 100px 100px;
+  grid-auto-flow: column;
+}
+
+.board-cell {
+  background: lightgrey;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+}
