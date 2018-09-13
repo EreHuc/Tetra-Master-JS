@@ -14,3 +14,4 @@ export function configureStore(initialState = {}) {
 }
 
 export * from "./reducer";
+export * from "./board";
