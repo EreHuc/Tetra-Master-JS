@@ -8,7 +8,10 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  onCellClick: position => dispatch(placeTile(position)),
+  onCellClick: position => {
+    const randomTileId = `${Math.floor(Math.random() * 2)}`;
+    dispatch(placeTile(position, randomTileId));
+  },
 });
 
 const enhance = connect(

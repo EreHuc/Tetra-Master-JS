@@ -2,7 +2,7 @@ import * as React from "react";
 import { defaultProps } from "recompose";
 
 import { Vector2 } from "../../Vector2";
-import "./Board.css";
+import { Tile } from "../Tile";
 
 type CellProps = {
   position: Vector2;
@@ -19,7 +19,7 @@ export const Cell: React.SFC<CellProps> = ({ position, tileId, onClick }) => (
     className={"board-cell"}
     onClick={onClickWithPosition(onClick, position)}
   >
-    {tileId}
+    {tileId && <Tile tileId={tileId} />}
   </button>
 );
 

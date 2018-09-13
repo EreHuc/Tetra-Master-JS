@@ -10,9 +10,9 @@ export function initBoard(size: Vector2) {
   };
 }
 
-export function placeTile(position: Vector2) {
+export function placeTile(position: Vector2, tileId: string) {
   return {
     type: PLACE_TILE,
-    payload: { position },
+    payload: { position, tileId },
   };
 }

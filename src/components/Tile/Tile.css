@@ -1,0 +1,12 @@
+.tile {
+  width: 64px;
+  height: 64px;
+}
+
+.tile-0 {
+  background: lightblue;
+}
+
+.tile-1 {
+  background: lightcoral
+}
