@@ -1,7 +1,7 @@
 import * as React from "react";
 import { defaultProps } from "recompose";
 
-import { Vector2 } from "../../Vector2";
+import { Vector2 } from "../../models";
 import { Tile } from "../Tile";
 
 type CellProps = {

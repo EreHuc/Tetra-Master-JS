@@ -1,7 +1,7 @@
 import { combineReducers } from "redux";
-import { createSelector } from "reselect";
 
 import update from "immutability-helper";
+import { compose } from "ramda";
 import { Id, Player } from "../../models";
 import { RootState } from "../root.reducer";
 import { ADD_TILE_TO_HAND } from "./players.actions";
@@ -55,12 +55,15 @@ export const playersReducer = combineReducers({
 });
 
 // selectors
-export const getPlayersState = (rootState: RootState) => rootState.players;
-export const getPlayer = (playerId: Id) => playersState =>
-  playersState.map[playerId];
+export const getPlayersRoot = (rootState: RootState) => rootState.players;
+export const makeGetPlayer = (playerId: Id) => (players: Players) =>
+  players.map[playerId];
 export const getHand = (player: Player) => player.hand;
 
-export const getPlayerHand = (playerId: Id) =>
-  createSelector([getPlayersState], (players: Players) =>
-    getHand(getPlayer(playerId)(players)),
-  );
+export const getPlayerHand = (playerId: Id) => (rootState: RootState) => {
+  return compose(
+    getHand,
+    makeGetPlayer(playerId),
+    getPlayersRoot,
+  )(rootState);
+};
