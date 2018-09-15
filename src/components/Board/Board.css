@@ -1,5 +1,4 @@
 /* FIXME: Make it work with various grid sizes */
-
 .board {
   padding: 16px;
 }
@@ -20,5 +19,5 @@
   justify-content: center;
   flex-direction: column;
   text-align: center;
-  background: lightgrey;
+  background: #8f9083;
 }

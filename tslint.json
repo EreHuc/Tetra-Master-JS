@@ -16,7 +16,7 @@
     },
     "jsx-boolean-value": ["error", "never"],
     "no-empty": [true, "allow-empty-functions"],
-    "no-unused-variable": true,
+    "no-unused-variable": false,
     "jsx-no-lambda": false,
     "interface-name": false,
     "interface-over-type-literal": false,

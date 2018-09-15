@@ -7,6 +7,7 @@ const {
 module.exports = {
   webpack: function(config, env) {
     config = rewireTypescript(config);
+    config.module.strictExportPresence = false;
 
     config = rewireTSLint(config, { typeCheck: true });
 

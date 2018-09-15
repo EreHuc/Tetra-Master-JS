@@ -1,69 +1,76 @@
+import * as R from "ramda";
 import { combineReducers } from "redux";
+import { v1 as uuidv1 } from "uuid";
 
-import update from "immutability-helper";
-import { compose } from "ramda";
 import { Id, Player } from "../../models";
-import { RootState } from "../root.reducer";
-import { ADD_TILE_TO_HAND } from "./players.actions";
+import { ADD_PLAYER, ADD_TILE_TO_HAND } from "./players.actions";
 
 export type Players = {
   map: PlayerMap;
   all: Id[];
 };
 
-type PlayerMap = { [key: string]: Player };
+export type PlayerMap = { [key: string]: Player };
 
-type AddTileToHandAction = {
-  playerId: Id;
-  tileIds: Id[];
-};
-const addTileToHand = (
+const addTilesToPlayerHandReducer = (
   playerMap: PlayerMap,
-  action: AddTileToHandAction,
+  payload: {
+    playerId: Id;
+    tileIds: Id[];
+  },
 ): PlayerMap => {
-  const { playerId, tileIds } = action;
+  const { playerId, tileIds } = payload;
 
-  return update<any>(playerMap, {
-    [playerId]: {
-      hand: { $push: tileIds },
-    },
-  });
+  const hand = [...playerMap[playerId].hand, ...tileIds];
+  return R.assocPath([playerId, "hand"], hand, playerMap);
 };
 
-// TODO: Don't hardcode default state here, instead trigger actions.
-const testPlayers = {
-  "1": { id: "1", name: "Player 1", hand: [] },
-  "2": { id: "2", name: "Player 2", hand: [] },
+const addPlayerToMapReducer = (
+  players: Players,
+  payload: { player: Player },
+): Players => {
+  const { player } = payload;
+
+  const fullPlayer = {
+    ...{ id: uuidv1(), hand: [] },
+    ...player,
+  };
+  const all = [...players.all, ...[fullPlayer.id]];
+
+  // @ts-ignore
+  return R.pipe(
+    R.assocPath(["map", fullPlayer.id], fullPlayer),
+    R.assocPath(["all"], all),
+  )(players);
 };
-export const mapReducer = (playerMap: PlayerMap = testPlayers, action) => {
+
+const mapReducer = (playerMap: PlayerMap = {}, action) => {
   switch (action.type) {
     case ADD_TILE_TO_HAND:
-      return addTileToHand(playerMap, action.payload);
+      return addTilesToPlayerHandReducer(playerMap, action.payload);
   }
   return playerMap;
 };
 
-// TODO: Don't hardcode default state here, instead trigger actions.
-const testPlayerIds = ["1", "2"];
-export const allReducer = (state: Id[] = testPlayerIds, action): Id[] => {
-  return state;
+const allReducer = (playerAll: Id[] = [], action) => {
+  return playerAll;
 };
 
-export const playersReducer = combineReducers({
+const crossSliceReducer = (players: Players, action) => {
+  switch (action.type) {
+    case ADD_PLAYER:
+      return addPlayerToMapReducer(players, action.payload);
+  }
+  return players;
+};
+
+const combinedReducer = combineReducers({
   map: mapReducer,
   all: allReducer,
 });
 
-// selectors
-export const getPlayersRoot = (rootState: RootState) => rootState.players;
-export const makeGetPlayer = (playerId: Id) => (players: Players) =>
-  players.map[playerId];
-export const getHand = (player: Player) => player.hand;
-
-export const getPlayerHand = (playerId: Id) => (rootState: RootState) => {
-  return compose(
-    getHand,
-    makeGetPlayer(playerId),
-    getPlayersRoot,
-  )(rootState);
-};
+export function playersReducer(state, action) {
+  const intermediateState = combinedReducer(state, action);
+  const finalState = crossSliceReducer(intermediateState, action);
+  return finalState;
+}

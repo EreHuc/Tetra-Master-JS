@@ -4,23 +4,33 @@ import { compose, lifecycle } from "recompose";
 import "./DebugBar.css";
 
 type DebugBarProps = {
+  initialized: boolean;
   startGame: () => void;
   addTilesToHand: () => void;
 };
 
-const withStartGameOnMount = lifecycle<DebugBarProps, {}>({
+const withLifecycle = lifecycle<DebugBarProps, {}>({
   componentDidMount() {
-    this.props.startGame();
-    this.props.addTilesToHand();
+    const { initialized, addTilesToHand } = this.props;
+    if (initialized) {
+      addTilesToHand();
+    }
   },
 });
 
-const DebugBar: React.SFC<DebugBarProps> = ({ startGame, addTilesToHand }) => (
+const DebugBar: React.SFC<DebugBarProps> = ({
+  initialized,
+  addTilesToHand,
+}) => (
   <div className="debug-bar">
-    <button onClick={startGame}>Start game</button>
+    <div>DEBUG BAR</div>
     {/* TODO: Create a simple formt to select players and tiles */}
     <button onClick={addTilesToHand}>Add tiles to hand</button>
+    <div />
+    <div>
+      Game initialized: <b>{initialized.toString()}</b>
+    </div>
   </div>
 );
 
-export const EnhancedDebugBar = compose(withStartGameOnMount)(DebugBar);
+export const EnhancedDebugBar = compose(withLifecycle)(DebugBar);
