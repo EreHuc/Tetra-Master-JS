@@ -5,8 +5,10 @@ import thunk from "redux-thunk";
 
 import rootReducer from "./root.reducer";
 
-// TODO: Enable only in development mode.
-const middlewares = [immutableStateInvariantMiddleware(), thunk];
+const middlewares = [
+  immutableStateInvariantMiddleware(), // TODO: Enable only in development mode.
+  thunk,
+];
 
 export function configureStore(initialState = {}) {
   const store: any = createStore(

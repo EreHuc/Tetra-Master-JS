@@ -43,11 +43,13 @@ describe("playersReducer", () => {
       };
       const action = {
         type: ADD_PLAYER,
-        payload: { player: { name: "Player 1" } },
+        payload: { player: { id: "1", name: "Player 1" } },
       };
 
       expect(playersReducer(state, action)).toEqual({
-        map: { "1": { id: "1", name: "Player 1", hand: [] } },
+        map: {
+          "1": { id: "1", name: "Player 1", hand: [], focusedTile: null },
+        },
         all: ["1"],
       });
     });

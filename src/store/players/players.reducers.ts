@@ -16,52 +16,56 @@ export type Players = {
 
 export type PlayerMap = { [key: string]: Player };
 
-const addTilesToPlayerHandReducer = (
-  playerMap: PlayerMap,
-  payload: {
-    playerId: Id;
-    tileIds: Id[];
-  },
-): PlayerMap => {
+//
+// Lens
+//
+
+// entities
+const mapItemLens = (id: Id) => R.lensPath(["map", id]);
+const allLens = R.lensProp("all");
+
+// player
+const playerLens = (id: Id) => R.lensProp(id);
+const playerHandLens = (id: Id) => R.lensPath([id, "hand"]);
+const playerFocusedTileLens = (id: Id) => R.lensPath([id, "focusedTile"]);
+
+//
+// Helpers
+//
+const addItemsToList = (items: any[]) => (list: any[]) => [...list, ...items];
+const addToList = (item: any) => addItemsToList([item]);
+const createPlayer = (data: Partial<Player>) => ({
+  ...data,
+  ...{ hand: [], focusedTile: null },
+});
+
+const addTilesToHand = (payload: { playerId: Id; tileIds: Id[] }) => {
   const { playerId, tileIds } = payload;
-
-  const hand = [...playerMap[playerId].hand, ...tileIds];
-  return R.assocPath([playerId, "hand"], hand, playerMap);
+  return R.over(playerHandLens(playerId), addItemsToList(tileIds));
 };
 
-const addPlayerToMapReducer = (
-  players: Players,
-  payload: { player: Player },
-): Players => {
+const addPlayerReducer = (payload: {
+  player: Player;
+}): ((players: Players) => Players) => {
   const { player } = payload;
-
-  const fullPlayer = {
-    ...{ id: uuidv1(), hand: [] },
-    ...player,
-  };
-  const all = [...players.all, ...[fullPlayer.id]];
-
-  // @ts-ignore
-  return R.pipe(
-    R.assocPath(["map", fullPlayer.id], fullPlayer),
-    R.assocPath(["all"], all),
-  )(players);
+  return R.compose(
+    R.over(allLens, addToList(player.id)),
+    R.set(mapItemLens(player.id), createPlayer(player)),
+  );
 };
 
-const setFocusedTileToPlayerHandReducer = (
-  playerMap: PlayerMap,
-  payload: { playerId: Id; tileId: Id },
-) => {
+const setFocusedTileReducer = (payload: { playerId: Id; tileId: Id }) => {
   const { playerId, tileId } = payload;
-  return R.assocPath([playerId, "focusedTile"], tileId, playerMap);
+
+  return R.set(playerFocusedTileLens(playerId), tileId);
 };
 
-const mapReducer = (playerMap: PlayerMap = {}, action) => {
-  switch (action.type) {
+const mapReducer = (playerMap: PlayerMap = {}, { type, payload }) => {
+  switch (type) {
     case ADD_TILE_TO_HAND:
-      return addTilesToPlayerHandReducer(playerMap, action.payload);
+      return addTilesToHand(payload)(playerMap);
     case FOCUS_HAND_TILE:
-      return setFocusedTileToPlayerHandReducer(playerMap, action.payload);
+      return setFocusedTileReducer(payload)(playerMap);
   }
   return playerMap;
 };
@@ -73,7 +77,7 @@ const allReducer = (playerAll: Id[] = [], action) => {
 const crossSliceReducer = (players: Players, action) => {
   switch (action.type) {
     case ADD_PLAYER:
-      return addPlayerToMapReducer(players, action.payload);
+      return addPlayerReducer(action.payload)(players);
   }
   return players;
 };
@@ -85,6 +89,7 @@ const combinedReducer = combineReducers({
 
 export function playersReducer(state, action) {
   const intermediateState = combinedReducer(state, action);
+  // @ts-ignore: Not sure what is going on here...
   const finalState = crossSliceReducer(intermediateState, action);
   return finalState;
 }

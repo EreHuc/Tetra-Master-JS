@@ -1,7 +1,6 @@
 import { connect } from "react-redux";
 
 import { randomId } from "../../lib/randomId";
-import { randomItem } from "../../lib/randomItem";
 import { Vector2 } from "../../models";
 import {
   addPlayer,
@@ -21,8 +20,8 @@ const debugModeInitGame = () => (dispatch, getState) => {
   dispatch(initBoard(new Vector2(3, 3)));
 
   // Create player 1 and 2
-  dispatch(addPlayer({ name: "Player 1" }));
-  dispatch(addPlayer({ name: "Player 2" }));
+  dispatch(addPlayer({ id: "1", name: "Player 1" }));
+  dispatch(addPlayer({ id: "1", name: "Player 2" }));
 
   // Give random cards to player 1 and 2
   const allPlayerIds = getAllPlayerIds(getState());

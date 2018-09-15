@@ -1,4 +1,4 @@
-import update from "immutability-helper";
+import * as R from "ramda";
 import { combineReducers } from "redux";
 
 import { Grid, Id, Vector2 } from "../../models";
@@ -6,10 +6,7 @@ import { INIT_BOARD, PLACE_TILE } from "./board.actions";
 
 export type Board = { grid: Grid };
 
-export const initBoardReducer = (
-  grid: Grid,
-  action: { size: Vector2 },
-): Grid => {
+export const initBoardReducer = (action: { size: Vector2 }) => {
   const { size } = action;
   const newGrid = Array(size.x);
 
@@ -20,27 +17,20 @@ export const initBoardReducer = (
   return newGrid;
 };
 
-export const placeTileReducer = (
-  grid: Grid,
-  action: { position: Vector2; tileId: Id },
-): Grid => {
+export const placeTileReducer = (action: { position: Vector2; tileId: Id }) => {
   const { position, tileId } = action;
 
-  return update(grid, {
-    [position.x]: {
-      [position.y]: { $set: tileId },
-    },
-  });
+  return R.assocPath([position.x, position.y], tileId);
 };
 
-const gridReducer = (state: Grid = [], action): Grid => {
+const gridReducer = (grid: Grid = [], action): Grid => {
   switch (action.type) {
     case INIT_BOARD:
-      return initBoardReducer(state, action.payload);
+      return initBoardReducer(action.payload);
     case PLACE_TILE:
-      return placeTileReducer(state, action.payload);
+      return placeTileReducer(action.payload)(grid);
   }
-  return state;
+  return grid;
 };
 
 export const boardReducer = combineReducers({
