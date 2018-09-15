@@ -1,6 +1,5 @@
 import { connect } from "react-redux";
 
-import { randomId } from "../../lib/randomId";
 import { Vector2 } from "../../models";
 import {
   addPlayer,

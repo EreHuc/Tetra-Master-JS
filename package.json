@@ -33,6 +33,7 @@
     "@types/redux-immutable-state-invariant": "^2.0.4",
     "@types/uuid": "^3.4.4",
     "prettier": "^1.14.2",
+    "react-app-rewire-awesome-typescript": "^0.0.6",
     "react-app-rewire-typescript-babel-preset": "^2.4.0",
     "react-app-rewired": "^2.0.0",
     "react-scripts": "2.0.0-next.a671462c",

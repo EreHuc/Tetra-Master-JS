@@ -9,4 +9,5 @@ const mapStateToProps = (state, ownProps) => ({
 
 const enhance = connect(mapStateToProps);
 
+// @ts-ignore: Still having some issues with Redux and Typescript
 export default enhance(TileCard);

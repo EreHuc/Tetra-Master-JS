@@ -16,7 +16,11 @@ type MergeProps = {
   onTileClick: TileEventFn;
 };
 
-const mergeProps = (stateProps, dispatchProps, ownProps): MergeProps => {
+const mergeProps = (
+  stateProps,
+  dispatchProps,
+  ownProps: OwnProps,
+): MergeProps => {
   const { state } = stateProps;
   const { dispatch } = dispatchProps;
   const { playerId } = ownProps;
@@ -39,7 +43,7 @@ const mergeProps = (stateProps, dispatchProps, ownProps): MergeProps => {
   };
 };
 
-const enhance = connect<any, any, OwnProps>(
+const enhance = connect(
   state => ({ state }),
   dispatch => ({ dispatch }),
   mergeProps,
