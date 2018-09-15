@@ -3,7 +3,11 @@ import { combineReducers } from "redux";
 import { v1 as uuidv1 } from "uuid";
 
 import { Id, Player } from "../../models";
-import { ADD_PLAYER, ADD_TILE_TO_HAND } from "./players.actions";
+import {
+  ADD_PLAYER,
+  ADD_TILE_TO_HAND,
+  FOCUS_HAND_TILE,
+} from "./players.actions";
 
 export type Players = {
   map: PlayerMap;
@@ -44,10 +48,20 @@ const addPlayerToMapReducer = (
   )(players);
 };
 
+const setFocusedTileToPlayerHandReducer = (
+  playerMap: PlayerMap,
+  payload: { playerId: Id; tileId: Id },
+) => {
+  const { playerId, tileId } = payload;
+  return R.assocPath([playerId, "focusedTile"], tileId, playerMap);
+};
+
 const mapReducer = (playerMap: PlayerMap = {}, action) => {
   switch (action.type) {
     case ADD_TILE_TO_HAND:
       return addTilesToPlayerHandReducer(playerMap, action.payload);
+    case FOCUS_HAND_TILE:
+      return setFocusedTileToPlayerHandReducer(playerMap, action.payload);
   }
   return playerMap;
 };

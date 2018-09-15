@@ -1,4 +1,8 @@
-import { ADD_PLAYER, ADD_TILE_TO_HAND } from "./players.actions";
+import {
+  ADD_PLAYER,
+  ADD_TILE_TO_HAND,
+  FOCUS_HAND_TILE,
+} from "./players.actions";
 import { playersReducer } from "./players.reducers";
 
 jest.mock("uuid", () => ({ v1: jest.fn().mockReturnValue("1") }));
@@ -46,6 +50,38 @@ describe("playersReducer", () => {
         map: { "1": { id: "1", name: "Player 1", hand: [] } },
         all: ["1"],
       });
+    });
+  });
+
+  describe("FOCUS_HAND_TILE action", () => {
+    it("should set '1' in focusedTile", () => {
+      const state: any = {
+        map: { "1": {} },
+      };
+      const action = {
+        type: FOCUS_HAND_TILE,
+        payload: { playerId: "1", tileId: "1" },
+      };
+
+      expect(playersReducer(state, action)).toEqual({
+        map: { "1": { focusedTile: "1" } },
+        all: [],
+      });
+    });
+  });
+
+  it("should set null in focusedTile", () => {
+    const state: any = {
+      map: { "1": {} },
+    };
+    const action = {
+      type: FOCUS_HAND_TILE,
+      payload: { playerId: "1", tileId: null },
+    };
+
+    expect(playersReducer(state, action)).toEqual({
+      map: { "1": { focusedTile: null } },
+      all: [],
     });
   });
 });

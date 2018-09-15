@@ -8,16 +8,20 @@ import "./App.css";
 
 type AppProps = {
   initialized: boolean;
-  startGame?: () => void;
+  initGame: () => void;
 };
 
-const withStartGameOnMount = lifecycle<{ startGame: () => void }, {}>({
+const withStartGameOnMount = lifecycle<AppProps, {}>({
   componentDidMount() {
-    this.props.startGame();
+    const { initGame } = this.props;
+
+    initGame();
   },
 });
 
-const withDefaultProps = defaultProps({ startGame: () => {} });
+const withDefaultProps = defaultProps({
+  initGame: () => {},
+});
 
 export const App: React.SFC<AppProps> = ({ initialized }) => (
   <div>

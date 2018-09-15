@@ -10,7 +10,7 @@ type PlayerHandProps = {
 
 export const PlayerHand = ({ tiles = [] }: PlayerHandProps) => (
   <div className="player-hand">
-    {tiles.length &&
+    {tiles.length > 0 &&
       tiles.map((tileId, index) => <Tile key={index} tileId={tileId} />)}
   </div>
 );

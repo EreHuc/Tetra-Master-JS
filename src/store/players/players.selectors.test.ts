@@ -2,8 +2,6 @@ import {
   getAllPlayerIds,
   getPlayer,
   getPlayerAtIndex,
-  getPlayerHand,
-  getPlayerHandAtIndex,
   getPlayerIdAtIndex,
 } from "./players.selectors";
 
@@ -82,60 +80,6 @@ describe("getPlayerAtIndex", () => {
       },
     };
     expect(getPlayerAtIndex(2)(state)).toEqual(undefined);
-  });
-});
-
-describe("getPlayerHand", () => {
-  it("should return ['1', '2']", () => {
-    const state: any = {
-      players: {
-        map: { "1": { hand: ["1", "2"] } },
-        all: ["1", "2"],
-      },
-    };
-    expect(getPlayerHand("1")(state)).toEqual(["1", "2"]);
-  });
-
-  it("should return undefined", () => {
-    const state: any = {
-      players: {
-        map: { "1": {} },
-        all: ["1", "2"],
-      },
-    };
-    expect(getPlayerHand("1")(state)).toEqual([]);
-  });
-
-  it("should return undefined", () => {
-    const state: any = {
-      players: {
-        map: {},
-        all: ["1", "2"],
-      },
-    };
-    expect(getPlayerHand("1")(state)).toEqual([]);
-  });
-});
-
-describe("getPlayerHandAtIndex", () => {
-  it("should return ['1', '2']", () => {
-    const state: any = {
-      players: {
-        map: { "1": { hand: ["1", "2"] } },
-        all: ["1", "2"],
-      },
-    };
-    expect(getPlayerHandAtIndex(0)(state)).toEqual(["1", "2"]);
-  });
-
-  it("should return undefined", () => {
-    const state: any = {
-      players: {
-        map: { "1": {} },
-        all: ["1", "2"],
-      },
-    };
-    expect(getPlayerHandAtIndex(2)(state)).toEqual([]);
   });
 });
 

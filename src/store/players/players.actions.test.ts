@@ -3,6 +3,8 @@ import {
   ADD_TILE_TO_HAND,
   addPlayer,
   addTilesToPlayerHand,
+  FOCUS_HAND_TILE,
+  focusHandTile,
 } from "./players.actions";
 
 describe("addPlayer", () => {
@@ -19,6 +21,15 @@ describe("addTilesToPlayerHand", () => {
     expect(addTilesToPlayerHand("1", ["1"])).toEqual({
       type: ADD_TILE_TO_HAND,
       payload: { playerId: "1", tileIds: ["1"] },
+    });
+  });
+});
+
+describe("focusHandTile", () => {
+  it("should return a FOCUS_HAND_TILE action", () => {
+    expect(focusHandTile("1", "1")).toEqual({
+      type: FOCUS_HAND_TILE,
+      payload: { playerId: "1", tileId: "1" },
     });
   });
 });
