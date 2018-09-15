@@ -2,7 +2,7 @@ import * as React from "react";
 import { defaultProps } from "recompose";
 
 import { Vector2 } from "../../models";
-import { Tile } from "../Tile";
+import TileCard from "../TileCard";
 
 type CellProps = {
   position: Vector2;
@@ -16,10 +16,10 @@ const onClickWithPosition = (onClick, position) => clickEvent => {
 
 export const Cell: React.SFC<CellProps> = ({ position, tileId, onClick }) => (
   <button
-    className={"board-cell"}
+    className="board-cell"
     onClick={onClickWithPosition(onClick, position)}
   >
-    {tileId && <Tile tileId={tileId} />}
+    {tileId && <TileCard tileId={tileId} />}
   </button>
 );
 

@@ -1,26 +1,48 @@
 import { connect } from "react-redux";
 
 import { Id } from "../../models";
-import { getPlayerAtIndex, RootState } from "../../store";
-import { PlayerHand } from "./PlayerHand";
+import { focusHandTile, getPlayer, selectHandTile } from "../../store";
+import { PlayerHand, TileEventFn } from "./PlayerHand";
 
 type OwnProps = {
-  playerIndex: number;
+  playerId: Id;
 };
-type StateProps = {
-  tiles: Id[]; // TODO: Hydrate the tiles (instead of just passing the ids).
-  focusedTile: Id;
+type MergeProps = {
+  tileIds: Id[];
+  focusedTileId?: Id;
+  selectedTileId?: Id;
+  onTileMouseEnter: TileEventFn;
+  onTileMouseLeave: TileEventFn;
+  onTileClick: TileEventFn;
 };
 
-const mapStateToProps = (state: RootState, ownProps): StateProps => {
-  const player = getPlayerAtIndex(ownProps.playerIndex)(state);
+const mergeProps = (stateProps, dispatchProps, ownProps): MergeProps => {
+  const { state } = stateProps;
+  const { dispatch } = dispatchProps;
+  const { playerId } = ownProps;
+
+  const player = getPlayer(playerId)(state);
 
   return {
-    tiles: player.hand,
-    focusedTile: player.focusedTile,
+    tileIds: player ? player.hand : [],
+    focusedTileId: player && player.focusedTileId,
+    selectedTileId: player && player.selectedTileId,
+    onTileMouseEnter: ({ tileId }) => {
+      dispatch(focusHandTile(playerId, tileId));
+    },
+    onTileMouseLeave: ({ tileId }) => {
+      dispatch(focusHandTile(playerId, null));
+    },
+    onTileClick: ({ tileId }) => {
+      dispatch(selectHandTile(playerId, tileId));
+    },
   };
 };
 
-const enhance = connect<StateProps, any, OwnProps>(mapStateToProps);
+const enhance = connect<any, any, OwnProps>(
+  state => ({ state }),
+  dispatch => ({ dispatch }),
+  mergeProps,
+);
 
 export default enhance(PlayerHand);

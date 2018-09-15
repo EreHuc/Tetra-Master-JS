@@ -21,24 +21,12 @@ const debugModeInitGame = () => (dispatch, getState) => {
 
   // Create player 1 and 2
   dispatch(addPlayer({ id: "1", name: "Player 1" }));
-  dispatch(addPlayer({ id: "1", name: "Player 2" }));
+  dispatch(addPlayer({ id: "2", name: "Player 2" }));
 
   // Give random cards to player 1 and 2
   const allPlayerIds = getAllPlayerIds(getState());
-  dispatch(
-    addTilesToPlayerHand(allPlayerIds[0], [
-      randomId(1, 2),
-      randomId(1, 2),
-      randomId(1, 2),
-    ]),
-  );
-  dispatch(
-    addTilesToPlayerHand(allPlayerIds[1], [
-      randomId(1, 2),
-      randomId(1, 2),
-      randomId(1, 2),
-    ]),
-  );
+  dispatch(addTilesToPlayerHand(allPlayerIds[0], ["1", "2", "3"]));
+  dispatch(addTilesToPlayerHand(allPlayerIds[1], ["4", "5", "6"]));
 };
 
 function mergeProps(stateProps, dispatchProps, ownProps) {

@@ -1,12 +1,12 @@
 import * as R from "ramda";
 import { combineReducers } from "redux";
-import { v1 as uuidv1 } from "uuid";
 
 import { Id, Player } from "../../models";
 import {
   ADD_PLAYER,
   ADD_TILE_TO_HAND,
   FOCUS_HAND_TILE,
+  SELECT_HAND_TILE,
 } from "./players.actions";
 
 export type Players = {
@@ -25,18 +25,19 @@ const mapItemLens = (id: Id) => R.lensPath(["map", id]);
 const allLens = R.lensProp("all");
 
 // player
-const playerLens = (id: Id) => R.lensProp(id);
 const playerHandLens = (id: Id) => R.lensPath([id, "hand"]);
-const playerFocusedTileLens = (id: Id) => R.lensPath([id, "focusedTile"]);
+const playerFocusedTileLens = (id: Id) => R.lensPath([id, "focusedTileId"]);
+const playerSelectedTileLens = (id: Id) => R.lensPath([id, "selectedTileId"]);
 
 //
 // Helpers
 //
 const addItemsToList = (items: any[]) => (list: any[]) => [...list, ...items];
 const addToList = (item: any) => addItemsToList([item]);
-const createPlayer = (data: Partial<Player>) => ({
+type PartialPlayer = { id: Id; name: string };
+const createPlayer = (data: PartialPlayer): Player => ({
   ...data,
-  ...{ hand: [], focusedTile: null },
+  ...{ hand: [], focusedTileId: null, selectedTileId: null },
 });
 
 const addTilesToHand = (payload: { playerId: Id; tileIds: Id[] }) => {
@@ -56,8 +57,12 @@ const addPlayerReducer = (payload: {
 
 const setFocusedTileReducer = (payload: { playerId: Id; tileId: Id }) => {
   const { playerId, tileId } = payload;
-
   return R.set(playerFocusedTileLens(playerId), tileId);
+};
+
+const setSelectedTileReducer = (payload: { playerId: Id; tileId: Id }) => {
+  const { playerId, tileId } = payload;
+  return R.set(playerSelectedTileLens(playerId), tileId);
 };
 
 const mapReducer = (playerMap: PlayerMap = {}, { type, payload }) => {
@@ -66,6 +71,8 @@ const mapReducer = (playerMap: PlayerMap = {}, { type, payload }) => {
       return addTilesToHand(payload)(playerMap);
     case FOCUS_HAND_TILE:
       return setFocusedTileReducer(payload)(playerMap);
+    case SELECT_HAND_TILE:
+      return setSelectedTileReducer(payload)(playerMap);
   }
   return playerMap;
 };

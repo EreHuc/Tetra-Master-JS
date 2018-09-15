@@ -4,5 +4,6 @@ export type Player = {
   id: Id;
   name: string;
   hand: Id[];
-  focusedTile: Id;
+  focusedTileId: Id;
+  selectedTileId: Id;
 };

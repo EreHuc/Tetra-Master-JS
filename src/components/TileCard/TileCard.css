@@ -1,0 +1,25 @@
+.tile-card {
+  width: 64px;
+  height: 64px;
+  border: 2px solid transparent;
+}
+
+.tile-card.selected {
+  border-color: #000;
+}
+
+.tile-type-1 {
+  background: lightblue;
+}
+
+.tile-type-2 {
+  background: lightcoral
+}
+
+.tile-type-3 {
+  background: lightyellow
+}
+
+.tile-type-4 {
+  background: lightgreen
+}

@@ -27,8 +27,8 @@ export const App: React.SFC<AppProps> = ({ initialized }) => (
   <div>
     <DebugBar initialized={initialized} />
     {initialized && <Board />}
-    {initialized && <PlayerHand playerIndex={0} />}
-    {initialized && <PlayerHand playerIndex={1} />}
+    {initialized && <PlayerHand playerId="1" />}
+    {initialized && <PlayerHand playerId="2" />}
   </div>
 );
 

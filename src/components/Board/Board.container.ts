@@ -2,7 +2,7 @@ import { connect } from "react-redux";
 
 import { randomId } from "../../lib/randomId";
 import { getBoardGrid, placeTile } from "../../store";
-import { Board } from "./";
+import { Board } from "./Board";
 
 const mapStateToProps = state => ({
   grid: getBoardGrid(state),

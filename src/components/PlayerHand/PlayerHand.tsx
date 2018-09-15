@@ -1,16 +1,44 @@
 import * as React from "react";
 
 import { Id } from "../../models";
-import { Tile } from "../Tile";
+import TileCard from "../TileCard";
 import "./PlayerHand.css";
 
+export type TileEventFn = (params: { tileId: Id }) => void;
 type PlayerHandProps = {
-  tiles: Id[];
+  tileIds: Id[];
+  focusedTileId?: Id;
+  selectedTileId?: Id;
+  onTileMouseEnter: TileEventFn;
+  onTileMouseLeave: TileEventFn;
+  onTileClick: TileEventFn;
 };
 
-export const PlayerHand = ({ tiles = [] }: PlayerHandProps) => (
+const handleTileMouseEvent = (tileId: Id, onEvent: TileEventFn) => () => {
+  onEvent({ tileId });
+};
+
+export const PlayerHand = ({
+  tileIds = [],
+  focusedTileId,
+  selectedTileId,
+  onTileMouseEnter,
+  onTileMouseLeave,
+  onTileClick,
+}: PlayerHandProps) => (
   <div className="player-hand">
-    {tiles.length > 0 &&
-      tiles.map((tileId, index) => <Tile key={index} tileId={tileId} />)}
+    hand:&nbsp;
+    {tileIds.length > 0 &&
+      tileIds.map((tileId, index) => (
+        <TileCard
+          key={index}
+          tileId={tileId}
+          focused={tileId === focusedTileId}
+          selected={tileId === selectedTileId}
+          onMouseEnter={handleTileMouseEvent(tileId, onTileMouseEnter)}
+          onMouseLeave={handleTileMouseEvent(tileId, onTileMouseLeave)}
+          onClick={handleTileMouseEvent(tileId, onTileClick)}
+        />
+      ))}
   </div>
 );
