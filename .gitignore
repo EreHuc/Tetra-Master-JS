@@ -27,3 +27,6 @@ yarn-error.log*
 
 # Jetbrains suit
 .idea
+
+# firebase
+.firebase
