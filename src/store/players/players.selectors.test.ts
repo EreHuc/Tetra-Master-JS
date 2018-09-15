@@ -103,7 +103,7 @@ describe("getPlayerHand", () => {
         all: ["1", "2"],
       },
     };
-    expect(getPlayerHand("1")(state)).toEqual(undefined);
+    expect(getPlayerHand("1")(state)).toEqual([]);
   });
 
   it("should return undefined", () => {
@@ -113,7 +113,7 @@ describe("getPlayerHand", () => {
         all: ["1", "2"],
       },
     };
-    expect(getPlayerHand("1")(state)).toEqual(undefined);
+    expect(getPlayerHand("1")(state)).toEqual([]);
   });
 });
 
@@ -135,7 +135,7 @@ describe("getPlayerHandAtIndex", () => {
         all: ["1", "2"],
       },
     };
-    expect(getPlayerHandAtIndex(2)(state)).toEqual(undefined);
+    expect(getPlayerHandAtIndex(2)(state)).toEqual([]);
   });
 });
 

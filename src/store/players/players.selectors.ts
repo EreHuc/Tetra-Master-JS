@@ -5,7 +5,7 @@ import { RootState } from "../root.reducer";
 
 // TODO: Use reselect for memoization
 
-const getHand = (player: Player) => player.hand || undefined;
+const getHand = (player: Player) => player.hand || [];
 
 export const getAllPlayerIds = (rootState: RootState): Id[] => {
   return R.path<Id[]>(["players", "all"], rootState) || [];
@@ -24,14 +24,14 @@ export const getPlayerAtIndex = (index: number) => (rootState: RootState) => {
 
 export const getPlayerHand = (playerId: Id) => (rootState: RootState) => {
   const player = getPlayer(playerId)(rootState);
-  return player ? getHand(player) : undefined;
+  return player ? getHand(player) : [];
 };
 
 export const getPlayerHandAtIndex = (index: number) => (
   rootState: RootState,
 ) => {
   const player = getPlayerAtIndex(index)(rootState);
-  return player ? getHand(player) : undefined;
+  return player ? getHand(player) : [];
 };
 
 export const getPlayerIdAtIndex = (index: number) => (rootState: RootState) => {
