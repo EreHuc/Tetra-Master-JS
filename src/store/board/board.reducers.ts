@@ -1,19 +1,15 @@
 import update from "immutability-helper";
 import { combineReducers } from "redux";
 
-import { createSelector } from "reselect";
-import { Grid } from "../../models";
-import { RootState } from "../root.reducer";
-import {
-  INIT_BOARD,
-  InitBoardAction,
-  PLACE_TILE,
-  PlaceTileAction,
-} from "./board.actions";
+import { Grid, Id, Vector2 } from "../../models";
+import { INIT_BOARD, PLACE_TILE } from "./board.actions";
 
 export type Board = { grid: Grid };
 
-export const initBoardReducer = (grid: Grid, action: InitBoardAction): Grid => {
+export const initBoardReducer = (
+  grid: Grid,
+  action: { size: Vector2 },
+): Grid => {
   const { size } = action;
   const newGrid = Array(size.x);
 
@@ -24,7 +20,10 @@ export const initBoardReducer = (grid: Grid, action: InitBoardAction): Grid => {
   return newGrid;
 };
 
-export const placeTileReducer = (grid: Grid, action: PlaceTileAction): Grid => {
+export const placeTileReducer = (
+  grid: Grid,
+  action: { position: Vector2; tileId: Id },
+): Grid => {
   const { position, tileId } = action;
 
   return update(grid, {
@@ -47,9 +46,3 @@ const gridReducer = (state: Grid = [], action): Grid => {
 export const boardReducer = combineReducers({
   grid: gridReducer,
 });
-
-// selectors
-export const getBoard = (rootState: RootState) => rootState.board;
-export const getGrid = (board: Board) => board.grid;
-
-export const getBoardGrid = createSelector([getBoard], board => getGrid(board));

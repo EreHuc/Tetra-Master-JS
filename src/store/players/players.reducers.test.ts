@@ -1,5 +1,3 @@
-import { v1 as uuidv1 } from "uuid";
-
 import { ADD_PLAYER, ADD_TILE_TO_HAND } from "./players.actions";
 import { playersReducer } from "./players.reducers";
 

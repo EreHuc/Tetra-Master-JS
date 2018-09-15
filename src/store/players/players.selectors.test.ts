@@ -14,6 +14,13 @@ describe("getAllPlayersIds", () => {
     };
     expect(getAllPlayerIds(state)).toEqual(["1", "2"]);
   });
+
+  it("should return []", () => {
+    const state: any = {
+      players: {},
+    };
+    expect(getAllPlayerIds(state)).toEqual([]);
+  });
 });
 
 describe("getAllPlayerIds", () => {
