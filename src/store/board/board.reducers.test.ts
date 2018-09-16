@@ -1,8 +1,6 @@
 import { INIT_BOARD, PLACE_TILE } from "./board.actions";
 import { boardReducer } from "./board.reducers";
 
-jest.mock("uuid", () => ({ v1: jest.fn().mockReturnValue("1") }));
-
 describe("boardReducer", () => {
   describe("empty action", () => {
     it("should return the default state", () => {

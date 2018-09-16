@@ -7,6 +7,7 @@ import {
   getAllPlayerIds,
   initBoard,
 } from "../../store";
+import { startTurn } from "../../store/turn/turn.actions";
 import { EnhancedApp } from "./App";
 
 // TODO: Store a specific boolean in the store for this.
@@ -26,6 +27,8 @@ const debugModeInitGame = () => (dispatch, getState) => {
   const allPlayerIds = getAllPlayerIds(getState());
   dispatch(addTilesToPlayerHand(allPlayerIds[0], ["1", "2", "3"]));
   dispatch(addTilesToPlayerHand(allPlayerIds[1], ["4", "5", "6"]));
+
+  dispatch(startTurn("1"));
 };
 
 function mergeProps(stateProps, dispatchProps, ownProps) {

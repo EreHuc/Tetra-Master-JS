@@ -1,2 +1,2 @@
-export { EnhancedDebugBar as default } from "./DebugBar";
+export { default } from "./DebugBar.container";
 export * from "./DebugBar";
