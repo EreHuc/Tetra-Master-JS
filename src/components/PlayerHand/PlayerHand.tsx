@@ -6,6 +6,7 @@ import "./PlayerHand.css";
 
 export type TileEventFn = (params: { tileId: Id }) => void;
 type PlayerHandProps = {
+  playerId: Id;
   tileIds: Id[];
   focusedTileId?: Id;
   selectedTileId?: Id;
@@ -19,6 +20,7 @@ const handleTileMouseEvent = (tileId: Id, onEvent: TileEventFn) => () => {
 };
 
 export const PlayerHand = ({
+  playerId,
   tileIds = [],
   focusedTileId,
   selectedTileId,
@@ -33,6 +35,7 @@ export const PlayerHand = ({
         <TileCard
           key={index}
           tileId={tileId}
+          playerId={playerId}
           focused={tileId === focusedTileId}
           selected={tileId === selectedTileId}
           onMouseEnter={handleTileMouseEvent(tileId, onTileMouseEnter)}

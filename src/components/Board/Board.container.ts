@@ -1,18 +1,18 @@
 import { connect } from "react-redux";
 
-import { randomId } from "../../lib/randomId";
-import { getBoardGrid, placeTile } from "../../store";
+import { getBoardGrid, placeCurrentPlayerTile } from "../../store";
 import { Board } from "./Board";
 
 const mapStateToProps = state => ({
   grid: getBoardGrid(state),
 });
 
+const handleCellClick = dispatch => position => {
+  dispatch(placeCurrentPlayerTile(position));
+};
+
 const mapDispatchToProps = dispatch => ({
-  onCellClick: position => {
-    // FIXME: Use the currentPlayerId and selectedTileId instead of random ids.
-    dispatch(placeTile(randomId(1, 2), randomId(1, 2), position));
-  },
+  onCellClick: handleCellClick(dispatch),
 });
 
 const enhance = connect(

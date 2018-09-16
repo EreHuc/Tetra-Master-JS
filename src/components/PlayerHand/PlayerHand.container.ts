@@ -14,7 +14,7 @@ type MergeProps = {
   onTileMouseEnter: TileEventFn;
   onTileMouseLeave: TileEventFn;
   onTileClick: TileEventFn;
-};
+} & OwnProps;
 
 const mergeProps = (
   stateProps,
@@ -28,6 +28,7 @@ const mergeProps = (
   const player = getPlayer(playerId)(state);
 
   return {
+    ...ownProps,
     tileIds: player ? player.hand : [],
     focusedTileId: player && player.focusedTileId,
     selectedTileId: player && player.selectedTileId,

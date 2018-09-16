@@ -7,6 +7,7 @@ exports[`EnhancedBoardCell should display a tile with the correct tileId 1`] = `
   role="button"
 >
   <Connect(TileCard)
+    playerId="1"
     tileId="1"
   />
 </div>
@@ -19,6 +20,7 @@ exports[`EnhancedBoardCell should react to clicks 1`] = `
   role="button"
 >
   <Connect(TileCard)
+    playerId="1"
     tileId="1"
   />
 </div>

@@ -1,10 +1,11 @@
 import { connect } from "react-redux";
 
-import { getTile } from "../../store";
+import { getPlayer, getTile } from "../../store";
 import { TileCard } from "./TileCard";
 
 const mapStateToProps = (state, ownProps) => ({
   tile: getTile(ownProps.tileId)(state),
+  player: getPlayer(ownProps.playerId)(state),
 });
 
 const enhance = connect(mapStateToProps);

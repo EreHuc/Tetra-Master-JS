@@ -4,19 +4,27 @@ import * as React from "react";
 import { TileCard } from "./TileCard";
 
 const mockTile = { id: "1", typeId: "1" };
+const mockPlayer = { id: "1", name: "Player 1", hand: [] };
 
 describe("TileCard", () => {
   it("should not display the tile infos", () => {
-    const wrapper = shallow(<TileCard tile={mockTile} />);
+    const wrapper = shallow(<TileCard tile={mockTile} player={mockPlayer} />);
 
     expect(wrapper.contains("tile 1")).toBeFalsy();
     expect(wrapper).toMatchSnapshot();
   });
 
   it("should have a className containing the tileId", () => {
-    const wrapper = shallow(<TileCard tile={mockTile} />);
+    const wrapper = shallow(<TileCard tile={mockTile} player={mockPlayer} />);
 
     expect(wrapper.hasClass("tile-type-1")).toBeTruthy();
+    expect(wrapper).toMatchSnapshot();
+  });
+
+  it("should have a className containing the playerId", () => {
+    const wrapper = shallow(<TileCard tile={mockTile} player={mockPlayer} />);
+
+    expect(wrapper.hasClass("player-1")).toBeTruthy();
     expect(wrapper).toMatchSnapshot();
   });
 
@@ -27,6 +35,7 @@ describe("TileCard", () => {
     const wrapper = shallow(
       <TileCard
         tile={mockTile}
+        player={mockPlayer}
         onClick={onClick}
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
@@ -50,7 +59,9 @@ describe("TileCard", () => {
 
   describe("when focused", () => {
     it("should display the tile infos", () => {
-      const wrapper = shallow(<TileCard tile={mockTile} focused />);
+      const wrapper = shallow(
+        <TileCard tile={mockTile} player={mockPlayer} focused />,
+      );
 
       expect(wrapper.contains("tile 1")).toBeTruthy();
       expect(wrapper).toMatchSnapshot();
@@ -59,7 +70,9 @@ describe("TileCard", () => {
 
   describe("when selected", () => {
     it("should have a 'selected' className", () => {
-      const wrapper = shallow(<TileCard tile={mockTile} selected />);
+      const wrapper = shallow(
+        <TileCard tile={mockTile} player={mockPlayer} selected />,
+      );
 
       expect(wrapper.hasClass("selected")).toBeTruthy();
       expect(wrapper).toMatchSnapshot();

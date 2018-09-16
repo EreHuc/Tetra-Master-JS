@@ -1,10 +1,11 @@
 import * as React from "react";
 
-import { Tile } from "../../models";
+import { Player, Tile } from "../../models";
 import "./TileCard.css";
 
 type TileProps = {
   tile: Tile;
+  player: Player;
   focused?: boolean;
   selected?: boolean;
   onMouseEnter?: React.MouseEventHandler;
@@ -14,6 +15,7 @@ type TileProps = {
 
 export const TileCard: React.SFC<TileProps> = ({
   tile,
+  player,
   selected,
   focused,
   onMouseEnter,
@@ -21,7 +23,8 @@ export const TileCard: React.SFC<TileProps> = ({
   onClick,
 }) => (
   <button
-    className={`tile-card tile-type-${tile.typeId} ${selected && "selected"}`}
+    className={`tile-card tile-type-${tile.typeId} ${selected &&
+      "selected"} player-${player.id}`}
     onMouseEnter={onMouseEnter}
     onMouseLeave={onMouseLeave}
     onClick={onClick}

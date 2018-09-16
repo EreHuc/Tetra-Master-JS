@@ -21,3 +21,11 @@
   text-align: center;
   background: #8f9083;
 }
+
+.board-cell .player-1 {
+  border-color: blue;
+}
+
+.board-cell .player-2 {
+  border-color: red;
+}

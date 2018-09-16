@@ -20,7 +20,7 @@ const BoardCell: React.SFC<CellProps> = ({ position, cell, onClick }) => (
     role="button"
     onClick={onClickWithPosition(onClick, position)}
   >
-    {cell.tileId && <TileCard tileId={cell.tileId} />}
+    {cell.tileId && <TileCard tileId={cell.tileId} playerId={cell.playerId} />}
   </div>
 );
 

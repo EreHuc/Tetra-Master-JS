@@ -1,20 +1,26 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`TileCard should have a className containing the playerId 1`] = `
+<button
+  className="tile-card tile-type-1 undefined player-1"
+/>
+`;
+
 exports[`TileCard should have a className containing the tileId 1`] = `
 <button
-  className="tile-card tile-type-1 undefined"
+  className="tile-card tile-type-1 undefined player-1"
 />
 `;
 
 exports[`TileCard should not display the tile infos 1`] = `
 <button
-  className="tile-card tile-type-1 undefined"
+  className="tile-card tile-type-1 undefined player-1"
 />
 `;
 
 exports[`TileCard should react to mouse events 1`] = `
 <button
-  className="tile-card tile-type-1 undefined"
+  className="tile-card tile-type-1 undefined player-1"
   onClick={
     [MockFunction] {
       "calls": Array [
@@ -41,7 +47,7 @@ exports[`TileCard should react to mouse events 1`] = `
 
 exports[`TileCard when focused should display the tile infos 1`] = `
 <button
-  className="tile-card tile-type-1 undefined"
+  className="tile-card tile-type-1 undefined player-1"
 >
   tile 1
 </button>
@@ -49,6 +55,6 @@ exports[`TileCard when focused should display the tile infos 1`] = `
 
 exports[`TileCard when selected should have a 'selected' className 1`] = `
 <button
-  className="tile-card tile-type-1 selected"
+  className="tile-card tile-type-1 selected player-1"
 />
 `;

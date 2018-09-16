@@ -18,3 +18,5 @@ describe("placeTile", () => {
     });
   });
 });
+
+describe("placeCurrentPlayerTile", () => {});
