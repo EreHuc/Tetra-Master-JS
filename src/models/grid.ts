@@ -1,3 +1,8 @@
 import { Id } from "./id";
 
-export type Grid = Id[][];
+export type Cell = {
+  playerId?: Id;
+  tileId?: Id;
+};
+
+export type Grid = Cell[][];

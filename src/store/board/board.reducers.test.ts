@@ -21,7 +21,7 @@ describe("boardReducer", () => {
       };
 
       expect(boardReducer(state, action)).toEqual({
-        grid: [[null, null], [null, null]],
+        grid: [[{}, {}], [{}, {}]],
       });
     });
   });
@@ -29,15 +29,15 @@ describe("boardReducer", () => {
   describe("PLACE_TILE action", () => {
     it("should set the player's hand to ['1', '2', '3']", () => {
       const state: any = {
-        grid: [[null, null], [null, null]],
+        grid: [[{}, {}], [{}, {}]],
       };
       const action = {
         type: PLACE_TILE,
-        payload: { position: { x: 0, y: 0 }, tileId: "1" },
+        payload: { playerId: "1", tileId: "1", position: { x: 0, y: 0 } },
       };
 
       expect(boardReducer(state, action)).toEqual({
-        grid: [["1", null], [null, null]],
+        grid: [[{ playerId: "1", tileId: "1" }, {}], [{}, {}]],
       });
     });
   });

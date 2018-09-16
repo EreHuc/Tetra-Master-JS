@@ -1,12 +1,12 @@
 import * as React from "react";
 import { defaultProps } from "recompose";
 
-import { Vector2 } from "../../models";
+import { Cell, Vector2 } from "../../models";
 import TileCard from "../TileCard";
 
 type CellProps = {
   position: Vector2;
-  tileId: string;
+  cell: Cell;
   onClick: (position: Vector2) => void;
 };
 
@@ -14,15 +14,16 @@ const onClickWithPosition = (onClick, position) => clickEvent => {
   onClick(position);
 };
 
-export const Cell: React.SFC<CellProps> = ({ position, tileId, onClick }) => (
-  <button
+const BoardCell: React.SFC<CellProps> = ({ position, cell, onClick }) => (
+  <div
     className="board-cell"
+    role="button"
     onClick={onClickWithPosition(onClick, position)}
   >
-    {tileId && <TileCard tileId={tileId} />}
-  </button>
+    {cell.tileId && <TileCard tileId={cell.tileId} />}
+  </div>
 );
 
-export const EnhancedCell = defaultProps({
+export const EnhancedBoardCell = defaultProps({
   onClick: _ => {},
-})(Cell);
+})(BoardCell);

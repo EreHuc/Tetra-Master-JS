@@ -11,16 +11,20 @@ export const initBoardReducer = (action: { size: Vector2 }) => {
   const newGrid = Array(size.x);
 
   for (let i = 0; i < newGrid.length; i += 1) {
-    newGrid[i] = Array(size.y).fill(null);
+    newGrid[i] = Array(size.y).fill({});
   }
 
   return newGrid;
 };
 
-export const placeTileReducer = (action: { position: Vector2; tileId: Id }) => {
-  const { position, tileId } = action;
+export const placeTileReducer = (action: {
+  playerId: Id;
+  tileId: Id;
+  position: Vector2;
+}) => {
+  const { playerId, tileId, position } = action;
 
-  return R.assocPath([position.x, position.y], tileId);
+  return R.assocPath([position.x, position.y], { playerId, tileId });
 };
 
 const gridReducer = (grid: Grid = [], action): Grid => {

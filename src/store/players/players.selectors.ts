@@ -25,7 +25,15 @@ export const getPlayerIdAtIndex = (index: number) => (rootState: RootState) => {
 };
 
 // TODO: Move to store/tiles
-const tiles = [
+// const mockTileTypes = [
+//   { id: "1", name: "Type 1" },
+//   { id: "2", name: "Type 2" },
+//   { id: "3", name: "Type 3" },
+//   { id: "4", name: "Type 4" },
+//   { id: "5", name: "Type 5" },
+//   { id: "6", name: "Type 6" },
+// ];
+const mockTiles = [
   { id: "1", typeId: "1" },
   { id: "2", typeId: "2" },
   { id: "3", typeId: "4" },
@@ -34,5 +42,5 @@ const tiles = [
   { id: "6", typeId: "2" },
 ];
 export const getTile = (tileId: Id) => (rootState: RootState) => {
-  return tiles.find(tile => tile.id === tileId);
+  return mockTiles.find(tile => tile.id === tileId);
 };

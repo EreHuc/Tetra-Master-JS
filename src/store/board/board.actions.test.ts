@@ -12,9 +12,9 @@ describe("initBoard", () => {
 
 describe("placeTile", () => {
   it("should return a ADD_TILE_TO_HAND action", () => {
-    expect(placeTile(new Vector2(1, 1), "1")).toEqual({
+    expect(placeTile("1", "1", new Vector2(1, 1))).toEqual({
       type: PLACE_TILE,
-      payload: { position: { x: 1, y: 1 }, tileId: "1" },
+      payload: { playerId: "1", tileId: "1", position: { x: 1, y: 1 } },
     });
   });
 });

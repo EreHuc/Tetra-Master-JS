@@ -10,7 +10,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   onCellClick: position => {
-    dispatch(placeTile(position, randomId(1, 2)));
+    // FIXME: Use the currentPlayerId and selectedTileId instead of random ids.
+    dispatch(placeTile(randomId(1, 2), randomId(1, 2), position));
   },
 });
 

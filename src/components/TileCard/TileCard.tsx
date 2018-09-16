@@ -20,12 +20,12 @@ export const TileCard: React.SFC<TileProps> = ({
   onMouseLeave,
   onClick,
 }) => (
-  <div
+  <button
     className={`tile-card tile-type-${tile.typeId} ${selected && "selected"}`}
     onMouseEnter={onMouseEnter}
     onMouseLeave={onMouseLeave}
     onClick={onClick}
   >
     {focused && `tile ${tile.id}`}
-  </div>
+  </button>
 );

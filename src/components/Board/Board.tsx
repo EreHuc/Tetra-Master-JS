@@ -1,7 +1,7 @@
 import * as React from "react";
 
 import { Grid, Vector2 } from "../../models";
-import { Cell } from "./Board.Cell";
+import { EnhancedBoardCell } from "./Board.Cell";
 import "./Board.css";
 
 type BoardProps = {
@@ -13,10 +13,10 @@ export const Board: React.SFC<BoardProps> = ({ grid, onCellClick }) => (
   <div className="board">
     <div className="grid">
       {grid.map((row, x) =>
-        row.map((cellId, y) => (
-          <Cell
+        row.map((cell, y) => (
+          <EnhancedBoardCell
             key={`${x}-${y}`}
-            tileId={cellId}
+            cell={cell}
             position={new Vector2(x, y)}
             onClick={onCellClick}
           />
