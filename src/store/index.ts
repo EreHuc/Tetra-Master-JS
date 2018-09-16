@@ -23,3 +23,4 @@ export function configureStore(initialState = {}) {
 export * from "./root.reducer";
 export * from "./board";
 export * from "./players";
+export * from "./tiles";
