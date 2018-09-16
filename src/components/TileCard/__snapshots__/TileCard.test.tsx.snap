@@ -1,413 +1,54 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`TileCard should have a className containing the tileId 1`] = `
-ShallowWrapper {
-  Symbol(enzyme.__root__): [Circular],
-  Symbol(enzyme.__unrendered__): <TileCard
-    tile={
-      Object {
-        "id": "1",
-        "typeId": "1",
-      }
-    }
-  />,
-  Symbol(enzyme.__renderer__): Object {
-    "batchedUpdates": [Function],
-    "getNode": [Function],
-    "render": [Function],
-    "simulateError": [Function],
-    "simulateEvent": [Function],
-    "unmount": [Function],
-  },
-  Symbol(enzyme.__node__): Object {
-    "instance": null,
-    "key": undefined,
-    "nodeType": "host",
-    "props": Object {
-      "children": undefined,
-      "className": "tile-card tile-type-1 undefined",
-      "onClick": undefined,
-      "onMouseEnter": undefined,
-      "onMouseLeave": undefined,
-    },
-    "ref": null,
-    "rendered": null,
-    "type": "button",
-  },
-  Symbol(enzyme.__nodes__): Array [
-    Object {
-      "instance": null,
-      "key": undefined,
-      "nodeType": "host",
-      "props": Object {
-        "children": undefined,
-        "className": "tile-card tile-type-1 undefined",
-        "onClick": undefined,
-        "onMouseEnter": undefined,
-        "onMouseLeave": undefined,
-      },
-      "ref": null,
-      "rendered": null,
-      "type": "button",
-    },
-  ],
-  Symbol(enzyme.__options__): Object {
-    "adapter": ReactSixteenAdapter {
-      "options": Object {
-        "enableComponentDidUpdateOnSetState": true,
-        "lifecycles": Object {
-          "componentDidUpdate": Object {
-            "onSetState": true,
-          },
-          "getDerivedStateFromProps": true,
-          "getSnapshotBeforeUpdate": true,
-          "setState": Object {
-            "skipsComponentDidUpdateOnNullish": true,
-          },
-        },
-      },
-    },
-    "attachTo": undefined,
-    "hydrateIn": undefined,
-  },
-}
+<button
+  className="tile-card tile-type-1 undefined"
+/>
 `;
 
 exports[`TileCard should not display the tile infos 1`] = `
-ShallowWrapper {
-  Symbol(enzyme.__root__): [Circular],
-  Symbol(enzyme.__unrendered__): <TileCard
-    tile={
-      Object {
-        "id": "1",
-        "typeId": "1",
-      }
-    }
-  />,
-  Symbol(enzyme.__renderer__): Object {
-    "batchedUpdates": [Function],
-    "getNode": [Function],
-    "render": [Function],
-    "simulateError": [Function],
-    "simulateEvent": [Function],
-    "unmount": [Function],
-  },
-  Symbol(enzyme.__node__): Object {
-    "instance": null,
-    "key": undefined,
-    "nodeType": "host",
-    "props": Object {
-      "children": undefined,
-      "className": "tile-card tile-type-1 undefined",
-      "onClick": undefined,
-      "onMouseEnter": undefined,
-      "onMouseLeave": undefined,
-    },
-    "ref": null,
-    "rendered": null,
-    "type": "button",
-  },
-  Symbol(enzyme.__nodes__): Array [
-    Object {
-      "instance": null,
-      "key": undefined,
-      "nodeType": "host",
-      "props": Object {
-        "children": undefined,
-        "className": "tile-card tile-type-1 undefined",
-        "onClick": undefined,
-        "onMouseEnter": undefined,
-        "onMouseLeave": undefined,
-      },
-      "ref": null,
-      "rendered": null,
-      "type": "button",
-    },
-  ],
-  Symbol(enzyme.__options__): Object {
-    "adapter": ReactSixteenAdapter {
-      "options": Object {
-        "enableComponentDidUpdateOnSetState": true,
-        "lifecycles": Object {
-          "componentDidUpdate": Object {
-            "onSetState": true,
-          },
-          "getDerivedStateFromProps": true,
-          "getSnapshotBeforeUpdate": true,
-          "setState": Object {
-            "skipsComponentDidUpdateOnNullish": true,
-          },
-        },
-      },
-    },
-    "attachTo": undefined,
-    "hydrateIn": undefined,
-  },
-}
+<button
+  className="tile-card tile-type-1 undefined"
+/>
 `;
 
 exports[`TileCard should react to mouse events 1`] = `
-ShallowWrapper {
-  Symbol(enzyme.__root__): [Circular],
-  Symbol(enzyme.__unrendered__): <TileCard
-    onClick={
-      [MockFunction] {
-        "calls": Array [
-          Array [],
-        ],
-      }
+<button
+  className="tile-card tile-type-1 undefined"
+  onClick={
+    [MockFunction] {
+      "calls": Array [
+        Array [],
+      ],
     }
-    onMouseEnter={
-      [MockFunction] {
-        "calls": Array [
-          Array [],
-        ],
-      }
+  }
+  onMouseEnter={
+    [MockFunction] {
+      "calls": Array [
+        Array [],
+      ],
     }
-    onMouseLeave={
-      [MockFunction] {
-        "calls": Array [
-          Array [],
-        ],
-      }
+  }
+  onMouseLeave={
+    [MockFunction] {
+      "calls": Array [
+        Array [],
+      ],
     }
-    tile={
-      Object {
-        "id": "1",
-        "typeId": "1",
-      }
-    }
-  />,
-  Symbol(enzyme.__renderer__): Object {
-    "batchedUpdates": [Function],
-    "getNode": [Function],
-    "render": [Function],
-    "simulateError": [Function],
-    "simulateEvent": [Function],
-    "unmount": [Function],
-  },
-  Symbol(enzyme.__node__): Object {
-    "instance": null,
-    "key": undefined,
-    "nodeType": "host",
-    "props": Object {
-      "children": undefined,
-      "className": "tile-card tile-type-1 undefined",
-      "onClick": [MockFunction] {
-        "calls": Array [
-          Array [],
-        ],
-      },
-      "onMouseEnter": [MockFunction] {
-        "calls": Array [
-          Array [],
-        ],
-      },
-      "onMouseLeave": [MockFunction] {
-        "calls": Array [
-          Array [],
-        ],
-      },
-    },
-    "ref": null,
-    "rendered": null,
-    "type": "button",
-  },
-  Symbol(enzyme.__nodes__): Array [
-    Object {
-      "instance": null,
-      "key": undefined,
-      "nodeType": "host",
-      "props": Object {
-        "children": undefined,
-        "className": "tile-card tile-type-1 undefined",
-        "onClick": [MockFunction] {
-          "calls": Array [
-            Array [],
-          ],
-        },
-        "onMouseEnter": [MockFunction] {
-          "calls": Array [
-            Array [],
-          ],
-        },
-        "onMouseLeave": [MockFunction] {
-          "calls": Array [
-            Array [],
-          ],
-        },
-      },
-      "ref": null,
-      "rendered": null,
-      "type": "button",
-    },
-  ],
-  Symbol(enzyme.__options__): Object {
-    "adapter": ReactSixteenAdapter {
-      "options": Object {
-        "enableComponentDidUpdateOnSetState": true,
-        "lifecycles": Object {
-          "componentDidUpdate": Object {
-            "onSetState": true,
-          },
-          "getDerivedStateFromProps": true,
-          "getSnapshotBeforeUpdate": true,
-          "setState": Object {
-            "skipsComponentDidUpdateOnNullish": true,
-          },
-        },
-      },
-    },
-    "attachTo": undefined,
-    "hydrateIn": undefined,
-  },
-}
+  }
+/>
 `;
 
 exports[`TileCard when focused should display the tile infos 1`] = `
-ShallowWrapper {
-  Symbol(enzyme.__root__): [Circular],
-  Symbol(enzyme.__unrendered__): <TileCard
-    focused={true}
-    tile={
-      Object {
-        "id": "1",
-        "typeId": "1",
-      }
-    }
-  />,
-  Symbol(enzyme.__renderer__): Object {
-    "batchedUpdates": [Function],
-    "getNode": [Function],
-    "render": [Function],
-    "simulateError": [Function],
-    "simulateEvent": [Function],
-    "unmount": [Function],
-  },
-  Symbol(enzyme.__node__): Object {
-    "instance": null,
-    "key": undefined,
-    "nodeType": "host",
-    "props": Object {
-      "children": "tile 1",
-      "className": "tile-card tile-type-1 undefined",
-      "onClick": undefined,
-      "onMouseEnter": undefined,
-      "onMouseLeave": undefined,
-    },
-    "ref": null,
-    "rendered": "tile 1",
-    "type": "button",
-  },
-  Symbol(enzyme.__nodes__): Array [
-    Object {
-      "instance": null,
-      "key": undefined,
-      "nodeType": "host",
-      "props": Object {
-        "children": "tile 1",
-        "className": "tile-card tile-type-1 undefined",
-        "onClick": undefined,
-        "onMouseEnter": undefined,
-        "onMouseLeave": undefined,
-      },
-      "ref": null,
-      "rendered": "tile 1",
-      "type": "button",
-    },
-  ],
-  Symbol(enzyme.__options__): Object {
-    "adapter": ReactSixteenAdapter {
-      "options": Object {
-        "enableComponentDidUpdateOnSetState": true,
-        "lifecycles": Object {
-          "componentDidUpdate": Object {
-            "onSetState": true,
-          },
-          "getDerivedStateFromProps": true,
-          "getSnapshotBeforeUpdate": true,
-          "setState": Object {
-            "skipsComponentDidUpdateOnNullish": true,
-          },
-        },
-      },
-    },
-    "attachTo": undefined,
-    "hydrateIn": undefined,
-  },
-}
+<button
+  className="tile-card tile-type-1 undefined"
+>
+  tile 1
+</button>
 `;
 
 exports[`TileCard when selected should have a 'selected' className 1`] = `
-ShallowWrapper {
-  Symbol(enzyme.__root__): [Circular],
-  Symbol(enzyme.__unrendered__): <TileCard
-    selected={true}
-    tile={
-      Object {
-        "id": "1",
-        "typeId": "1",
-      }
-    }
-  />,
-  Symbol(enzyme.__renderer__): Object {
-    "batchedUpdates": [Function],
-    "getNode": [Function],
-    "render": [Function],
-    "simulateError": [Function],
-    "simulateEvent": [Function],
-    "unmount": [Function],
-  },
-  Symbol(enzyme.__node__): Object {
-    "instance": null,
-    "key": undefined,
-    "nodeType": "host",
-    "props": Object {
-      "children": undefined,
-      "className": "tile-card tile-type-1 selected",
-      "onClick": undefined,
-      "onMouseEnter": undefined,
-      "onMouseLeave": undefined,
-    },
-    "ref": null,
-    "rendered": null,
-    "type": "button",
-  },
-  Symbol(enzyme.__nodes__): Array [
-    Object {
-      "instance": null,
-      "key": undefined,
-      "nodeType": "host",
-      "props": Object {
-        "children": undefined,
-        "className": "tile-card tile-type-1 selected",
-        "onClick": undefined,
-        "onMouseEnter": undefined,
-        "onMouseLeave": undefined,
-      },
-      "ref": null,
-      "rendered": null,
-      "type": "button",
-    },
-  ],
-  Symbol(enzyme.__options__): Object {
-    "adapter": ReactSixteenAdapter {
-      "options": Object {
-        "enableComponentDidUpdateOnSetState": true,
-        "lifecycles": Object {
-          "componentDidUpdate": Object {
-            "onSetState": true,
-          },
-          "getDerivedStateFromProps": true,
-          "getSnapshotBeforeUpdate": true,
-          "setState": Object {
-            "skipsComponentDidUpdateOnNullish": true,
-          },
-        },
-      },
-    },
-    "attachTo": undefined,
-    "hydrateIn": undefined,
-  },
-}
+<button
+  className="tile-card tile-type-1 selected"
+/>
 `;

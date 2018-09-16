@@ -1,10 +1,10 @@
 import * as R from "ramda";
 import { combineReducers } from "redux";
 
-import { Grid, Id, Vector2 } from "../../models";
+import { Cell, Grid, Id, Vector2 } from "../../models";
 import { INIT_BOARD, PLACE_TILE } from "./board.actions";
 
-export type Board = { grid: Grid };
+export type BoardState = { grid: Grid };
 
 export const initBoardReducer = (action: { size: Vector2 }) => {
   const { size } = action;
@@ -24,7 +24,10 @@ export const placeTileReducer = (action: {
 }) => {
   const { playerId, tileId, position } = action;
 
-  return R.assocPath([position.x, position.y], { playerId, tileId });
+  return R.assocPath<Cell, Grid>([position.x, position.y], {
+    playerId,
+    tileId,
+  });
 };
 
 const gridReducer = (grid: Grid = [], action): Grid => {

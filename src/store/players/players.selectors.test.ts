@@ -57,7 +57,7 @@ describe("getPlayer", () => {
         all: ["1", "2"],
       },
     };
-    expect(getPlayer("1")(state)).toEqual(undefined);
+    expect(getPlayer("1")(state)).toBeUndefined();
   });
 });
 
@@ -79,7 +79,7 @@ describe("getPlayerAtIndex", () => {
         all: ["1", "2"],
       },
     };
-    expect(getPlayerAtIndex(2)(state)).toEqual(undefined);
+    expect(getPlayerAtIndex(2)(state)).toBeUndefined();
   });
 });
 
@@ -101,6 +101,6 @@ describe("getPlayerIdAtIndex", () => {
         all: ["1", "2"],
       },
     };
-    expect(getPlayerIdAtIndex(2)(state)).toEqual(undefined);
+    expect(getPlayerIdAtIndex(2)(state)).toBeUndefined();
   });
 });

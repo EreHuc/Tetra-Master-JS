@@ -1,10 +1,10 @@
 import { createSelector } from "reselect";
 
 import { RootState } from "../root.reducer";
-import { Board } from "./board.reducers";
+import { BoardState } from "./board.reducers";
 
 const getBoardRoot = (rootState: RootState) => rootState.board;
-const getGrid = (board: Board) => board.grid || [];
+const getGrid = (board: BoardState) => board.grid || [];
 
 export const getBoardGrid = createSelector([getBoardRoot], board =>
   getGrid(board),

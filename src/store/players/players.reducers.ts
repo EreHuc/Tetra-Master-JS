@@ -9,7 +9,7 @@ import {
   SELECT_HAND_TILE,
 } from "./players.actions";
 
-export type Players = {
+export type PlayersState = {
   map: PlayerMap;
   all: Id[];
 };
@@ -25,9 +25,12 @@ const mapItemLens = (id: Id) => R.lensPath(["map", id]);
 const allLens = R.lensProp("all");
 
 // player
-const playerHandLens = (id: Id) => R.lensPath([id, "hand"]);
-const playerFocusedTileLens = (id: Id) => R.lensPath([id, "focusedTileId"]);
-const playerSelectedTileLens = (id: Id) => R.lensPath([id, "selectedTileId"]);
+export const playerLens = (id: Id) => R.lensProp(id);
+export const playerHandLens = (id: Id) => R.lensPath([id, "hand"]);
+export const playerFocusedTileLens = (id: Id) =>
+  R.lensPath([id, "focusedTileId"]);
+export const playerSelectedTileLens = (id: Id) =>
+  R.lensPath([id, "selectedTileId"]);
 
 //
 // Helpers
@@ -47,8 +50,9 @@ const addTilesToHand = (payload: { playerId: Id; tileIds: Id[] }) => {
 
 const addPlayerReducer = (payload: {
   player: Player;
-}): ((players: Players) => Players) => {
+}): ((players: PlayersState) => PlayersState) => {
   const { player } = payload;
+  // @ts-ignore
   return R.compose(
     R.over(allLens, addToList(player.id)),
     R.set(mapItemLens(player.id), createPlayer(player)),
@@ -81,7 +85,7 @@ const allReducer = (playerAll: Id[] = [], action) => {
   return playerAll;
 };
 
-const crossSliceReducer = (players: Players, action) => {
+const crossSliceReducer = (players: PlayersState, action) => {
   switch (action.type) {
     case ADD_PLAYER:
       return addPlayerReducer(action.payload)(players);

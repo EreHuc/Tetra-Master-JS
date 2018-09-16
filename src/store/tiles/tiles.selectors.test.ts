@@ -19,7 +19,7 @@ describe("getTile", () => {
           all: [],
         },
       };
-      expect(getTile("9")(state)).toEqual(undefined);
+      expect(getTile("9")(state)).toBeUndefined();
     });
   });
 });

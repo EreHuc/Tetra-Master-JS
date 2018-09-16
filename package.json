@@ -35,6 +35,7 @@
     "@types/redux-immutable-state-invariant": "^2.0.4",
     "@types/uuid": "^3.4.4",
     "enzyme-adapter-react-16": "^1.5.0",
+    "enzyme-to-json": "^3.3.4",
     "prettier": "^1.14.2",
     "react-app-rewire-awesome-typescript": "^0.0.6",
     "react-app-rewire-typescript-babel-preset": "^2.4.0",
@@ -51,7 +52,9 @@
   },
   "jest": {
     "setupTestFrameworkScriptFile": "<rootDir>src/setupTests.js",
-    "snapshotSerializers": ["enzyme-to-json/serializer"]
+    "snapshotSerializers": [
+      "enzyme-to-json/serializer"
+    ]
   },
   "browserslist": {
     "development": [
