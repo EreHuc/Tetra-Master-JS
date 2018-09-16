@@ -1,0 +1,16 @@
+language: node_js
+node_js:
+  - 10.10.0
+cache:
+  yarn: true
+  directories:
+    - node_modules
+script:
+  - yarn test --coverage
+  - yarn build
+deploy:
+  provider: firebase
+  on:
+    branch: react
+  token:
+    secure: MNihFGHB5PNniTSykRGIve3LMinFZxGOAOwYuy8t7kHXF1+VdF3CtwNFdJgmvAvfOp7kwLXmd6Ygka37wMgRobYT2NlinqGpr/CJRaCze5ig2Jro15pJaNYqfVOtQe1bAjDrguS6xtZwGRyAwb3zUT1KEjaicKoqJxzE7eWKV6JH6R+dN1e/R/Y9TasRF9RhQPoJfCpR9LFDR28OfIEnE74aU7nw3JT+8d7vGj48nC9TxlTkAgzSaQhEWMXR7QbItWVkEpT6t2/xNGzDw+Xzc87kVuu6Q5DoAcVahXhl1sTkzv6GNrf8OL8p19EwvJYhoz0ArriH2p9Be0xZOsGvQF/5BjGFHwJC3/syau8eF/DO3d3Q6sd89bva4ELu4F7gcDKSo48IaUdECuQpsZ4iCjE8KYrtk/yztM2ykpFnBc4lUWSKUQNnYy0GhMr1nYSm56fDLHnvlfESSUmzsPCjotQjkGzagqXql7kbOQNeiTsNXXBvm6cf2eb71HDTVYpq+rhMgsgRtJF+0Yi9hHqM0nEIBoYHqbAWQB4TQd4uF9sXFLdADBrAE9hYDk3iE4LAuzIiJwJLUA3ZzYJ1O4ND23R+zCnxdly7dvQVnj2FgARZzDrAeAQk/mn0vcP/To/CY/PMMptKM6zpLN5+pjOX2qLuUD4nkKwVCKuiVfj824U=
